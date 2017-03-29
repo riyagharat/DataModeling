@@ -19,10 +19,6 @@ class Row{
     return data;
   }
 
-  public Boolean getNotNull(){
-    return notNull;
-  }
-
   public String getType(){
     return type;
   }
@@ -30,11 +26,7 @@ class Row{
   public void setData(String newData){
     this.data = newData;
   }
-
-  public void setNotNull(Boolean newNotNull){
-    this.notNull = newNotNull;
-  }
-
+  
   public void setType(String newType){
     this.type = newType;
   }
