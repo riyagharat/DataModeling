@@ -9,18 +9,13 @@ class Row{
 
   }
 
-  public Row(String data, Boolean notNull, String type) {
+  public Row(String data, String type) {
     this.data = data;
-    this.notNull = notNull;
     this.type = type;
   }
 
   public String getData(){
     return data;
-  }
-
-  public Boolean getNotNull(){
-    return notNull;
   }
 
   public String getType(){
@@ -29,10 +24,6 @@ class Row{
 
   public void setData(String newData){
     this.data = newData;
-  }
-
-  public void setNotNull(Boolean newNotNull){
-    this.notNull = newNotNull;
   }
 
   public void setType(String newType){
