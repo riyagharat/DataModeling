@@ -3,7 +3,7 @@ class Column{
   private List<Row> list;
   private Column nextColumn;
   private String name;
-  private Boolean notNull;
+  private String dataType;
   private Column dateTime;
 
   public Column(){
