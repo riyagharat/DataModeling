@@ -1,7 +1,6 @@
 // Row class
 class Row{
   private String data;
-  private Boolean notNull;
   private String type;
   private Row nextRow;
   private Row nextField;
