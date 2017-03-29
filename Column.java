@@ -20,16 +20,8 @@ class Column{
     return name;
   }
 
-  public Boolean getNotNull(){
-    return notNull;
-  }
-
   public void setName(String newName){
     this.name = newName;
-  }
-
-  public void setNotNull(Boolean newNotNull){
-    this.notNull = newNotNull;
   }
 
   public boolean equals(Object obj){
