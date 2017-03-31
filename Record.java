@@ -1,15 +1,15 @@
 // Row class
-class Row{
+class Record{
   private String data;
   private String type;
-  private Row nextRow;
-  private Row nextField;
+  private Record nextRow;
+  private Record sideRow;
 
-  public Row(){
+  public Record(){
 
   }
 
-  public Row(String data, Boolean notNull, String type) {
+  public Record(String data, Boolean notNull, String type) {
     this.data = data;
     this.notNull = notNull;
     this.type = type;
@@ -37,5 +37,10 @@ class Row{
 
   public String toString(){
       return getData() + " " + getType() + "  "+ getNotNull() + "\n";
+  }
+  
+  public void delete()
+  {
+    
   }
 }
