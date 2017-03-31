@@ -1,6 +1,6 @@
 // Col class
 class Column{
-  private List<Row> list;
+  private Record firstRecord;
   private Column nextColumn;
   private String name;
   private String dataType;
@@ -10,8 +10,8 @@ class Column{
 
   }
 
-  public Column(List<Row> list, String name, Boolean notNull) {
-    this.list = list;
+  public Column(Record firstRecord, String name, Boolean notNull) {
+    this.firstRecord = firstRecord;
     this.name = name;
     this.notNull = notNull;
   }
