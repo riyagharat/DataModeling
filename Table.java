@@ -1,7 +1,7 @@
 // Table Class
 
 class Table{
-  private List<Column> list;
+  private Column firstCol;
   private Table nextTable;
   private String name;
 
@@ -9,8 +9,8 @@ class Table{
 
   }
 
-  public Table(List<Column> list, String name) {
-    this.list = list;
+  public Table(Column firstCol, String name) {
+    this.firstCol = firstCol;
     this.name = name;
   }
 
@@ -28,5 +28,16 @@ class Table{
 
   public String toString(){
       return getName() + "\n";
+  }
+  
+  public void findRecordFromWhere(String from, String where)
+  {
+    String attribute;
+    String operator;
+    String value;
+    
+
+    
+    
   }
 }
