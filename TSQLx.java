@@ -1,6 +1,9 @@
 // TSQLx.java
 public class TSQLx{
-  public static void main(String [] args){
+  public static void main(String [] args)
+  {
+	  Table newTable = new Table();
+	  newTable.findRecordWhere("SNO <= 4");
     
   }
   public static void createDatabase(String dataBaseName){
