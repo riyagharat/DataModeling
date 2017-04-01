@@ -4,6 +4,7 @@ class Record{
   private String type;
   private Record nextRow;
   private Record sideRow;
+  private Boolean notNull;
 
   public Record(){
 
@@ -39,8 +40,17 @@ class Record{
       return getData() + " " + getType() + "  "+ getNotNull() + "\n";
   }
   
-  public void delete()
+  private Boolean getNotNull() {
+	return notNull;
+  }
+
+  public void delete(String operator, String value)			// idk how we will do comparisons with an operator as a String. although maybe there's a better way to read in the condition
   {
-    
+	 int data1;
+     if(this.type.equals("integer"))
+    	 data1 = Integer.parseInt(this.data);
+     
+     // if (this.data operator value == true)
+     		//delete
   }
 }
