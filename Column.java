@@ -10,18 +10,26 @@ class Column{
 
   }
 
-  public Column(List<Row> list, String name, Boolean notNull) {
+  public Column(List<Row> list, String name, String dataType) {
     this.list = list;
     this.name = name;
-    this.notNull = notNull;
+    this.dataType = dataType;
   }
 
   public String getName(){
     return name;
   }
 
+  public String getDataType(){
+    return dataType;
+  }
+
   public void setName(String newName){
     this.name = newName;
+  }
+
+  public void setDataType(String newDataType){
+    this.dataType = newDataType;
   }
 
   public boolean equals(Object obj){
@@ -29,6 +37,6 @@ class Column{
   }
 
   public String toString(){
-      return getName() + " " + getNotNull() + "\n";
+      return getName() + " " + getDataType() + "\n";
   }
 }
