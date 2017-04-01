@@ -1,7 +1,6 @@
 // Col class
 class Column{
   private List<Row> list;
-  private Column nextColumn;
   private String name;
   private String dataType;
   private Column dateTime;
