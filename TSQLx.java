@@ -11,50 +11,35 @@ public class TSQLx{
     }
   }
   public static void createDatabase(String dataBaseName){
-    Table newTable = (dataBaseName, "", "");
+    File file = dataBaseName + ".txt";
+    file.open();
+  }
+
+  public static void dropDatabase(String dataBaseName){
+    File file = dataBaseName + ".txt";
+    file.delete();
+  }
+
+  public static void saveDatabase(String dataBaseName){
+    File file = dataBaseName + ".txt";
+    file.close();
+  }
+
+  public static void loadDatabase(String dataBaseName){
+    
+  }
+
+  public static void createTable(String tableName){
+    Table newTable = (tableName, "", "");
     listOfTables.add(newTable);
   }
 
-  public static void dropDatabase(String dataBaseName){
+  public static void dropTable(String tableName){
     for(int i = 0; i < listOfTables.size()){
-      if((listOfTables.get(i).getName()).equals(dataBaseName)){
-        File file = dataBaseName + ".txt";
-        file.delete();
-        break;
+      if((listOfTables.get(i).getName()).equals(tableName)){
+        listOfTables.get(i).remove();
       }
     }
-  }
-
-  public static void saveDatabase(String dataBaseName){
-    
-  }
-
-  public static void loadDatabase(String dataBaseName){
-    
-  }
-
-  public static void createTable(){
-    
-  }
-  
-  public static void dropDatabase(String dataBaseName){
-
-  }
-
-  public static void saveDatabase(String dataBaseName){
-
-  }
-
-  public static void loadDatabase(String dataBaseName){
-
-  }
-
-  public static void createTable(){
-
-  }
-
-  public static void dropTable(String tableName){
-
   }
 
   public static void SQLInsert(){
