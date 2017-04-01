@@ -11,11 +11,18 @@ public class TSQLx{
     }
   }
   public static void createDatabase(String dataBaseName){
-  
+    Table newTable = (dataBaseName, "", "");
+    listOfTables.add(newTable);
   }
 
   public static void dropDatabase(String dataBaseName){
-    
+    for(int i = 0; i < listOfTables.size()){
+      if((listOfTables.get(i).getName()).equals(dataBaseName)){
+        File file = dataBaseName + ".txt";
+        file.delete();
+        break;
+      }
+    }
   }
 
   public static void saveDatabase(String dataBaseName){
