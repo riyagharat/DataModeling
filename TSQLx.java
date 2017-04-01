@@ -1,7 +1,14 @@
 // TSQLx.java
 public class TSQLx{
   public static void main(String [] args){
-    
+    String userInput = args[0];
+
+    while(true){
+      switch(userInput){
+        case " ":
+          break;
+      }
+    }
   }
   public static void createDatabase(String dataBaseName){
   
