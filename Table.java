@@ -1,15 +1,14 @@
 // Table Class
 
 class Table{
-  private List<Column> list;
-  private Table nextTable;
+  private ArrayList<Column> listOfColumns;
   private String name;
 
   public Table(){
 
   }
 
-  public Table(List<Column> list, String name) {
+  public Table(ArrayList<Column> listOfColumns, String name) {
     this.list = list;
     this.name = name;
   }
