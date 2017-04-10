@@ -106,11 +106,11 @@ class Column{
 		this.nextColumn = firstCol;
 	}
 
-	public void insertRecord(String data)
+	public void insertRecord(String data)			//list insert
 	{
 		this.list.get(list.size() - 1).setData(data);	
 	}
-	public void insertRec(String data)
+	public void insertRec(String data)			//linked list insert
 	{
 		Row curRow = this.firstRecord;
 		while(curRow != null)
