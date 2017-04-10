@@ -3,7 +3,10 @@ class Row{
   private String data;
   private String type;
   private Row nextRow;
-  private Row nextField;
+  private Row sideRow;
+  private Row prevRow;
+  private Boolean notNull;
+ 
 
   public Row(){
 
@@ -30,6 +33,24 @@ class Row{
   public void setType(String newType){
     this.type = newType;
   }
+  public void setnextRow(Row nextRow){
+	    this.nextRow = nextRow;
+	  }
+  public void setsideRow(Row sideRow){
+	    this.sideRow = sideRow;
+	  }
+  public Row getNextRow(){
+	    return this.nextRow;
+	  }
+  public void setPrevRow(Row prevRow){
+	    this.prevRow = prevRow;
+	  }
+  public Row getPrevRow(){
+	    return this.prevRow;
+	  }
+public Row getsideRow(){
+	    return this.sideRow;
+	  }
 
   public boolean equals(Object obj){
    return true;
@@ -37,5 +58,9 @@ class Row{
 
   public String toString(){
       return getData() + " " + getType() + "  "+ getNotNull() + "\n";
+  }
+  
+  private Boolean getNotNull() {
+	return notNull;
   }
 }
