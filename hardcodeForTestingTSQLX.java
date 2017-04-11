@@ -4,12 +4,26 @@ import java.util.ArrayList;
 public class TSQLx{
   public static void main(String [] args)
   {
-	  createTable();
-	 // newTable.findRecordWhere("SNO <= 4");
-    
-  }
-  public static void createDatabase(String dataBaseName){
+	  createDatabase();
   
+  }
+  public static void createDatabase()
+  {
+	  ArrayList<String> fields = new ArrayList<String>();			
+	  ArrayList<String> types = new ArrayList<String>();
+	 
+	  fields.add("Fname");
+	  fields.add("Lname");					//column fields and types for testing
+	  fields.add("Address");
+	  fields.add("ZIP");
+	  fields.add("Salary");
+	  
+	  types.add("char(15)");
+	  types.add("char(20)");
+	  types.add("char(30)");
+	  types.add("number(5)");
+	  types.add("integer(8,2)");
+	  createTable(fields, types);
   }
 
   public static void dropDatabase(String dataBaseName){
@@ -24,47 +38,41 @@ public class TSQLx{
     
   }
 
-  public static void createTable()
+  public static void createTable(ArrayList<String> fields, ArrayList<String> types)
   {
-	  String[] attributes = new String[5];
-	  attributes[0] = "Lname";
-	  attributes[1] = "Fname";
-	  attributes[2] = "Phone No";
-	  attributes[3] = "Address";
-	  attributes[4] = "ZIP";
+	  Table newTable = new Table(fields, types, "Employee"); 
 	  
-	  Table newTable = new Table(attributes, "Table 1");
 	  newTable.displayColumns();
 	  ArrayList<String> values = new ArrayList<String>();
 	  ArrayList<String> values1 = new ArrayList<String>();
 	  ArrayList<String> values2 = new ArrayList<String>();
-	  
-	  ArrayList<String> fields = new ArrayList<String>();
+	  ArrayList<String> fields1 = new ArrayList<String>();
 	  ArrayList<String> fieldsEmpty = new ArrayList<String>();
-	  values.add("Brian1");
-	  values.add("Phelan12");
-	  values.add("2657 Oakgrove Ave1");
+	  values.add("Brian");
+	  values.add("Phelan");
+	  values.add("2657 Oakgrove Ave1");								//data for insertion testing
+	  values.add("2049.49");
 	  values.add("32092");
-	  values.add("9046524033");
 	  
-	  values1.add("Brian1");
-	  values1.add("Phelan12");
-	  values1.add("2657 Oakgrove Ave1");
-	  values1.add("320921");
-	  values1.add("90465240331");
+	  values1.add("Brian");
+	  values1.add("Phelan");
+	  values1.add("2657 Oakgrove Ave1jkjhjjhkhjkhjkhkjhjkkjhhjkjhk");
+	  values1.add("20939.49");
+	  values1.add("32092");
 	
-	  values2.add("Phelan12");
 	  values2.add("Brian1");
-	  values2.add("942032093");
+	  values2.add("Phelan12");
+	  values2.add("45 Den St.");
 	  
-	  fields.add("Fname");
-	  fields.add("Lname");
-	  fields.add("Address");
-	  fields.add("ZIP");
-	  fields.add("Phone No");
+	  fields1.add("Fname");
+	  fields1.add("Lname");
+	  fields1.add("Address");
+	  fields1.add("Salary");
+	  fields1.add("ZIP");
+	  
 
-	 newTable.insert(fields, values);
-	 newTable.insert(fields, values1);
+	 newTable.insert(fields1, values);
+	 newTable.insert(fields1, values1);
 	 newTable.insert(fieldsEmpty, values2);
 	 newTable.displayTable();
 	  
@@ -73,14 +81,14 @@ public class TSQLx{
 	 deleteConditions.add("=");
 	 deleteConditions.add("Brian1");
 	 deleteConditions.add("Lname");
-	 deleteConditions.add("=");
-	 deleteConditions.add("Phelan12");
+	 deleteConditions.add("=");							//data for deletion testing
+	 deleteConditions.add("Phelan12");					
 	 deleteConditions.add("Address");
 	 deleteConditions.add("=");
-	 deleteConditions.add("2657 Oakgrove Ave1");
+	 deleteConditions.add("45 Den St.");
 	
 	 newTable.delete(deleteConditions);
-
+	 System.out.println("after deletion\n");
 	  newTable.displayTable();
   }
 }
