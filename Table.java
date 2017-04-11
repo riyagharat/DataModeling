@@ -134,8 +134,8 @@ class Table{
 		 }
 		 else
 			 {
-			 for(int j = 0; j < rowsToBeDeleted.size(); j ++)
-				 deleteFromList(rowsToBeDeleted.get(j-j));
+			 for(int j = rowsToBeDeleted.size() - 1; j >= 0; j --)
+				 deleteFromList(rowsToBeDeleted.get(j));
 			 }
 		
   }
