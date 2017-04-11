@@ -8,7 +8,9 @@ class Column{
 	  private String name;
 	  private String dataType;
 	  private Column dateTime;
+	  private int size;
 	private Boolean notNull;
+	public Boolean stopDeletion = false;
 	public Boolean firstCol = false;
 	public Boolean lastCol = false;
 
@@ -31,12 +33,17 @@ class Column{
   {
 	    return this.firstCol;
   }
+
   public String getName(){
     return name;
   }
   public void setName(String newName){
     this.name = newName;
   }
+  public void setName(String newName, int size){
+	    this.name = newName;
+	    this.size = size;
+	  }
 
   public boolean equals(Object obj){
    return true;
@@ -52,6 +59,9 @@ class Column{
 
 	public Column getNextColumn() {
 	return nextColumn;
+	}
+	public String getType() {
+	return this.dataType;
 	}
 
 	public void setNextColumn(Column nextColumn) {
@@ -106,11 +116,11 @@ class Column{
 		this.nextColumn = firstCol;
 	}
 
-	public void insertRecord(String data)			//list insert
+	public void insertRecord(String data)
 	{
 		this.list.get(list.size() - 1).setData(data);	
 	}
-	public void insertRec(String data)			//linked list insert
+	public void insertRec(String data)
 	{
 		Row curRow = this.firstRecord;
 		while(curRow != null)
@@ -118,5 +128,54 @@ class Column{
 		
 		curRow.setData(data);
 	}
-}
 	
+	public ArrayList<Integer> findRowNoInitial(String operator, String rightSide)		//find all row #s where first condition is true
+	{
+		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
+		for(int i = 0; i < this.list.size(); i++)
+		{
+			if(this.list.get(i).findValue(operator, rightSide) == true)
+				rowsToBeDeleted.add(i);
+		}
+		return rowsToBeDeleted;
+
+
+	}
+	public ArrayList<Integer> findRowNo(String operator, String rightSide, ArrayList<Integer> indicesTBC)		//find row #s where the 2nd, 3rd, etc condition is true
+	{																											//only considers rows that are currently true
+		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
+		for(int i = 0; i < indicesTBC.size(); i++)
+		{
+			if(this.list.get(indicesTBC.get(i)).findValue(operator, rightSide) == true)
+				rowsToBeDeleted.add(indicesTBC.get(i));
+		}
+		return rowsToBeDeleted;
+
+
+	}
+	
+	public void deleteFromList(int index)
+	{
+		this.list.remove(index);
+	}
+	
+	
+	public void displayRecords()
+	{
+		//System.out.println("array list:");
+		for(int i = 0; i < this.list.size(); i++)
+		{
+			System.out.println(this.list.get(i).getData());
+		}
+		System.out.println();
+		/*System.out.println("linked list:");
+		Row tempRow;
+		tempRow = firstRecord;
+		while(tempRow != null)
+		{
+			System.out.println(tempRow.getData());
+			tempRow = tempRow.getNextRow();
+		}*/
+		System.out.println();
+	}
+}
