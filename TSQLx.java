@@ -4,11 +4,13 @@ public class TSQLx{
     
   }
   public static void createDatabase(String dataBaseName){
-  
+    File file = dataBaseName + ".txt";
+    file.open();
   }
 
   public static void dropDatabase(String dataBaseName){
-    
+    File file = dataBaseName + ".txt";
+    file.delete();
   }
 
   public static void saveDatabase(String dataBaseName){
@@ -20,19 +22,9 @@ public class TSQLx{
   }
 
   public static void createTable(){
-    
-  }
-  
-  public static void dropDatabase(String dataBaseName){
-
-  }
-
-  public static void saveDatabase(String dataBaseName){
-
-  }
-
-  public static void loadDatabase(String dataBaseName){
-
+    // need to have the columns set up here
+    Table newTable = (tableName, "", "");
+    listOfTables.add(newTable);
   }
 
   public static void createTable(){
@@ -40,7 +32,11 @@ public class TSQLx{
   }
 
   public static void dropTable(String tableName){
-
+    for(int i = 0; i < listOfTables.size()){
+      if((listOfTables.get(i).getName()).equals(tableName)){
+        listOfTables.get(i).remove();
+      }
+    }
   }
 
   public static void SQLInsert(){
