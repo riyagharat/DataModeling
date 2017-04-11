@@ -10,7 +10,6 @@ class Table{
 	 ArrayList<Column> list = new ArrayList<Column>();
 	  private Table nextTable;
 	  private String name;
-	  public int deletionIndex;
 
 
   public Table(){
@@ -85,4 +84,93 @@ class Table{
 	    	}
 	  }
   }
+  public void displayColumns()
+  {
+	  for(int i = 0; i < this.list.size(); i ++)
+		  System.out.print(this.list.get(i).getName() + " ");
+	  
+	  System.out.println();
+  }
+  
+  public void displayTable()
+  {
+	  int i = 0;
+	  while(this.list.get(i).lastCol != true)
+	  {
+		  System.out.println(this.list.get(i).getName() + " ");
+		  System.out.println("--------------");
+		  this.list.get(i).displayRecords();
+		  i++;
+	  }
+	  System.out.println(this.list.get(i).getName() + " ");
+	  System.out.println("--------------");
+	  this.list.get(i).displayRecords();
+	  i++;
+  }  
+  
+  public void delete(ArrayList<String> conditions)
+  {	
+	  ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
+	 int i = 0;
+
+		 String leftSide = conditions.get(i);
+		 String operator = conditions.get(i+1);
+		 String rightSide = conditions.get(i+2);
+		 i += 3;
+		 rowsToBeDeleted = deleteInitial(leftSide, operator, rightSide);		//get all indices that are true for the first condition
+
+		 while(i < conditions.size())									//if more conditions
+		 {
+			 leftSide = conditions.get(i);
+			 operator = conditions.get(i+1);
+			 rightSide = conditions.get(i+2);
+			 i += 3;
+			 rowsToBeDeleted = deleteWhere(leftSide, operator, rightSide, rowsToBeDeleted);			//get indices that are still true
+		 }
+		 if(rowsToBeDeleted.isEmpty())
+		 {
+			 System.out.println("Condition failed so nothing was deleted.");
+			 return;
+		 }
+		 else
+			 {
+			 for(int j = 0; j < rowsToBeDeleted.size(); j ++)
+				 deleteFromList(rowsToBeDeleted.get(j-j));
+			 }
+		
+  }
+  public ArrayList<Integer> deleteWhere(String leftSide, String operator, String rightSide, ArrayList<Integer> deletionIndices)		//finds the row #s that are still true (checks 2nd, 3rd, etc conditions)
+  {
+	  for(int i = 0; i < this.list.size(); i++)								//find correct column
+	  {
+		  if(this.list.get(i).getName().equals(leftSide))				//need type check
+		  {
+			  deletionIndices = this.list.get(i).findRowNo(operator, rightSide, deletionIndices);
+			  return deletionIndices;
+		  }
+	  }
+	  System.out.println(leftSide + " not found in " + this.name);
+	  return deletionIndices;
+  }
+  
+  public ArrayList<Integer> deleteInitial(String leftSide, String operator, String rightSide)			//finds all the row #s where the first condition is true
+  {
+	  ArrayList<Integer> deletionIndices = new ArrayList<Integer>();
+	  for(int i = 0; i < this.list.size(); i++)								//find correct column
+	  {
+		  if(this.list.get(i).getName().equals(leftSide))		//need type check
+		  {
+			  deletionIndices.addAll(this.list.get(i).findRowNoInitial(operator, rightSide));
+			  return deletionIndices;
+		  }
+	  }
+	  System.out.println(leftSide + " not found in " + this.name);
+	  return deletionIndices;
+  }
+  public void deleteFromList(int index)
+  {
+	  for(int i = 0; i < this.list.size(); i ++)
+		  this.list.get(i).deleteFromList(index);
+  }
+
 }
