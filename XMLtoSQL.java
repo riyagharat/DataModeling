@@ -105,7 +105,42 @@ public class XMLtoSQL{
       // Create columns here with attributes
       while(input2.hasNextLine()){
         String text = input2.nextLine();
-        
+        if(text.contains("<")){
+          String tablename = "";
+          String attributename = "";
+          String value = "";
+          int newIndex = 0;
+          for(int i = (text.indexOf("<") +1); i < text.length(); i++){
+            if((!(text.charAt(i) == ('>'))) && (!(text.charAt(i) == ('?')))){
+              if(!(text.charAt(i) == ('/'))){
+                tablename = tablename + text.charAt(i);
+              }else{
+                break;
+              }
+            }else if((text.indexOf(">") + 1) < text.length()){
+              if((((text.charAt(text.indexOf(">") + 1)) >= 'a') && ((text.charAt(text.indexOf(">") + 1)) <= 'z'))
+                  || (((text.charAt(text.indexOf(">") + 1)) >= 'A') && ((text.charAt(text.indexOf(">") + 1)) <= 'Z'))
+                  || (((text.charAt(text.indexOf(">") + 1)) >= '0') && ((text.charAt(text.indexOf(">") + 1)) <= '9'))){
+                attributename = tablename;
+                tablename = "";
+                for(int j = (text.indexOf(">") +1); j < text.length(); j++){
+                  if((!(text.charAt(j) == ('<'))) /*&& (!(text.charAt(j+1) == ('/')))*/){
+                    value = value + text.charAt(j);
+                  }else{
+                    break;
+                  }
+                }
+              }
+              break;
+            }else{
+              break;
+            }
+          }
+          System.out.println("Table Name/ Object Name: " + tablename);
+          System.out.println("Attribute: " + attributename);
+          System.out.println("Value: " + value);
+          System.out.println("");
+        }
       }
     }catch (FileNotFoundException e){
         e.printStackTrace();
@@ -116,7 +151,45 @@ public class XMLtoSQL{
     try{
       Scanner input = new Scanner(XMLfile);
       // attributes are given as tags in the file, create columns here
-
+      while(input.hasNextLine()){
+        String text = input.nextLine();
+        if(text.contains("<")){
+          String tablename = "";
+          String attributename = "";
+          String value = "";
+          int newIndex = 0;
+          for(int i = (text.indexOf("<") +1); i < text.length(); i++){
+            if((!(text.charAt(i) == ('>'))) && (!(text.charAt(i) == ('?')))){
+              if(!(text.charAt(i) == ('/'))){
+                tablename = tablename + text.charAt(i);
+              }else{
+                break;
+              }
+            }else if((text.indexOf(">") + 1) < text.length()){
+              if((((text.charAt(text.indexOf(">") + 1)) >= 'a') && ((text.charAt(text.indexOf(">") + 1)) <= 'z'))
+                  || (((text.charAt(text.indexOf(">") + 1)) >= 'A') && ((text.charAt(text.indexOf(">") + 1)) <= 'Z'))
+                  || (((text.charAt(text.indexOf(">") + 1)) >= '0') && ((text.charAt(text.indexOf(">") + 1)) <= '9'))){
+                attributename = tablename;
+                tablename = "";
+                for(int j = (text.indexOf(">") +1); j < text.length(); j++){
+                  if((!(text.charAt(j) == ('<'))) /*&& (!(text.charAt(j+1) == ('/')))*/){
+                    value = value + text.charAt(j);
+                  }else{
+                    break;
+                  }
+                }
+              }
+              break;
+            }else{
+              break;
+            }
+          }
+          System.out.println("Table Name/ Object Name: " + tablename);
+          System.out.println("Attribute: " + attributename);
+          System.out.println("Value: " + value);
+          System.out.println("");
+        }
+      }
     }catch (FileNotFoundException e){
       e.printStackTrace();
     }
