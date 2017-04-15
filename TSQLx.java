@@ -2,11 +2,12 @@
 public class TSQLx{
   public static void main(String [] args){
     Console reader = System.console();
-    String userInput = reader.readLine();
-    Parser consoleInput = new Parser(userInput);
+    String userInput;
     int choice = 0;
 
     do{
+      userInput = reader.readLine()
+      Parser consoleInput = new Parser(userInput);
       choice = consoleInput.scan();
       switch(choice){
         /*
