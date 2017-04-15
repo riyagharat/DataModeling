@@ -63,4 +63,98 @@ public Row getsideRow(){
   private Boolean getNotNull() {
 	return notNull;
   }
+
+  public Boolean findValue(String operator, String rightSide)			
+  {
+	  if(operator.equals("="))
+	  {
+	//	  if(this.type.equals("char"))
+	//	  {
+			  if(rightSide.equals(this.data))
+				  return true;
+			  else return false;
+/*		  }
+		  else if(this.type.equals("number"))
+		  {
+			  if(rightSide == this.data)
+				  return true;
+			  else return false;
+		  }*/
+	  }
+	  else if(operator.equals("<>"))			
+	  {
+		  if(this.type.equals("char"))
+		  {
+			  if(!rightSide.equals(this.data))
+				  return true;
+			  else return false;
+		  }
+		  else if(this.type.equals("number"))
+		  {
+			  if(rightSide != this.data)
+				  return true;
+			  else return false;
+		  }
+	  }
+	  else if(operator.equals("<"))
+	  {
+		  if (rightSide.matches(".*[a-zA-Z].*")) 
+		  { 
+			  System.out.println("invalid use of " + operator + " on type " + this.type);
+			  return false;
+		  }
+		  else  if(Integer.parseInt(this.data) < Integer.parseInt(rightSide))
+			  return true;
+		  else return false;
+		  
+	  }
+	  else  if(operator.equals(">="))
+	  {
+		  if (rightSide.matches(".*[a-zA-Z].*")) 
+		  { 
+			  System.out.println("invalid use of " + operator + " on type " + this.type);
+			  return false;
+		  }
+		  else  if(Integer.parseInt(this.data) >= Integer.parseInt(rightSide))
+			  return true;
+		  else return false;
+		  
+	  }
+	  else  if(operator.equals("<="))
+	  {
+		  if (rightSide.matches(".*[a-zA-Z].*")) 
+		  { 
+			  System.out.println("invalid use of " + operator + " on type " + this.type);
+			  return false;
+		  }
+		  else  if(Integer.parseInt(this.data) <= Integer.parseInt(rightSide))
+			  return true;
+		  else return false;
+		  
+	  }
+	  else  if(operator.equals(">"))
+	  {
+		  if (rightSide.matches(".*[a-zA-Z].*")) 
+		  { 
+			  System.out.println("invalid use of " + operator + " on type " + this.type);
+			  return false;
+		  }
+		  else  if(Integer.parseInt(this.data) > Integer.parseInt(rightSide))
+			  return true;
+		  else return false;
+		  
+	  }
+	  else
+	  {
+		  System.out.println(operator + " invalid");
+		  return false;
+	  }
+	return false;
+
+  	}
+  
+  	public void delete()
+  	{
+	  
+  	}
 }
