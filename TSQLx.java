@@ -11,8 +11,17 @@ public class TSQLx{
       Parser consoleInput = new Parser(userInput);
       choice = consoleInput.Scan();
       switch(choice){
+         /*
+            fromat:
+               call function name
+               params = (consoleInput.getArg0(),...Arg1(),...Arg2());
+         */
         case 0:
-            System.out.println("Reject");
+            System.out.print("      ");
+            for(int k = 0; k<consoleInput.getError(); k++){
+               System.out.print(" ");
+            }
+            System.out.println("*");
             break;
          case 1:
             System.out.println("CREATE");
@@ -24,7 +33,7 @@ public class TSQLx{
             break;
          case 3:
             System.out.println("SAVE");
-            saveDatabase("q");
+            saveDatabase(consoleInput.getArg0().get(0));
             break;
          case 4:
             System.out.println("LOAD");
