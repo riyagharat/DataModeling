@@ -78,19 +78,19 @@ class Row{
 	  float rSide = Float.parseFloat(rightSide);
 	  if(operator.equals("="))
 	  {
-			if(thisData == rSide)
+		if(thisData == rSide)
+		  return true;
+		else return false;
+	  }
+	  else if(operator.equals("<>"))
+	  {
+		if(thisData != rSide)
 			  return true;
 			else return false;
 	  }
-	  else if(operator.equals("<>"))			
-	  {
-			if(thisData != rSide)
-				  return true;
-				else return false;
-	  }
 	  else if(operator.equals("<"))
 	  {
-		  if(thisData > rSide)
+		  if(thisData < rSide)
 			  return true;
 			else return false;
 	  }
