@@ -10,16 +10,6 @@ public class TSQLx{
       Parser consoleInput = new Parser(userInput);
       choice = consoleInput.scan();
       switch(choice){
-        /*
-        case 1: // createDatabase
-                break;
-        case 2: // dropDatabase
-                break;
-        case 3: // saveDatabase
-                break;
-        case 4: // loadDatabase
-                break;
-        */
         case 0:
             System.out.println("Reject");
             break;
