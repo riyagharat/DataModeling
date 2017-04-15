@@ -70,11 +70,14 @@ class Parser{
    //boolean isParsed;
    int choice;
    int j;
+   int errorIndex;
    boolean accept;
+   boolean rejected;
    ArrayList<String> arg0;
    ArrayList<String> arg1;
    ArrayList<String> arg2;
    String temp;
+   String error;
    
    public Parser(String input){
       this.input = input;
@@ -83,7 +86,10 @@ class Parser{
       choice = 0;
       j = 0;
       this.accept = true;
+      this.rejected = false;
       temp = "";
+      error = "";
+      errorIndex = 0;
    }
    
    public int Scan(){
@@ -93,7 +99,7 @@ class Parser{
       tokens = new ArrayList<Token>();
       Matcher m = Pattern.compile(params).matcher(input);
       while(m.find()){ 
-         
+         //System.out.println("index " + m.start());
          //System.out.println(m.group());
          /*for(int i = 0; i < 7; i++){
             System.out.print("(" + m.group(i) + ")");
@@ -101,21 +107,21 @@ class Parser{
          //System.out.println();
          if(m.group(3)!=null){
             //System.out.println("WORD: " + m.group());
-            if(isKeyword(m.group(3))) tokens.add(new Token("KW", m.group(3)));
-            else tokens.add(new Token("ID", m.group(3)));
+            if(isKeyword(m.group(3))) tokens.add(new Token("KW", m.group(3), m.start()));
+            else tokens.add(new Token("ID", m.group(3), m.start()));
          }
          else if(m.group(4)!=null){
             //System.out.println("DIGIT: " + m.group());
             if(checkFloat(m.group(4))){
-               tokens.add(new Token("FL", m.group(4)));
+               tokens.add(new Token("FL", m.group(4), m.start()));
             }
             else{
-               tokens.add(new Token("DI", m.group(4)));
+               tokens.add(new Token("DI", m.group(4), m.start()));
             }
          }
          else if(m.group(6)!=null){
             //System.out.println("OTHER: " + m.group());
-            tokens.add(new Token("SP", m.group(6)));
+            tokens.add(new Token("SP", m.group(6), m.start()));
          }
       }
       return Parse();
@@ -149,13 +155,29 @@ class Parser{
       return false;
    }
    
+   public int getError(){
+      //return this.errorIndex;
+      return errorIndex;
+   }
+   
+   public void setFalse(){
+      if(!this.rejected){
+         this.accept = false;            
+         this.rejected = true;
+         errorIndex = tokens.get(j).getIndex();
+         //error = str;
+      }
+   }
+   
    public int Parse(){
+      this.accept = true;
+      this.rejected = false;
       choice = 0;
       j = 0;
       if(tokens.size()>0){
          a();
       }
-      else this.accept = false;
+      else setFalse();
       if(this.accept){
          //System.out.println("ACCEPT");
       }
@@ -192,7 +214,7 @@ class Parser{
          choice = 12;
          acc("exit",true);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void b(){
@@ -204,7 +226,7 @@ class Parser{
             }
          }
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void c(){
@@ -217,7 +239,7 @@ class Parser{
             }
          }
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void d(){
@@ -282,7 +304,7 @@ class Parser{
          choice = 12;
          acc("exit", true);
       }*/
-      else this.accept = false;
+      else setFalse();
    }
    
    void e(){
@@ -298,7 +320,7 @@ class Parser{
          acc("ID", false);
          f();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void f(){
@@ -308,7 +330,7 @@ class Parser{
          g();
          acc(")", false);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void g(){
@@ -320,7 +342,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void h(){
@@ -330,7 +352,7 @@ class Parser{
          i();
          //arg2.add(temp);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void i(){
@@ -393,15 +415,15 @@ class Parser{
                            acc(")", false);
                         }
                      }
-                     else this.accept = false;
+                     else setFalse();
                   }
                }
-               else this.accept = false;   
+               else setFalse();   
             }
          }
-         else this.accept = false;*/
+         else setFalse();*/
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void j(){
@@ -416,7 +438,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void k(){
@@ -432,7 +454,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void l(){
@@ -445,7 +467,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void m(){
@@ -462,7 +484,7 @@ class Parser{
          arg0.add(tokens.get(j).getName());
          acc("ID", false);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void o(){
@@ -471,7 +493,7 @@ class Parser{
          arg0.add(tokens.get(j).getName());
          acc("ID", false);
       } 
-      else this.accept = false;
+      else setFalse();
    }
    
    void p(){
@@ -483,7 +505,7 @@ class Parser{
          acc("values", true);
          s();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void q(){
@@ -499,7 +521,7 @@ class Parser{
       else if(tokens.get(j).getName().equalsIgnoreCase("values")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void r(){
@@ -512,7 +534,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void s(){
@@ -559,25 +581,25 @@ class Parser{
                               arg2.add(temp);
                            }
                      }
-                     else this.accept = false;
+                     else setFalse();
                         }
                      }
                   }
                   else if(tokens.get(j).getName().equals("'")){
                   }
-                  else this.accept = false;
+                  else setFalse();
                }
                arg2.add(temp);
             }
-            else this.accept = false;
+            else setFalse();
             acc("'",false);
             t();
             acc(")", false);
          }
-         else this.accept = false;
+         else setFalse();
          
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void t(){
@@ -624,26 +646,26 @@ class Parser{
                               arg2.add(temp);
                            }
                      }
-                     else this.accept = false;
+                     else setFalse();
                         }
                      }
                   }
                   else if(tokens.get(j).getName().equals("'")){
                   }
-                  else this.accept = false;
+                  else setFalse();
                }
                arg2.add(temp);
             }
-            else this.accept = false;
+            else setFalse();
             acc("'",false);
             t();
          }
-         else this.accept = false;
+         else setFalse();
       }
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
       
    }
    
@@ -654,7 +676,7 @@ class Parser{
          acc("ID", false);
          v();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void v(){
@@ -665,7 +687,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(";")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void va(){
@@ -679,7 +701,7 @@ class Parser{
          acc("DI",false);
          vb();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void vb(){
@@ -723,7 +745,7 @@ class Parser{
          }
          vc();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void vc(){
@@ -735,7 +757,7 @@ class Parser{
          arg2.add(tokens.get(j).getName());
          acc("DI",false);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void w(){
@@ -752,7 +774,7 @@ class Parser{
          acc(")", false);
          u();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void wa(){
@@ -765,7 +787,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void x(){
@@ -775,7 +797,7 @@ class Parser{
          acc("ID", false);
          v();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void y(){
@@ -792,7 +814,7 @@ class Parser{
          arg2.add(tokens.get(j).getName());
          acc("ID", false);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void aa(){
@@ -805,7 +827,7 @@ class Parser{
       else if(tokens.get(j).getName().equalsIgnoreCase("as")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void acc(String str, boolean ignoreCase){
@@ -818,7 +840,9 @@ class Parser{
             }
             //else this.complete = true;
          }
-         else this.accept = false;
+         else{ 
+            setFalse();
+         }
       }
       else{
          if(tokens.get(j).getName().equalsIgnoreCase(str)||tokens.get(j).getType().equalsIgnoreCase (str)){
@@ -828,7 +852,9 @@ class Parser{
             }
             //else this.complete = true;
          }
-         else this.accept = false;
+         else{ 
+            setFalse();
+         }
       }
    }
 }
@@ -837,8 +863,10 @@ class Parser{
 class Token{
    private String type;
    private String name;
+   private int index;
    
-   public Token(String type, String name){
+   public Token(String type, String name, int index){
+      this.index = index;
       this.type = type;
       this.name = name; 
    }
@@ -857,6 +885,14 @@ class Token{
    
    public void setName(String name){
       this.name = name;
+   }
+   
+   public int getIndex(){
+      return this.index;
+   }
+   
+   public void setIndex(int index){
+      this.index = index;
    }
 }
 
