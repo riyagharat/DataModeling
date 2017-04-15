@@ -4,10 +4,12 @@ public class TSQLx{
     Console reader = System.console();
     String userInput = reader.readLine();
     Parser consoleInput = new Parser(userInput);
-    int choice = consoleInput.scan();
+    int choice = 0;
 
-    while(true){
+    do{
+      choice = consoleInput.scan();
       switch(choice){
+        /*
         case 1: // createDatabase
                 break;
         case 2: // dropDatabase
@@ -16,8 +18,60 @@ public class TSQLx{
                 break;
         case 4: // loadDatabase
                 break;
+        */
+        case 0:
+            System.out.println("Reject");
+            break;
+         case 1:
+            System.out.println("CREATE");
+            create();
+            break;
+         case 2:
+            System.out.println("DROP");
+            drop();
+            break;
+         case 3:
+            System.out.println("SAVE");
+            saveDatabase();
+            break;
+         case 4:
+            System.out.println("LOAD");
+            loadDatabase();
+            break;
+         case 5:
+            System.out.println("INSERT");
+            insert();
+            break;
+         case 6:
+            System.out.println("DELETE");
+            delete();
+            break;
+         case 7:
+            System.out.println("SELECT");
+            break;
+         case 8:
+            System.out.println("TSELECT");
+            break;
+         case 9:
+            System.out.println("CONVERT");
+            convertXML();
+            break;
+         case 10:
+            System.out.println("COMMIT");
+            break;
+         case 11:
+            System.out.println("INPUT");
+            inputFile();
+            break;
+         case 12:
+            System.out.println("EXIT");
+            break;
+         default:
+            System.out.println("Reject");
+            break;
+        
       }
-    }
+    }while(choice!=12);
   }
 
   public static void saveDatabase(String dataBaseName){
