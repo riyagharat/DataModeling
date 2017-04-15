@@ -30,8 +30,9 @@ public class TSQLx{
     
   }
        
-  public static void simpleSelect(Arraylist<String> Printlist, String TableName, Arraylist<String> Wheres){
+  public static void simpleSelect(Arraylist<String> Printlist, Arraylist<String> TableNamer, Arraylist<String> Wheres){
    
+   String TableName = TableNamer.get(0);
    int TableIndex = 0;
    String ColumnName;
    String Relational;
