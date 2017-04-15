@@ -4,6 +4,7 @@ public class TSQLx{
     Scanner reader = new Scanner(System.in);
     String userInput;
     int choice = 0;
+    ArrayList<Table> listOfTables = new ArrayList<Table>();
 
     do{
       System.out.print("TSQLx>");
@@ -27,7 +28,7 @@ public class TSQLx{
          case 1:
             System.out.println("CREATE");
             if(!(consoleInput.getArg1().size() == 0)){
-              create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2());
+              create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
             }else{
               create(consoleInput.getArg0().get(0));
             }
@@ -93,17 +94,12 @@ public static void saveDatabase(String dataBaseName){
   }
 
  public static void create(String dataBaseName){
-
-    // need to have the columns set up here
-//    Table newTable = (tableName, "", "");
-//    listOfTables.add(newTable);
-
-//    File file = dataBaseName + ".txt";
-//    file.open();
+    File file = new File(dataBaseName + ".txt");
   }
 
-  public static void create(String dataBaseName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs){
-
+  public static void create(String tableName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs, ArrayList<Table> listOfTables){
+    Table newTable = new Table(tableName, fieldNames, fieldDefs);
+    listOfTables.add(newTable);
   }
 
   public static void drop(String tableName){
