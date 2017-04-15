@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.lang.StackOverflowError;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class TSQLx{
   public static void main(String [] args){
@@ -82,34 +84,41 @@ public class TSQLx{
     }while(choice!=12);
   }
 
-  public static void commitCmd(String dataBaseName, ArrayList<String> cmdList){ //writing to DB
-	File dbFile = dataBaseName + ".txt";
+  public static void commitCmd(String dataBaseName, ArrayList<String> cmdList){ // writes & saves to external memory. DOES NOT flush internal memory
+	File dbFile = new File(dataBaseName + ".txt");
 
-	FileWriter dbWriter  = new FileWriter(dbFile, true); // the true sets it to append
+	FileWriter dbWriter  = new FileWriter(dbFile, true); // the 'true' sets it to append
 	int i;
-
-	for (i = 0; i < cmdList.size(); i++) {
-		dbWriter.write(cmdList.get(i));
+	try {
+		for (i = 0; i < cmdList.size(); i++) {
+			dbWriter.write(cmdList.get(i));
+		}
+		dbWriter.close();
+	} catch (IOException ex) {
+		System.out.println("An error occurred while writing to external memory");
 	}
-	dbWriter.close();
+	
 	return;
   }
 
-  public static void saveDatabase(String dataBaseName, ArrayList<String> cmdList){ //writing to DB and closing DB
-    File dbFile = dataBaseName + ".txt";
+  public static void saveDatabase(String dataBaseName, ArrayList<String> cmdList){ // writes to external memory and saves external memory. Flushes internal memory
+    File dbFile = new File(dataBaseName + ".txt");
 
-	FileWriter dbWriter  = new FileWriter(dbFile, true); // the true sets it to append
+	FileWriter dbWriter  = new FileWriter(dbFile, true); // the 'true' sets it to append
 	int i;
 
-	for (i = 0; i < cmdList.size(); i++) {
-		dbWriter.write(cmdList.get(i));
+	try {
+		for (i = 0; i < cmdList.size(); i++) {
+			dbWriter.write(cmdList.get(i));
+		}
+		dbWriter.close();
+	} catch (IOException ex) {
+		System.out.println("An error occurred while writing to external memory");
 	}
-	dbWriter.close();
-	dbFile.close();
+
 	return;
   }
 
-<<<<<<< HEAD
   public static void loadDatabase(String dataBaseName){
 	File dbFile = new File(dataBaseName + ".txt");
 	if (!dbFile.exists()) { // make sure the db that is trying to be loaded exists
@@ -118,6 +127,7 @@ public class TSQLx{
 	}
     Scanner fileIn = new Scanner(dbFile);
 	Pattern cmdPat = new Pattern.compile("^(?<cmd>t?[A-Za-z]+).+$");
+	String tempLine = "";
 
 	while(fileIn.hasNextLine()) { // iterate through file, line by line
 		String tempLine = in.nextLine();
@@ -158,8 +168,6 @@ public class TSQLx{
 	return;
   } // END loadDatabase
 
-  public static void createTable(){
-=======
   public static void create(){
 >>>>>>> refs/remotes/origin/master
     // need to have the columns set up here
