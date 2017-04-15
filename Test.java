@@ -11,7 +11,49 @@ public class Test{
       Scanner cLine = new Scanner(System.in);
       String testLine = cLine.nextLine();
       Parser parser = new Parser(testLine);
-      parser.Scan();
+      switch(parser.Scan()){
+         case 0:
+            System.out.println("Reject");
+            break;
+         case 1:
+            System.out.println("CREATE");
+            break;
+         case 2:
+            System.out.println("DROP");
+            break;
+         case 3:
+            System.out.println("SAVE");
+            break;
+         case 4:
+            System.out.println("LOAD");
+            break;
+         case 5:
+            System.out.println("INSERT");
+            break;
+         case 6:
+            System.out.println("DELETE");
+            break;
+         case 7:
+            System.out.println("SELECT");
+            break;
+         case 8:
+            System.out.println("TSELECT");
+            break;
+         case 9:
+            System.out.println("CONVERT");
+            break;
+         case 10:
+            System.out.println("COMMIT");
+            break;
+         case 11:
+            System.out.println("INPUT");
+            break;
+         default:
+            System.out.println("Reject");
+            break;
+         
+      }
+      //parser.Scan();
    }
 }
 
@@ -19,7 +61,7 @@ class Parser{
    String input;
    public static final String params = "((([a-zA-z]+)|([0-9]+(\\.[0-9]+)?)|([^a-zA-Z0-9\\s])))";
    public static final String[] keywords = {"CREATE","DROP","SAVE","LOAD","INSERT","SELECT",
-      "tSELECT","CONVERT","COMMIT","INTEGER", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
+      "tSELECT","CONVERT","COMMIT","INTEGER","INPUT", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
       "FROM","WHERE","XML","XSD","AS", "DATABASE", "TABLE"};
    ArrayList<Token> tokens;
    //boolean isParsed;
@@ -205,12 +247,12 @@ class Parser{
          u();
       }
       else if(tokens.get(j).getName().equalsIgnoreCase("tselect")){
-         choice = 7;
+         choice = 8;
          acc("tselect", true);
          w();
       }
       else if(tokens.get(j).getName().equalsIgnoreCase("select")){
-         choice = 8;
+         choice = 7;
          acc("select", true);
          w();
       }
