@@ -21,22 +21,47 @@ public class TSQLx{
     file.delete();
   }
 
-  public static void saveDatabase(String dataBaseName){
+  public static void commitCmd(String dataBaseName, ArrayList<String> cmdList){ //writing to DB
+	File dbFile = dataBaseName + ".txt";
+
+	FileWriter dbWriter  = new FileWriter(dbFile, true); // the true sets it to append
+	int i;
+
+	for (i = 0; i < cmdList.size(); i++) {
+		dbWriter.write(cmdList.get(i));
+	}
+	dbWriter.close();
+	return;
+  }
+
+  public static void saveDatabase(String dataBaseName, ArrayList<String> cmdList){ //writing to DB and closing DB
     File dbFile = dataBaseName + ".txt";
+
+	FileWriter dbWriter  = new FileWriter(dbFile, true); // the true sets it to append
+	int i;
+
+	for (i = 0; i < cmdList.size(); i++) {
+		dbWriter.write(cmdList.get(i));
+	}
+	dbWriter.close();
 	dbFile.close();
+	return;
   }
 
   public static void loadDatabase(String dataBaseName){
-    Scanner fileIn = new Scanner(dataBaseName + ".txt");
-	Pattern cmdPat = new Pattern.compile("^(?<cmd>t?[A-Z]+)\\s+.+$");
+	File dbFile = new File(dataBaseName + ".txt");
+	if (!dbFile.exists()) { // make sure the db that is trying to be loaded exists
+		System.out.println("ERROR: Database does not exist");
+		return;
+	}
+    Scanner fileIn = new Scanner(dbFile);
+	Pattern cmdPat = new Pattern.compile("^(?<cmd>t?[A-Za-Zz]+).+$");
 
-	while(filein.hasNextLine()) { // iterate through file, line by line
+	while(fileIn.hasNextLine()) { // iterate through file, line by line
 		String tempLine = in.nextLine();
 		Matcher cmdMatcher = cmdPat.matcher(tempLine);
-		/*if (!(cmdMatcher.matches())) { //Not sure if this is needed
-			continue;
-		}*/
-		switch(cmdMatcher.group(1)) {
+		
+		switch(cmdMatcher.group("cmd")) { // decide which sql cmd is being read
 			case "CREATE":
 				
 				break;
@@ -65,10 +90,9 @@ public class TSQLx{
 				
 				break;
 
-			
 		} // END switch(cmdStr)
 
-	} // END while(in.hasNextLine())
+	} // END while(fileIn.hasNextLine())
 	return;
   } // END loadDatabase
 
