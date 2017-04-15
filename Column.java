@@ -78,6 +78,7 @@ class Column{
 		newRec.setType(this.dataType);
 		this.list.add(newRec);
 	}
+
 	public void insertRecord(String data)
 	{
 		this.list.get(list.size() - 1).setData(data);	
@@ -90,7 +91,7 @@ class Column{
 		{
 			if(this.list.get(i).getType().equals("char"))
 			{
-				if(rightSide.matches(".*\\d+.*") == true)
+				if(rightSide.matches("[0-9]*") == true)
 				{
 					System.out.println("Invalid comparison between type char and " + rightSide);
 					rowsToBeDeleted.clear();
@@ -103,7 +104,7 @@ class Column{
 			}
 			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))
 			{
-				if(rightSide.matches(".*\\c+.*") == true)
+				if(rightSide.matches("[a-zA-z]*") == true)
 				{
 					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide);
 					rowsToBeDeleted.clear();
@@ -126,7 +127,7 @@ class Column{
 		{
 			if(this.list.get(i).getType().equals("char"))
 			{
-				if(rightSide.matches(".*\\d+.*") == true)
+				if(rightSide.matches("[0-9]*") == true)
 				{
 					System.out.println("Invalid comparison between type char and " + rightSide);
 					rowsToBeDeleted.clear();
@@ -140,7 +141,7 @@ class Column{
 			}
 			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))
 			{
-				if(rightSide.matches(".*\\c+.*") == true)
+				if(rightSide.matches("[a-zA-z]*") == true)
 				{
 					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide);
 					rowsToBeDeleted.clear();
