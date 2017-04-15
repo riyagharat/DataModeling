@@ -6,6 +6,7 @@ public class TSQLx{
     int choice = 0;
 
     do{
+      System.out.print("TSQLx>");
       userInput = reader.readLine()
       Parser consoleInput = new Parser(userInput);
       choice = consoleInput.scan();
