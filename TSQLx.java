@@ -43,7 +43,7 @@ public class TSQLx{
       String Comparator = Wheres.get(2);
    }
    
-   while(listOfTables.get(TableIndex) != TableName){//Is this table a thing?
+   while(!listOfTables.get(TableIndex).equals(TableName)){//Is this table a thing?
       TableIndex++;
       if(TableIndex = listOfTables.size()){//If you've gone too far, give up
          System.out.println("That table doesn't exist ya silly goose");
@@ -52,7 +52,7 @@ public class TSQLx{
    }
    
    if(Wheres.size = 0){
-      if(Printlist.get(0) = "*"){
+      if(Printlist.get(0).equals("*")){
          printEverything(TableIndex);
          return;
       }else{
@@ -60,7 +60,7 @@ public class TSQLx{
          int checking = 0;
          for(int k = 0; k < Wheres.size()){
             int Persona = 0;
-            while(listOfTables.get(TableIndex).list.get(i) != Wheres.get(Persona)){
+            while(!listOfTables.get(TableIndex).list.get(i).equals(Wheres.get(Persona))){
                Persona++;
                if(Persona = listOfTables.get(TableIndex).list.size()){
                   System.out.println("Excuse me, WHAT column?");
