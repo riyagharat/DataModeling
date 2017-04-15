@@ -767,7 +767,7 @@ public static void saveDatabase(String dataBaseName){
   public static void please(int TableIndex, ArrayList helpMe, ArrayList<Table> listOfTables){
      //remind me to put the names of the columns up here some time
      for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
-        for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.get(j); i++){//and this loop is getting those records
+        for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
            if(helpMe.contains(j)){
               if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                  System.out.print("\t\t");
@@ -784,7 +784,7 @@ public static void saveDatabase(String dataBaseName){
   //remind me to put the names of the columns up here some time
      for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
         if(indices.contains(i)){
-           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.get(j); i++){//and here we got some rows
+           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
               if(helpMe.contains(j)){
                  if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                     System.out.print("\t\t");
