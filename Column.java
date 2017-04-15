@@ -78,7 +78,6 @@ class Column{
 		newRec.setType(this.dataType);
 		this.list.add(newRec);
 	}
-
 	public void insertRecord(String data)
 	{
 		this.list.get(list.size() - 1).setData(data);	
@@ -89,31 +88,81 @@ class Column{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < this.list.size(); i++)
 		{
-			if(this.list.get(i).findValue(operator, rightSide) == true)
-				rowsToBeDeleted.add(i);
+			if(this.list.get(i).getType().equals("char"))
+			{
+				if(rightSide.matches(".*\\d+.*") == true)
+				{
+					System.out.println("Invalid comparison between type char and " + rightSide);
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else{
+					if(this.list.get(i).findValueChar(operator, rightSide) == true)
+						rowsToBeDeleted.add(i);
+				}
+			}
+			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))
+			{
+				if(rightSide.matches(".*\\c+.*") == true)
+				{
+					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide);
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(i).findValue(operator, rightSide) == true)
+						rowsToBeDeleted.add(i);
+				}
+			}
+
 		}
 		return rowsToBeDeleted;
-
-
 	}
 	public ArrayList<Integer> findRowNo(String operator, String rightSide, ArrayList<Integer> indicesTBC)		//find row #s where the 2nd, 3rd, etc condition is true
 	{																											//only considers rows that are currently true
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < indicesTBC.size(); i++)
 		{
-			if(this.list.get(indicesTBC.get(i)).findValue(operator, rightSide) == true)
-				rowsToBeDeleted.add(indicesTBC.get(i));
+			if(this.list.get(i).getType().equals("char"))
+			{
+				if(rightSide.matches(".*\\d+.*") == true)
+				{
+					System.out.println("Invalid comparison between type char and " + rightSide);
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(indicesTBC.get(i)).findValueChar(operator, rightSide) == true)
+						rowsToBeDeleted.add(indicesTBC.get(i));
+				}
+			}
+			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))
+			{
+				if(rightSide.matches(".*\\c+.*") == true)
+				{
+					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide);
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(indicesTBC.get(i)).findValue(operator, rightSide) == true)
+						rowsToBeDeleted.add(indicesTBC.get(i));
+				}
+			}
 		}
+
+		
+		
 		return rowsToBeDeleted;
-
-
 	}
 	
 	public void deleteFromList(int index)
 	{
 		this.list.remove(index);
 	}
-	
 	
 	public void displayRecords()
 	{
