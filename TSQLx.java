@@ -86,37 +86,13 @@ public class TSQLx{
     }while(choice!=12);
   }
 
-  public static void commitCmd(String dataBaseName, ArrayList<String> cmdList){ // writes & saves to external memory. DOES NOT flush internal memory
-	File dbFile = new File(dataBaseName + ".txt");
-
-	FileWriter dbWriter  = new FileWriter(dbFile, true); // the 'true' sets it to append
-	int i;
-	try {
-		for (i = 0; i < cmdList.size(); i++) {
-			dbWriter.write(cmdList.get(i));
-		}
-		dbWriter.close();
-	} catch (IOException ex) {
-		System.out.println("An error occurred while writing to external memory");
-	}
+  public static void commitCmd(){ // writes & saves to external memory. DOES NOT flush internal memory
+	System.out.println("Your commands have been committed");
 	
 	return;
   }
 
-  public static void saveDatabase(String dataBaseName, ArrayList<String> cmdList){ // writes to external memory and saves external memory. Flushes internal memory
-    File dbFile = new File(dataBaseName + ".txt");
-
-	FileWriter dbWriter  = new FileWriter(dbFile, true); // the 'true' sets it to append
-	int i;
-
-	try {
-		for (i = 0; i < cmdList.size(); i++) {
-			dbWriter.write(cmdList.get(i));
-		}
-		dbWriter.close();
-	} catch (IOException ex) {
-		System.out.println("An error occurred while writing to external memory");
-	}
+  public static void saveDatabase(String dataBaseName){ // writes to external memory and saves external memory. Flushes internal memory
 
 	tableList = new ArrayList<Table>(); // flush tables from internal memory
 
@@ -125,19 +101,19 @@ public class TSQLx{
 
   public static void loadDatabase(String dataBaseName){
 	File dbFile = new File(dataBaseName + ".txt");
-	if (!dbFile.exists()) { // make sure the db that is trying to be loaded exists
+	if (!dbFile.exists()) { // check to see if the database exists
 		System.out.println("ERROR: Database does not exist");
 		return;
 	}
     Scanner fileIn = new Scanner(dbFile);
-	Pattern cmdPat = new Pattern.compile("^(?<cmd>[A-Za-z]+)\\s+.+$");
+	Pattern cmdPat = new Pattern.compile("^(?<cmd>[A-Za-z]+)\\s+.+$"); // Regex to isolate the command
 	String tempLine = "";
 
 	while(fileIn.hasNextLine()) { // iterate through file, line by line
-		String tempLine = in.nextLine();
+		String tempLine = in.nextLine(); // take in line from file
 		Matcher cmdMatcher = cmdPat.matcher(tempLine);
 		
-		switch(cmdMatcher.group("cmd")) { // decide which sql cmd is being read
+		switch(cmdMatcher.group("cmd")) { // decide which sql cmd is being parsed
 			case "CREATE":
 				
 				break;
