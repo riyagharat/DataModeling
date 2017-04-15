@@ -400,6 +400,13 @@ class Table{
   }  
   public void delete(ArrayList<String> conditions) throws ParseException
   {	
+	  if(conditions.isEmpty())
+	  {
+		  for(int i = 0; i < this.list.size(); i++)
+			  this.list.get(i).deleteAll();
+		  
+		  this.list.clear();
+	  }
 	  ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 	 int i = 0;
 	 int j = 0;
