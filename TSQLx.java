@@ -1,7 +1,23 @@
 // TSQLx.java
 public class TSQLx{
   public static void main(String [] args){
-    
+    Console reader = System.console();
+    String userInput = reader.readLine();
+    Parser consoleInput = new Parser(userInput);
+    int choice = consoleInput.scan();
+
+    while(true){
+      switch(choice){
+        case 1: // createDatabase
+                break;
+        case 2: // dropDatabase
+                break;
+        case 3: // saveDatabase
+                break;
+        case 4: // loadDatabase
+                break;
+      }
+    }
   }
 
   public static void saveDatabase(String dataBaseName){
