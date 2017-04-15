@@ -1,4 +1,8 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 // Col class
 class Column{
@@ -6,10 +10,11 @@ class Column{
 	  private Column nextColumn;
 	  private String name;
 	  private String dataType;
-	  private Column dateTime;
+
 	  private int size;
 	  private int decimal;
 	private Boolean notNull;
+	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 
   public Column(){
@@ -52,7 +57,8 @@ class Column{
    return true;
   }
 
-  public String toString(){
+  public String toString()
+  {
       return getName() + " " + getNotNull() + "\n";
   }
 
@@ -78,13 +84,63 @@ class Column{
 		newRec.setType(this.dataType);
 		this.list.add(newRec);
 	}
-
 	public void insertRecord(String data)
 	{
+		Date date = new Date();
+		dateFormat.format(date);
 		this.list.get(list.size() - 1).setData(data);	
+		this.list.get(list.size() - 1).setDateTime(date);
 	}
-	
-	public ArrayList<Integer> findRowNoInitial(String operator, String rightSide)		//find all row #s where first condition is true
+	public ArrayList<Integer> findRowNoInitialRSC(String operator, Column rightSide) throws ParseException		//find all row #s where first condition is true
+	{
+		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
+		for(int i = 0; i < this.list.size(); i++)
+		{
+			if(this.list.get(i).getType().equals("char"))
+			{
+				if(rightSide.list.get(i).getData().matches("[0-9]*") == true)
+				{
+					System.out.println("Invalid comparison between type char and " + rightSide);
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else{
+					if(this.list.get(i).findValueChar(operator, rightSide.list.get(i).getData()) == true)
+						rowsToBeDeleted.add(i);
+				}
+			}
+			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))
+			{
+				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)
+				{
+					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide.list.get(i).getData());
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(i).findValue(operator, rightSide.list.get(i).getData()) == true)
+						rowsToBeDeleted.add(i);
+				}
+			}
+			else if(this.list.get(i).getType().equals("date"))
+			{
+				if(rightSide.list.get(i).getData().matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
+				{
+					System.out.println("Invalid format for type date");
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(i).findValueDate(operator, rightSide.list.get(i).getData()) == true)
+						rowsToBeDeleted.add(i);
+				}
+			}
+		}
+		return rowsToBeDeleted;
+	}	
+	public ArrayList<Integer> findRowNoInitial(String operator, String rightSide) throws ParseException		//find all row #s where first condition is true
 	{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < this.list.size(); i++)
@@ -116,11 +172,24 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-
+			else if(this.list.get(i).getType().equals("date"))
+			{
+				if(rightSide.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
+				{
+					System.out.println("Invalid format for type date");
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(i).findValueDate(operator, rightSide) == true)
+						rowsToBeDeleted.add(i);
+				}
+			}
 		}
 		return rowsToBeDeleted;
 	}
-	public ArrayList<Integer> findRowNo(String operator, String rightSide, ArrayList<Integer> indicesTBC)		//find row #s where the 2nd, 3rd, etc condition is true
+	public ArrayList<Integer> findRowNo(String operator, String rightSide, ArrayList<Integer> indicesTBC) throws ParseException		//find row #s where the 2nd, 3rd, etc condition is true
 	{																											//only considers rows that are currently true
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < indicesTBC.size(); i++)
@@ -153,34 +222,81 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
+			else if(this.list.get(i).getType().equals("date"))
+			{
+				if(rightSide.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
+				{
+					System.out.println("Invalid format for type date");
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(i).findValueDate(operator, rightSide) == true)
+						rowsToBeDeleted.add(indicesTBC.get(i));
+				}
+			}
 		}
-
-		
-		
 		return rowsToBeDeleted;
 	}
-	
+	public ArrayList<Integer> findRowNoRSC(String operator, Column rightSide, ArrayList<Integer> indicesTBC) throws ParseException		//find all row #s where first condition is true
+	{
+		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
+		for(int i = 0; i < indicesTBC.size(); i++)
+		{
+			if(this.list.get(i).getType().equals("char"))
+			{
+				if(rightSide.list.get(i).getData().matches("[0-9]*") == true)
+				{
+					System.out.println("Invalid comparison between type char and " + rightSide.list.get(i).getData());
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(indicesTBC.get(i)).findValueChar(operator, rightSide.list.get(i).getData()) == true)
+						rowsToBeDeleted.add(indicesTBC.get(i));
+				}
+			}
+			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))
+			{
+				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)
+				{
+					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide.list.get(i).getData());
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(indicesTBC.get(i)).findValue(operator, rightSide.list.get(i).getData()) == true)
+						rowsToBeDeleted.add(indicesTBC.get(i));
+				}
+			}
+			else if(this.list.get(i).getType().equals("date"))
+			{
+				if(rightSide.list.get(i).getData().matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
+				{
+					System.out.println("Invalid format for type date");
+					rowsToBeDeleted.clear();
+					return rowsToBeDeleted;
+				}
+				else
+				{
+					if(this.list.get(indicesTBC.get(i)).findValueDate(operator, rightSide.list.get(i).getData()) == true)
+						rowsToBeDeleted.add(i);
+				}
+			}
+		}
+		return rowsToBeDeleted;
+	}
 	public void deleteFromList(int index)
 	{
 		this.list.remove(index);
 	}
-	
 	public void displayRecords()
 	{
-		//System.out.println("array list:");
 		for(int i = 0; i < this.list.size(); i++)
-		{
-			System.out.println(this.list.get(i).getData());
-		}
-		System.out.println();
-		/*System.out.println("linked list:");
-		Row tempRow;
-		tempRow = firstRecord;
-		while(tempRow != null)
-		{
-			System.out.println(tempRow.getData());
-			tempRow = tempRow.getNextRow();
-		}*/
+			System.out.println(this.list.get(i).getData() + " \t" + this.list.get(i).getDateTime());
 		System.out.println();
 	}
 
