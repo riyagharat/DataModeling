@@ -79,12 +79,12 @@ class Table{
 		  {			 
 			  if(this.list.get(i).getType().equals("char"))				//semantic checks
 			  {
-/*				  if(values.get(i).contains("[0-9]+") == true)			//decline if data contains any digits
+				  if(values.get(i).contains("[0-9]+") == true)			//decline if data contains any digits
 				  {
 					  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type char");
 					  return;
 				  }
-				  else */if (values.get(i).length() > this.list.get(i).getSize())			//decline if too large
+				  else if (values.get(i).length() > this.list.get(i).getSize())			//decline if too large
 					{
 					  System.out.println(values.get(i) + " too large for " + this.list.get(i).getName());
 					  return;
@@ -139,12 +139,12 @@ class Table{
 			 
 			  if(this.list.get(colIndex).getType().equals("char"))				//semantic checks
 			  {
-/*				  if(values.get(i).contains("[0-9]+") == true)				//decline if data contains any digits
+				  if(values.get(i).contains("[0-9]+") == true)				//decline if data contains any digits
 				  {
 					  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type char");
 					  return;
 				  }
-				  else*/ if (values.get(i).length() > this.list.get(colIndex).getSize())		//decline if too large
+				  else if (values.get(i).length() > this.list.get(colIndex).getSize())		//decline if too large
 					{
 					  System.out.println(values.get(i) + " too large for " + this.list.get(colIndex).getName());
 					  return;
