@@ -108,9 +108,38 @@ public class TSQLx{
                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
                   System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
                   return;
-               }else{
-                  if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) > 1){
-                     FilteredColumns.add(RowNumber);
+               }else if{listOfTables.get(TableIndex).list.get(killMe).type.equals("Date")){//run shutdown.exe
+                  if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
+                     System.out.println("What kind of cockweasel screws up their date input");
+                     return;
+                  }else{
+                     SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");
+                     SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
+                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                     String formattedDate = formatter.format(date);
+                     String theDate = new String(listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data());
+                     Date rowValue;
+                     Date tempDate;
+                     String formattedRowValue;
+                     if(theDate.length() > 8){
+                        rowValue = parser.parse(theDate);
+                     }else{
+                        rowValue = otherParser.parse(theDate);
+                     }
+                     formattedRowValue = formatter.format(rowValue)
+                     if(Comparator.length() > 8){
+                        tempDate = parser.parse(Comparator);
+                     }else{
+                        tempDate = otherParser.parse(Comparator);
+                     }
+                     Comparator = formatter.format(tempDate);
+                     if(formattedRowValue.compareTo(Comparator) < 1){
+                        ShitWeNeed.add(monsterMash);
+                     }
+                  }else{   
+                     if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) > 1){
+                        FilteredColumns.add(RowNumber);
+                     }
                   }
                }
             }
