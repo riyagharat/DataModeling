@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class TSQLx{
+	public ArrayList<Table> tableList = new ArrayList<Table>();
+
   public static void main(String [] args){
     Console reader = System.console();
     String userInput = reader.readLine();
@@ -116,6 +118,8 @@ public class TSQLx{
 		System.out.println("An error occurred while writing to external memory");
 	}
 
+	tableList = new ArrayList<Table>(); // flush tables from internal memory
+
 	return;
   }
 
@@ -126,7 +130,7 @@ public class TSQLx{
 		return;
 	}
     Scanner fileIn = new Scanner(dbFile);
-	Pattern cmdPat = new Pattern.compile("^(?<cmd>t?[A-Za-z]+).+$");
+	Pattern cmdPat = new Pattern.compile("^(?<cmd>[A-Za-z]+)\\s+.+$");
 	String tempLine = "";
 
 	while(fileIn.hasNextLine()) { // iterate through file, line by line
