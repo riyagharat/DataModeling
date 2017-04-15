@@ -1,15 +1,15 @@
 // TSQLx.java
 public class TSQLx{
   public static void main(String [] args){
-    Console reader = System.console();
+    Scanner reader = new Scanner(System.in);
     String userInput;
     int choice = 0;
 
     do{
       System.out.print("TSQLx>");
-      userInput = reader.readLine()
+      userInput = reader.nextLine();
       Parser consoleInput = new Parser(userInput);
-      choice = consoleInput.scan();
+      choice = consoleInput.Scan();
       switch(choice){
         case 0:
             System.out.println("Reject");
@@ -20,15 +20,15 @@ public class TSQLx{
             break;
          case 2:
             System.out.println("DROP");
-            drop();
+            drop("q");
             break;
          case 3:
             System.out.println("SAVE");
-            saveDatabase();
+            saveDatabase("q");
             break;
          case 4:
             System.out.println("LOAD");
-            loadDatabase();
+            loadDatabase("q");
             break;
          case 5:
             System.out.println("INSERT");
