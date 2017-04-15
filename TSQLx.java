@@ -22,6 +22,7 @@ public class TSQLx{
                System.out.print(" ");
             }
             System.out.println("*");
+            System.out.println("Error at index: "+consoleInput.getError());
             break;
          case 1:
             System.out.println("CREATE");
