@@ -471,10 +471,10 @@ public static void saveDatabase(String dataBaseName){
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
-                }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
+                }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");
                       return;
@@ -484,7 +484,7 @@ public static void saveDatabase(String dataBaseName){
                       SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy"); //2 digit years
                       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd"); //formatted for comparison
                       String formattedDate = formatter.format(Comparator);
-                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data());
+                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
                       String formattedRowValue;
@@ -504,7 +504,7 @@ public static void saveDatabase(String dataBaseName){
                          FilteredColumns.add(RowNumber);
                       }
                    }
-                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) > 0){
+                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) > 0){
                       FilteredColumns.add(RowNumber);
                    }
                 }
@@ -515,11 +515,11 @@ public static void saveDatabase(String dataBaseName){
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");
                       return;
@@ -529,7 +529,7 @@ public static void saveDatabase(String dataBaseName){
                       SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
                       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
                       String formattedDate = formatter.format(Comparator);
-                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data());
+                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
                       String formattedRowValue;
@@ -550,7 +550,7 @@ public static void saveDatabase(String dataBaseName){
                       }
                    }
                 }else{
-                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) < 0){
+                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) < 0){
                       FilteredColumns.add(RowNumber);
                    }
                 }
@@ -561,7 +561,7 @@ public static void saveDatabase(String dataBaseName){
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");
                       return;
@@ -571,7 +571,7 @@ public static void saveDatabase(String dataBaseName){
                       SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
                       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
                       String formattedDate = formatter.format(Comparator);
-                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data());
+                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
                       String formattedRowValue;
@@ -592,7 +592,7 @@ public static void saveDatabase(String dataBaseName){
                       }
                    }
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().equals(Comparator)){
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().equals(Comparator)){
                    FilteredColumns.add(RowNumber);
                 }
              }
@@ -602,7 +602,7 @@ public static void saveDatabase(String dataBaseName){
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");
                       return;
@@ -612,7 +612,7 @@ public static void saveDatabase(String dataBaseName){
                       SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
                       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
                       String formattedDate = formatter.format(Comparator);
-                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data());
+                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
                       String formattedRowValue;
@@ -633,7 +633,7 @@ public static void saveDatabase(String dataBaseName){
                       }
                    }
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().equals(Comparator)){
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().equals(Comparator)){
                    FilteredColumns.add(RowNumber);
                 }
              }
@@ -643,11 +643,11 @@ public static void saveDatabase(String dataBaseName){
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");
                       return;
@@ -657,7 +657,7 @@ public static void saveDatabase(String dataBaseName){
                       SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
                       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
                       String formattedDate = formatter.format(Comparator);
-                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data());
+                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
                       String formattedRowValue;
@@ -679,7 +679,7 @@ public static void saveDatabase(String dataBaseName){
                    }
                    }
                    else{
-                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) >= 0){
+                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) >= 0){
                       FilteredColumns.add(RowNumber);
                    }
                 }
@@ -690,11 +690,11 @@ public static void saveDatabase(String dataBaseName){
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");
                       return;
@@ -704,7 +704,7 @@ public static void saveDatabase(String dataBaseName){
                       SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
                       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
                       String formattedDate = formatter.format(Comparator);
-                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data());
+                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
                       String formattedRowValue;
@@ -726,7 +726,7 @@ public static void saveDatabase(String dataBaseName){
                    }
                    }
                    else{
-                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) <= 0){
+                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) <= 0){
                       FilteredColumns.add(RowNumber);
                    }
                 }
@@ -734,7 +734,7 @@ public static void saveDatabase(String dataBaseName){
              break;
        }
        if(PrintList.get(0).equals("*")){
-          please(TableIndex, FilteredColumns);
+          please(TableIndex, FilteredColumns, listOfTables);
           return;
        }else{
           ArrayList indices = new ArrayList<Integer>();
@@ -761,10 +761,10 @@ public static void saveDatabase(String dataBaseName){
      for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
         for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.get(j); i++){//and this loop is getting those records
            if(helpMe.contains(j)){
-              if(listOfTables.get(TableIndex).list.get(i).list.get(j).data = null){//just tab twice for empty
+              if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                  System.out.print("\t\t");
               }else{
-                 System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).data + "\t");
+                 System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
               }
            }
         }
@@ -778,10 +778,10 @@ public static void saveDatabase(String dataBaseName){
         if(indices.contains(i)){
            for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.get(j); i++){//and here we got some rows
               if(helpMe.contains(j)){
-                 if(listOfTables.get(TableIndex).list.get(i).list.get(j).data = null){//just tab twice for empty
+                 if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                     System.out.print("\t\t");
                  }else{
-                    System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).data + "\t");
+                    System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
                  }
               }
            }
@@ -795,10 +795,10 @@ public static void saveDatabase(String dataBaseName){
      //remind me to put the names of the columns up here some time
      for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
         for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.get(j); i++){//and this loop is getting those records
-           if(listOfTables.get(TableIndex).list.get(i).list.get(j).data = null){//just tab twice for empty
+           if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
               System.out.print("\t\t");
            }else{
-              System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).data + "\t");
+              System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
            }
         }
         System.out.print("\n");
@@ -810,17 +810,17 @@ public static void saveDatabase(String dataBaseName){
      for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
         if(indices.contains(i)){
            for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.get(j); i++){//and here we got some rows
-                 if(listOfTables.get(TableIndex).list.get(i).list.get(j).data = null){//just tab twice for rows
+                 if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for rows
                     System.out.print("\t\t");
                  }else{
-                    System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).data + "\t");
+                    System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
                  }
            }
            System.out.print("\n");
         }
      }
   }
-
+  
   public static void dateSelect(){
 
   }
