@@ -1,0 +1,1 @@
+str.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false
