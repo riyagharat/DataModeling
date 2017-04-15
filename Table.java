@@ -17,24 +17,38 @@ class Table{
   }
 
 
-  public Table(ArrayList<String> fields, ArrayList<String> types, String name) 
+  public Table(String name, ArrayList<String> fields, ArrayList<String> types) 
   {
     for(int i = 0; i < fields.size(); i++)					//create columns and set types/size
     {
     	Column newCol = new Column();
     	newCol.setName(fields.get(i));
-    	String type = types.get(i).substring(0, types.get(i).indexOf("("));
-    	newCol.setType(type);
+    	String type = "";
+    	if(types.get(i).contains("(") && types.get(i).contains(")"))					//if a size is specified
+    	{
+    			type = types.get(i).substring(0, types.get(i).indexOf("("));		
+    	    	if(type.equals("integer"))										//if float, set size, decimal size
+    	    	{
+    	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(","))));
+    	    		newCol.setDecimal(Integer.parseInt(types.get(i).substring(types.get(i).indexOf(",") + 1, types.get(i).indexOf(")"))));
+    	    	}
+    	    	else															//else set size
+    	    	{
+    	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(")"))));
+    	    	}
+    	}
+    	else														//if no size is specified, set size,?(decimal) to 255
+    	{
+    		type = types.get(i);
+    		if(type.equals("integer"))
+	    	{
+    			newCol.setSize(255);
+    			newCol.setDecimal(255);
+	    	}
+    		else newCol.setSize(255);
+    	}
     	
-    	if(type.equals("integer"))
-    	{
-    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(","))));
-    		newCol.setDecimal(Integer.parseInt(types.get(i).substring(types.get(i).indexOf(",") + 1, types.get(i).indexOf(")"))));
-    	}
-    	else
-    	{
-    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(")"))));
-    	}
+    	newCol.setType(type);		
     	this.list.add(newCol);
     }
     this.name = name;
@@ -59,21 +73,18 @@ class Table{
   public void insert(ArrayList<String> fields, ArrayList<String> values)
   {	  
 	  ArrayList<Integer> insertHere = new ArrayList<Integer>();			
-	
-
- 
 	  if(fields.isEmpty())					//simple insert
 	  {
 		  for(int i = 0; i < values.size(); i ++)						
 		  {			 
 			  if(this.list.get(i).getType().equals("char"))				//semantic checks
 			  {
-/*				  if(values.get(i).contains("[0-9]+") == true)			//decline if data contains any digits
+				  if(values.get(i).contains("[0-9]+") == true)			//decline if data contains any digits
 				  {
 					  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type char");
 					  return;
 				  }
-				  else */if (values.get(i).length() > this.list.get(i).getSize())			//decline if too large
+				  else if (values.get(i).length() > this.list.get(i).getSize())			//decline if too large
 					{
 					  System.out.println(values.get(i) + " too large for " + this.list.get(i).getName());
 					  return;
@@ -128,12 +139,12 @@ class Table{
 			 
 			  if(this.list.get(colIndex).getType().equals("char"))				//semantic checks
 			  {
-/*				  if(values.get(i).contains("[0-9]+") == true)				//decline if data contains any digits
+				  if(values.get(i).contains("[0-9]+") == true)				//decline if data contains any digits
 				  {
 					  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type char");
 					  return;
 				  }
-				  else*/ if (values.get(i).length() > this.list.get(colIndex).getSize())		//decline if too large
+				  else if (values.get(i).length() > this.list.get(colIndex).getSize())		//decline if too large
 					{
 					  System.out.println(values.get(i) + " too large for " + this.list.get(colIndex).getName());
 					  return;
