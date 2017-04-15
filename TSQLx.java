@@ -55,7 +55,7 @@ public class TSQLx{
 		return;
 	}
     Scanner fileIn = new Scanner(dbFile);
-	Pattern cmdPat = new Pattern.compile("^(?<cmd>t?[A-Za-Zz]+).+$");
+	Pattern cmdPat = new Pattern.compile("^(?<cmd>t?[A-Za-z]+).+$");
 
 	while(fileIn.hasNextLine()) { // iterate through file, line by line
 		String tempLine = in.nextLine();
