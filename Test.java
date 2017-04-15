@@ -48,6 +48,9 @@ public class Test{
          case 11:
             System.out.println("INPUT");
             break;
+         case 12:
+            System.out.println("EXIT");
+            break;
          default:
             System.out.println("Reject");
             break;
@@ -61,7 +64,7 @@ class Parser{
    String input;
    public static final String params = "((([a-zA-z]+)|([0-9]+(\\.[0-9]+)?)|([^a-zA-Z0-9\\s])))";
    public static final String[] keywords = {"CREATE","DROP","SAVE","LOAD","INSERT","SELECT",
-      "tSELECT","CONVERT","COMMIT","INTEGER","INPUT", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
+      "tSELECT","CONVERT","COMMIT","INTEGER","INPUT", "EXIT", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
       "FROM","WHERE","XML","XSD","AS", "DATABASE", "TABLE"};
    ArrayList<Token> tokens;
    //boolean isParsed;
@@ -270,6 +273,10 @@ class Parser{
          acc("input", true);
          arg0.add(tokens.get(j).getName());
          acc("ID", false);
+      }
+      else if(tokens.get(j).getName().equalsIgnoreCase("exit")){
+         choice = 12;
+         acc("exit", true);
       }
       else this.accept = false;
    }
