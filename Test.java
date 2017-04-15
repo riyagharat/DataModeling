@@ -50,9 +50,9 @@ class Parser{
       while(m.find()){ 
          
          //System.out.println(m.group());
-         for(int i = 0; i < 7; i++){
-            //System.out.print("(" + m.group(i) + ")");
-         }
+         /*for(int i = 0; i < 7; i++){
+            System.out.print("(" + m.group(i) + ")");
+         }*/
          //System.out.println();
          if(m.group(3)!=null){
             //System.out.println("WORD: " + m.group());
