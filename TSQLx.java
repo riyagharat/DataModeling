@@ -4,7 +4,6 @@ public class TSQLx{
     Scanner reader = new Scanner(System.in);
     String userInput;
     int choice = 0;
-    ArrayList<Table> listOfTables = new ArrayList<Table>();
 
     do{
       System.out.print("TSQLx>");
@@ -28,7 +27,7 @@ public class TSQLx{
          case 1:
             System.out.println("CREATE");
             if(!(consoleInput.getArg1().size() == 0)){
-              create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+              create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2());
             }else{
               create(consoleInput.getArg0().get(0));
             }
@@ -94,12 +93,17 @@ public static void saveDatabase(String dataBaseName){
   }
 
  public static void create(String dataBaseName){
-    File file = new File(dataBaseName + ".txt");
+
+    // need to have the columns set up here
+//    Table newTable = (tableName, "", "");
+//    listOfTables.add(newTable);
+
+//    File file = dataBaseName + ".txt";
+//    file.open();
   }
 
-  public static void create(String tableName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs, ArrayList<Table> listOfTables){
-    Table newTable = new Table(tableName, fieldNames, fieldDefs);
-    listOfTables.add(newTable);
+  public static void create(String dataBaseName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs){
+
   }
 
   public static void drop(String tableName){
@@ -411,14 +415,14 @@ public static void saveDatabase(String dataBaseName){
   }
 
   public static void select(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
-    ArrayList<Table> listOfTables){
-    String TableName = TableNamer.get(0);
+    ArrayList<Table> listOfTables){ // Begin select statement
+    String TableName = TableNamer.get(0); //retrieve table name from arraylist
     int TableIndex = 0;
     String ColumnName;
     String Relational;
     String Comparator;
     int Case;
-    if(Wheres.size() > 0){
+    if(Wheres.size() > 0){//if there is a where condition, get the parameters
        ColumnName = Wheres.get(0);
        Relational = Wheres.get(1);
        Comparator = Wheres.get(2);
@@ -439,7 +443,7 @@ public static void saveDatabase(String dataBaseName){
           Case = 6;
     }
 
-    while(!listOfTables.get(TableIndex).equals(TableName)){//Is this table a thing?
+    while(!listOfTables.get(TableIndex).equals(TableName)){//Checking if the table exists
        TableIndex++;
        if(TableIndex == listOfTables.size()){//If you've gone too far, give up
           System.out.println("Table not found.");
@@ -453,11 +457,11 @@ public static void saveDatabase(String dataBaseName){
           return;
        }else{ //SELECT [columns]
           ArrayList indices = new ArrayList<Integer>(); //columns we want
-          for(int k = 0; k < PrintList.size(); k++){
+          for(int k = 0; k < PrintList.size(); k++){//so long as there are more columns we want
              int Persona = 0;
-             while(!listOfTables.get(TableIndex).list.get(k).equals(PrintList.get(Persona))){
+             while(!listOfTables.get(TableIndex).list.get(Persona).equals(PrintList.get(k))){//while the column is not equal to what we want, increment
                 Persona++;
-                if(Persona == listOfTables.get(TableIndex).list.size()){
+                if(Persona == listOfTables.get(TableIndex).list.size()){//return if a column doesn't exist
                    System.out.println("Specified column not found.");
                    return;
                 }
@@ -470,17 +474,17 @@ public static void saveDatabase(String dataBaseName){
        ArrayList FilteredColumns = new ArrayList<Integer>();
        int ColumnNumber = 0;
        switch(Case){
-          case 1://less than? the world may never know
+          case 1://less than case
              ColumnNumber = 0;
-             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){
+             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
-                }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
+                }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                      System.out.println("Incorrect Date Format.");
+                      System.out.println("Incorrect Date Format.");//check for date format
                       return;
                    }
                    else{
@@ -491,7 +495,7 @@ public static void saveDatabase(String dataBaseName){
                       String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
-                      String formattedRowValue;
+                      String formattedRowValue;//going to compare the dates as strings
                       if(theDate.length() > 8){
                          rowValue = parser.parse(theDate);
                       }else{
