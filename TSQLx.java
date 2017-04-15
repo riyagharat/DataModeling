@@ -36,7 +36,7 @@ public class TSQLx{
     
   }
        
-  public static void simpleSelect(ArrayList<String> Printlist, ArrayList<String> TableNamer, ArrayList<String> Wheres){
+  public static void simpleSelect(ArrayList<String> Printlist, ArrayList<String> TableNamer, ArrayList<String> Where){
    String TableName = TableNamer.get(0);
    int TableIndex = 0;
    String ColumnName;
@@ -47,6 +47,9 @@ public class TSQLx{
       ColumnName = Wheres.get(0);
       Relational = Wheres.get(1);
       Comparator = Wheres.get(2);
+      Wheres.remove(2);
+      Wheres.remove(1);
+      Wheres.remove(0);   
    }
    
    if(Wheres.size() > 0){
@@ -94,94 +97,94 @@ public class TSQLx{
          printSomething(TableIndex, indices);
       }//end else
    }else{//OH SHIT BOIS IT'S A WHERE STATEMENT HOLD ON TO YOUR BUTTS
-      ArrayList ShitWeNeed = new ArrayList<Integer>();
-      int killMe = 0;
+      ArrayList FilteredColumns = new ArrayList<Integer>();
+      int ColumnNumber = 0;
       switch(Case){
          case 1://less than? the world may never know
-            killMe = 0;
-            while(!listOfTables.get(TableIndex).list.get(killMe).equals(ColumnName))
-               killMe++;
-            for(int monsterMash = 0; listOfTables.get(TableIndex).list.get(killMe).list.size(); monsterMash++){
-               if(listOfTables.get(TableIndex).list.get(killMe).type.equals("String")){
+            ColumnNumber = 0;
+            while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+               ColumnNumber++;
+            for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
+               if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
                   System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
                   return;
                }else{
-                  if(listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data().compareTo(Comparator) > 1){
-                     ShitWeNeed.add(monsterMash);
+                  if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) > 1){
+                     FilteredColumns.add(RowNumber);
                   }
                }
             }
             break;
          case 2://greater than? check later
-            killMe = 0;
-            while(!listOfTables.get(TableIndex).list.get(killMe).equals(ColumnName))
-               killMe++;
-            for(int monsterMash = 0; listOfTables.get(TableIndex).list.get(killMe).list.size(); monsterMash++){
-               if(listOfTables.get(TableIndex).list.get(killMe).type.equals("String")){
+            ColumnNumber = 0;
+            while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+               ColumnNumber++;
+            for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
+               if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
                   System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
                   return;
                }else{
-                  if(listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data().compareTo(Comparator) < 1){
-                     ShitWeNeed.add(monsterMash);
+                  if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) < 1){
+                     FilteredColumns.add(RowNumber);
                   }
                }
             } 
             break;
          case 3://equal to
-            killMe = 0;
-            while(!listOfTables.get(TableIndex).list.get(killMe).equals(ColumnName))
-               killMe++;
-            for(int monsterMash = 0; listOfTables.get(TableIndex).list.get(killMe).list.size(); monsterMash++){
-               if(listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data().equals(Comparator)){
-                  ShitWeNeed.add(monsterMash);
+            ColumnNumber = 0;
+            while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+               ColumnNumber++;
+            for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
+               if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().equals(Comparator)){
+                  FilteredColumns.add(RowNumber);
                }
             } 
             break;
          case 4://not equal   
-            killMe = 0;
-            while(!listOfTables.get(TableIndex).list.get(killMe).equals(ColumnName))
-               killMe++;
-            for(int monsterMash = 0; listOfTables.get(TableIndex).list.get(killMe).list.size(); monsterMash++){
-               if(!listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data().equals(Comparator)){
-                  ShitWeNeed.add(monsterMash);
+            ColumnNumber = 0;
+            while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+               ColumnNumber++;
+            for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
+               if(!listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().equals(Comparator)){
+                  FilteredColumns.add(RowNumber);
                }
             } 
             break;
          case 5://less than or equal to?
-            killMe = 0;
-            while(!listOfTables.get(TableIndex).list.get(killMe).equals(ColumnName))
-               killMe++;
-            for(int monsterMash = 0; listOfTables.get(TableIndex).list.get(killMe).list.size(); monsterMash++){
-               if(listOfTables.get(TableIndex).list.get(killMe).type.equals("String")){
+            ColumnNumber = 0;
+            while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+               ColumnNumber++;
+            for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
+               if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
                   System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
                   return;
                }else{
-                  if(listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data().compareTo(Comparator) < 1 || 
-                     listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data().equals(Comparator)){
-                     ShitWeNeed.add(monsterMash);
+                  if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) < 1 || 
+                     listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().equals(Comparator)){
+                     FilteredColumns.add(RowNumber);
                   }
                }
             } 
             break;
          case 6://greater than or equal to?
-            killMe = 0;
-            while(!listOfTables.get(TableIndex).list.get(killMe).equals(ColumnName))
-               killMe++;
-            for(int monsterMash = 0; listOfTables.get(TableIndex).list.get(killMe).list.size(); monsterMash++){
-               if(listOfTables.get(TableIndex).list.get(killMe).type.equals("String")){
+            ColumnNumber = 0;
+            while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+               ColumnNumber++;
+            for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
+               if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
                   System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
                   return;
                }else{
-                  if(listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data().compareTo(Comparator) > 1 || 
-                     listOfTables.get(TableIndex).list.get(killMe).list.get(monsterMash).data().equals(Comparator)){
-                     ShitWeNeed.add(monsterMash);
+                  if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().compareTo(Comparator) > 1 || 
+                     listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data().equals(Comparator)){
+                     FilteredColumns.add(RowNumber);
                   }
                }
             } 
             break;   
       }
       if(Printlist.get(0).equals("*")){
-         please(TableIndex, ShitWeNeed);
+         please(TableIndex, FilteredColumns);
          return;
       }else{
          ArrayList indices = new ArrayList<Integer>();
