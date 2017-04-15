@@ -50,12 +50,9 @@ public class TSQLx{
       ColumnName = Wheres.get(0);
       Relational = Wheres.get(1);
       Comparator = Wheres.get(2);
-      Wheres.remove(2);
-      Wheres.remove(1);
-      Wheres.remove(0);   
    }
    
-   if(Wheres.size() > 0){
+   if(Wheres.size() > 0){ //switch case based on comparison operator 
       if(Relational.equals("<"))
          Case = 1;
       if(Relational.equals(">"))
@@ -73,33 +70,31 @@ public class TSQLx{
    while(!listOfTables.get(TableIndex).equals(TableName)){//Is this table a thing?
       TableIndex++;
       if(TableIndex == listOfTables.size()){//If you've gone too far, give up
-         System.out.println("That table doesn't exist ya silly goose");
+         System.out.println("Table not found.");
          return;
       }
    }
    
-   if(Wheres.size() == 0){
-      if(PrintList.get(0).equals("*")){
-         printEverything(TableIndex);
+   if(Wheres.size() == 0){ //if there is no where condition
+      if(PrintList.get(0).equals("*")){ //SELECT * (everything)
+         printEverything(TableIndex); 
          return;
-      }else{
-         ArrayList indices = new ArrayList<Integer>();
-         int checking = 0;
+      }else{ //SELECT [columns]
+         ArrayList indices = new ArrayList<Integer>(); //columns we want
          for(int k = 0; k < PrintList.size(); k++){
             int Persona = 0;
             while(!listOfTables.get(TableIndex).list.get(k).equals(PrintList.get(Persona))){
                Persona++;
                if(Persona == listOfTables.get(TableIndex).list.size()){
-                  System.out.println("Excuse me, WHAT column?");
+                  System.out.println("Specified column not found.");
                   return;
                }
-            indices.add(Persona);   
+            indices.add(Persona); //the specified column was found - add the column we want 
             }//end while
-            k++;
          }//end for loop
          printSomething(TableIndex, indices);
       }//end else
-   }else{//OH SHIT BOIS IT'S A WHERE STATEMENT HOLD ON TO YOUR BUTTS
+   }else{//Where clause 
       ArrayList FilteredColumns = new ArrayList<Integer>();
       int ColumnNumber = 0;
       switch(Case){
@@ -109,17 +104,17 @@ public class TSQLx{
                ColumnNumber++;
             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
-                  System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
+                  System.out.println("Error. Cannot compare strings with less than.");
                   return;
-               }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){//run shutdown.exe
+               }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){ 
                   if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                     System.out.println("What kind of cockweasel screws up their date input");
+                     System.out.println("Incorrect Date Format.");
                      return;
                   }
                   else{
-                     SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");
-                     SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
-                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                     SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy"); //4 digit years
+                     SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy"); //2 digit years
+                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd"); //formatted for comparison
                      String formattedDate = formatter.format(Comparator);
                      String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).data());
                      Date rowValue;
@@ -153,12 +148,12 @@ public class TSQLx{
                ColumnNumber++;
             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
-                  System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
+                  System.out.println("Error. Cannot compare strings with less than.");
                   return;
                }
-               else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){//run shutdown.exe
+               else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
                   if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                     System.out.println("What kind of cockweasel screws up their date input");
+                     System.out.println("Incorrect Date Format.");
                      return;
                   }
                   else{
@@ -198,9 +193,9 @@ public class TSQLx{
             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
                ColumnNumber++;
             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-               if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){//run shutdown.exe
+               if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
                   if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                     System.out.println("What kind of cockweasel screws up their date input");
+                     System.out.println("Incorrect Date Format.");
                      return;
                   }
                   else{
@@ -239,9 +234,9 @@ public class TSQLx{
             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
                ColumnNumber++;
             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-               if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){//run shutdown.exe
+               if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
                   if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                     System.out.println("What kind of cockweasel screws up their date input");
+                     System.out.println("Incorrect Date Format.");
                      return;
                   }
                   else{
@@ -281,12 +276,12 @@ public class TSQLx{
                ColumnNumber++;
             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
-                  System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
+                  System.out.println("Error. Cannot compare strings with less than.");
                   return;
                }
-               else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){//run shutdown.exe
+               else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
                   if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                     System.out.println("What kind of cockweasel screws up their date input");
+                     System.out.println("Incorrect Date Format.");
                      return;
                   }
                   else{
@@ -328,12 +323,12 @@ public class TSQLx{
                ColumnNumber++;
             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
                if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("String")){
-                  System.out.println("Yeah man, String less than whatever, great idea, please choke on a scooter");
+                  System.out.println("Error. Cannot compare strings with less than.");
                   return;
                }
-               else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){//run shutdown.exe
+               else if(listOfTables.get(TableIndex).list.get(ColumnNumber).type.equals("Date")){
                   if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                     System.out.println("What kind of cockweasel screws up their date input");
+                     System.out.println("Incorrect Date Format.");
                      return;
                   }
                   else{
