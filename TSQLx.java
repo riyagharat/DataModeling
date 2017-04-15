@@ -26,7 +26,11 @@ public class TSQLx{
             break;
          case 1:
             System.out.println("CREATE");
-            create();
+            if(!(consoleInput.getArg1().size() == 0)){
+              create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2());
+            }else{
+              create(consoleInput.getArg0().get(0));
+            }
             break;
          case 2:
             System.out.println("DROP");
@@ -88,7 +92,7 @@ public static void saveDatabase(String dataBaseName){
 
   }
 
-  public static void create(){
+ public static void create(String dataBaseName){
 
     // need to have the columns set up here
 //    Table newTable = (tableName, "", "");
@@ -96,6 +100,10 @@ public static void saveDatabase(String dataBaseName){
 
 //    File file = dataBaseName + ".txt";
 //    file.open();
+  }
+
+  public static void create(String dataBaseName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs){
+
   }
 
   public static void drop(String tableName){
