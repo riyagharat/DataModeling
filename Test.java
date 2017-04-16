@@ -60,22 +60,34 @@ public class Test{
    }
 }
 
+/*
+   This class creates a parser for the SQL language. The parser will perform lexical and syntax analysis. Semantic analysis will 
+   be done in individual functinos. The parser class main purpose is to return an integer which will be associated with a sql command
+   (e.g: create, save, load, etc), and to store arguments in sql commands as arraylists, which can be referenced by other functions.
+*/
 class Parser{
+   //Variable declaration
    String input;
+   //static final variables are used for both the regex, and the keywords listings
    public static final String params = "((([a-zA-z]+)|([0-9]+(\\.[0-9]+)?)|([^a-zA-Z0-9\\s])))";
    public static final String[] keywords = {"CREATE","DROP","SAVE","LOAD","INSERT","SELECT",
-      "tSELECT","CONVERT","COMMIT","INTEGER","INPUT", "EXIT", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
-      "FROM","WHERE","XML","XSD","AS", "DATABASE", "TABLE"};
+      "tSELECT","CONVERT","COMMIT","INTEGER","INPUT", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
+      "FROM","WHERE","XML","XSD","AS", "DATABASE", "TABLE", "AND", "OR"};
    ArrayList<Token> tokens;
    //boolean isParsed;
    int choice;
    int j;
+   int errorIndex;
    boolean accept;
+   boolean rejected;
+   //Arguments for other functions held in arg0, arg1, and arg2
    ArrayList<String> arg0;
    ArrayList<String> arg1;
    ArrayList<String> arg2;
    String temp;
+   String error;
    
+   //class constructor
    public Parser(String input){
       this.input = input;
       tokens = new ArrayList<Token>();
@@ -83,44 +95,47 @@ class Parser{
       choice = 0;
       j = 0;
       this.accept = true;
+      this.rejected = false;
       temp = "";
+      error = "";
+      errorIndex = 0;
    }
    
+   /*
+      Scan function will parse input tokens, and seperate tokens that are numbers, letters or other characters.
+      Note: combinations of letters associate to the "id" type, meaning ids can't contain any special characters or numbers 
+   */
    public int Scan(){
+      //reinitialize the arguments
       arg0 = new ArrayList<String>();
       arg1 = new ArrayList<String>();
       arg2 = new ArrayList<String>();
+      //create compiler for regex following the construct of params
       tokens = new ArrayList<Token>();
       Matcher m = Pattern.compile(params).matcher(input);
       while(m.find()){ 
-         
-         //System.out.println(m.group());
-         /*for(int i = 0; i < 7; i++){
-            System.out.print("(" + m.group(i) + ")");
-         }*/
-         //System.out.println();
+         //groups seperated by regex statement. 3:ID or KeywWord, 4:Digit or Float, 6: other
          if(m.group(3)!=null){
-            //System.out.println("WORD: " + m.group());
-            if(isKeyword(m.group(3))) tokens.add(new Token("KW", m.group(3)));
-            else tokens.add(new Token("ID", m.group(3)));
+            if(isKeyword(m.group(3))) tokens.add(new Token("KW", m.group(3), m.start()));
+            else tokens.add(new Token("ID", m.group(3), m.start()));
          }
          else if(m.group(4)!=null){
-            //System.out.println("DIGIT: " + m.group());
             if(checkFloat(m.group(4))){
-               tokens.add(new Token("FL", m.group(4)));
+               tokens.add(new Token("FL", m.group(4), m.start()));
             }
             else{
-               tokens.add(new Token("DI", m.group(4)));
+               tokens.add(new Token("DI", m.group(4), m.start()));
             }
          }
          else if(m.group(6)!=null){
-            //System.out.println("OTHER: " + m.group());
-            tokens.add(new Token("SP", m.group(6)));
+            tokens.add(new Token("SP", m.group(6), m.start()));
          }
       }
+      //call parse function to return an integer, associated with a switch statement
       return Parse();
    }
    
+   //checks if a digit is either a float or an int
    public boolean checkFloat (String check){
       for (int i = 0; i<check.length(); i++){
          if(check.charAt(i)=='.'){
@@ -130,6 +145,9 @@ class Parser{
       return false;
    }
    
+   /*
+      The following three functions return argument lists for functions that call the sql commands and execute them.
+   */
    public ArrayList<String> getArg0(){
       return this.arg0;
    }
@@ -142,6 +160,7 @@ class Parser{
       return this.arg2;
    }
    
+   //checks if the given id is a keyword. Returns false if it is not a keyword
    public boolean isKeyword(String id){
       for(int i = 0; i < keywords.length; i++){
          if(keywords[i].equalsIgnoreCase(id)) return true;
@@ -149,36 +168,84 @@ class Parser{
       return false;
    }
    
+   //returns the index of the error in an incorrect sql command
+   public int getError(){
+      //return this.errorIndex;
+      return errorIndex;
+   }
+   
+   //used to set the accpet state to false. Caused by an incorrect input 
+   public void setFalse(){
+      if(!this.rejected){
+         this.accept = false;            
+         this.rejected = true;
+         errorIndex = tokens.get(j).getIndex();
+         //error = str;
+      }
+   }
+   
+   /*
+      parses the tokens collected by the scanner, and checks if those tokens follow the grammar rules of sql
+      
+      follws the following CFG
+      
+      $ == empty
+
+      a->b|exit
+      b->c
+      c->d;
+      d->create_e|drop_n|save_o|load_o|insert_p|delete_u|tselect_w|select_w|convert_z|commit|input_ID
+      e->database_ID|table_ID_f
+      f->(h_g)
+      g->,h_g|$
+      h->ID_i
+      i->integer_j|number_k|character(Digit)|date
+      j->(Digit)|$
+      k->(Digit_l)|$
+      l->,Digit|$
+      n->database_ID|table_ID
+      o->database_ID
+      p->into_ID_q_values_s
+      q->(ID_r)|$
+      r->,ID_r|$
+      s->('ID't)|('Float't)|('Digit't)|('Digit/Digit/Digit't)
+      t->,'ID't|,'Float't|,'Digit't|,'Digit/Digit/Digit't|$
+      u->from_ID_v
+      v->where_va|$
+      va->ID_vb|Digit_vb
+      vb-><_vc|<=_vc|<>_vc|=_vc|>_vc|>=_vc
+      vc->ID_vd|Digit_vd
+      vd->AND_va|OR_va|$
+      w->*_u|(ID_wa)_u
+      wa->,ID_r|$
+      x->from_ID_v
+      z->xml_ID_aa_AS_ID
+      aa->,XSD_ID|$
+   */
    public int Parse(){
+      this.accept = true;
+      this.rejected = false;
       choice = 0;
       j = 0;
       if(tokens.size()>0){
+         //runs the first state of the sql grammar
          a();
       }
-      else this.accept = false;
+      else setFalse();
       if(this.accept){
-         //System.out.println("ACCEPT");
       }
       else{ 
          choice = 0;
-         //System.out.println("REJECT");
       }
-      /*
-      for(int i = 0; i<arg0.size(); i++){
-         System.out.print(arg0.get(i)+ ", ");
-      }
-      System.out.println();
-      for(int i = 0; i<arg1.size(); i++){
-         System.out.print(arg1.get(i) + ", ");
-      }
-      System.out.println();
-      for(int i = 0; i<arg2.size(); i++){
-         System.out.print(arg2.get(i) + ", ");
-      }
-      System.out.println();*/
+      //returns the choice of the sql command
       return choice;
    }
    
+   /*
+      All following methods with simple names like a, b, etc are different staes in the sql grammar. the gramma follows as:
+      a->b|exit
+      b->
+   */
    void a(){
       if(tokens.get(j).getType().equals("KW")){
          for(int i = 0; i<keywords.length; i++){
@@ -188,7 +255,11 @@ class Parser{
             }
          }
       }
-      else this.accept = false;
+      else if(tokens.get(j).getName().equalsIgnoreCase("exit")){
+         choice = 12;
+         acc("exit",true);
+      }
+      else setFalse();
    }
    
    void b(){
@@ -200,7 +271,7 @@ class Parser{
             }
          }
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void c(){
@@ -213,7 +284,7 @@ class Parser{
             }
          }
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void d(){
@@ -274,11 +345,7 @@ class Parser{
          arg0.add(tokens.get(j).getName());
          acc("ID", false);
       }
-      else if(tokens.get(j).getName().equalsIgnoreCase("exit")){
-         choice = 12;
-         acc("exit", true);
-      }
-      else this.accept = false;
+      else setFalse();
    }
    
    void e(){
@@ -294,7 +361,7 @@ class Parser{
          acc("ID", false);
          f();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void f(){
@@ -304,7 +371,7 @@ class Parser{
          g();
          acc(")", false);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void g(){
@@ -316,7 +383,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void h(){
@@ -324,9 +391,8 @@ class Parser{
          arg1.add(tokens.get(j).getName());
          acc("ID", false);
          i();
-         //arg2.add(temp);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void i(){
@@ -358,46 +424,8 @@ class Parser{
          temp += tokens.get(j).getName();
          acc("date", true);
          arg2.add(temp);
-         //temp += tokens.get(j).getName();
-         /*acc("(", false);
-         if(tokens.get(j).getType().equals("DI")){
-            if(tokens.get(j).getName().length() > 2){
-               this.accept = false;
-            }
-            else{
-               temp += tokens.get(j).getName();
-               acc("DI", false);
-               temp += tokens.get(j).getName();
-               acc("/",false);
-               if(tokens.get(j).getType().equals("DI")){
-                  if(tokens.get(j).getName().length() > 2){
-                     this.accept = false;
-                  }
-                  else{
-                     temp += tokens.get(j).getName();
-                     acc("DI", false);
-                     temp += tokens.get(j).getName();
-                     acc("/", false);
-                     if(tokens.get(j).getType().equals("DI")){
-                        if(tokens.get(j).getName().length()>4){
-                           this.accept = false;
-                        }
-                        else{
-                           temp += tokens.get(j).getName();
-                           acc("DI", false);
-                           temp += tokens.get(j).getName();
-                           acc(")", false);
-                        }
-                     }
-                     else this.accept = false;
-                  }
-               }
-               else this.accept = false;   
-            }
-         }
-         else this.accept = false;*/
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void j(){
@@ -412,7 +440,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void k(){
@@ -428,7 +456,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void l(){
@@ -441,7 +469,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void m(){
@@ -455,10 +483,10 @@ class Parser{
       } 
       else if(tokens.get(j).getName().equalsIgnoreCase("table")){
          acc("table", true);
-         arg0.add(tokens.get(j).getName());
+         arg1.add(tokens.get(j).getName());
          acc("ID", false);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void o(){
@@ -467,7 +495,7 @@ class Parser{
          arg0.add(tokens.get(j).getName());
          acc("ID", false);
       } 
-      else this.accept = false;
+      else setFalse();
    }
    
    void p(){
@@ -479,7 +507,7 @@ class Parser{
          acc("values", true);
          s();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void q(){
@@ -495,7 +523,7 @@ class Parser{
       else if(tokens.get(j).getName().equalsIgnoreCase("values")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void r(){
@@ -508,7 +536,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void s(){
@@ -555,25 +583,25 @@ class Parser{
                               arg2.add(temp);
                            }
                      }
-                     else this.accept = false;
+                     else setFalse();
                         }
                      }
                   }
                   else if(tokens.get(j).getName().equals("'")){
                   }
-                  else this.accept = false;
+                  else setFalse();
                }
                arg2.add(temp);
             }
-            else this.accept = false;
+            else setFalse();
             acc("'",false);
             t();
             acc(")", false);
          }
-         else this.accept = false;
+         else setFalse();
          
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void t(){
@@ -620,26 +648,26 @@ class Parser{
                               arg2.add(temp);
                            }
                      }
-                     else this.accept = false;
+                     else setFalse();
                         }
                      }
                   }
                   else if(tokens.get(j).getName().equals("'")){
                   }
-                  else this.accept = false;
+                  else setFalse();
                }
                arg2.add(temp);
             }
-            else this.accept = false;
+            else setFalse();
             acc("'",false);
             t();
          }
-         else this.accept = false;
+         else setFalse();
       }
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
       
    }
    
@@ -650,7 +678,7 @@ class Parser{
          acc("ID", false);
          v();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void v(){
@@ -661,7 +689,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(";")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void va(){
@@ -675,7 +703,7 @@ class Parser{
          acc("DI",false);
          vb();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void vb(){
@@ -719,19 +747,38 @@ class Parser{
          }
          vc();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void vc(){
       if(tokens.get(j).getType().equals("ID")){
          arg2.add(tokens.get(j).getName());
          acc("ID", false);
+         vd();
       }
       else if(tokens.get(j).getType().equals("DI")){
          arg2.add(tokens.get(j).getName());
          acc("DI",false);
+         vd();
       }
-      else this.accept = false;
+      else setFalse();
+   }
+   
+   void vd(){
+      if(tokens.get(j).getName().equalsIgnoreCase("AND")){
+         arg2.add(tokens.get(j).getName());
+         acc("AND",true);
+         va();
+      }
+      else if(tokens.get(j).getName().equalsIgnoreCase("OR")){
+         arg2.add(tokens.get(j).getName());
+         acc("OR", true);
+         va();
+      }
+      else if(tokens.get(j).getName().equals(";")){
+         return;
+      }
+      else setFalse();
    }
    
    void w(){
@@ -748,7 +795,7 @@ class Parser{
          acc(")", false);
          u();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void wa(){
@@ -761,7 +808,7 @@ class Parser{
       else if(tokens.get(j).getName().equals(")")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void x(){
@@ -771,7 +818,7 @@ class Parser{
          acc("ID", false);
          v();
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void y(){
@@ -788,7 +835,7 @@ class Parser{
          arg2.add(tokens.get(j).getName());
          acc("ID", false);
       }
-      else this.accept = false;
+      else setFalse();
    }
    
    void aa(){
@@ -801,9 +848,12 @@ class Parser{
       else if(tokens.get(j).getName().equalsIgnoreCase("as")){
          return;
       }
-      else this.accept = false;
+      else setFalse();
    }
    
+   /*
+      compares the current string with the expected string, and will set accept to false if they don't match up with each other
+   */
    void acc(String str, boolean ignoreCase){
       //System.out.println(this.accept);
       if(!ignoreCase){
@@ -814,7 +864,9 @@ class Parser{
             }
             //else this.complete = true;
          }
-         else this.accept = false;
+         else{ 
+            setFalse();
+         }
       }
       else{
          if(tokens.get(j).getName().equalsIgnoreCase(str)||tokens.get(j).getType().equalsIgnoreCase (str)){
@@ -824,17 +876,26 @@ class Parser{
             }
             //else this.complete = true;
          }
-         else this.accept = false;
+         else{ 
+            setFalse();
+         }
       }
    }
 }
 
-
+/*
+   Token class will store necassary information of each token in the sql command
+*/
 class Token{
+   /*
+      type and name used for syntax checks, while index is used for error checking
+   */
    private String type;
    private String name;
+   private int index;
    
-   public Token(String type, String name){
+   public Token(String type, String name, int index){
+      this.index = index;
       this.type = type;
       this.name = name; 
    }
@@ -854,4 +915,13 @@ class Token{
    public void setName(String name){
       this.name = name;
    }
+   
+   public int getIndex(){
+      return this.index;
+   }
+   
+   public void setIndex(int index){
+      this.index = index;
+   }
 }
+
