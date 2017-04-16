@@ -1,3 +1,4 @@
+import java.text.ParseException;
 // TSQLx.java
 public class TSQLx{
   public static void main(String [] args){
@@ -415,7 +416,7 @@ public static void saveDatabase(String dataBaseName){
   }
 
   public static void select(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
-    ArrayList<Table> listOfTables){ // Begin select statement
+    ArrayList<Table> listOfTables) throws ParseException{ // Begin select statement
     String TableName = TableNamer.get(0); //retrieve table name from arraylist
     int TableIndex = 0;
     String ColumnName;
