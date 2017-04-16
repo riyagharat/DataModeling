@@ -47,18 +47,27 @@ public class TSQLx{
             break;
          case 4:
             System.out.println("LOAD");
-            loadDatabase("q");
+            loadDatabase(consoleInput.getArg0().get(0));
             break;
          case 5:
             System.out.println("INSERT");
-            insert();
+            //consoleInput.getArg0().get(0) is tablename
+            // consoleInput.getArg1() is the Column names
+            // consoleInput.getArg2() is the values
+            insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2());
             break;
          case 6:
             System.out.println("DELETE");
-            delete();
+            // consoleInput.getArg1().get(0) is the tablename
+            // consoleInput.getArg2() is the conditions
+            delete(consoleInput.getArg1().get(0), consoleInput.getArg2());
             break;
          case 7:
             System.out.println("SELECT");
+            //consoleInput.getArg0() is * or conditions
+            // consoleInput.getArg1() is the table name
+            // consoleInput.getArg2() is the where condition
+            select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
             break;
          case 8:
             System.out.println("TSELECT");
@@ -78,7 +87,7 @@ public class TSQLx{
             break;
          case 11:
             System.out.println("INPUT");
-            inputFile();
+            inputFile(consoleInput.getArg0().get(0));
             break;
          case 12:
             System.out.println("EXIT");
@@ -121,11 +130,11 @@ public static void saveDatabase(String dataBaseName){
     file.delete();
   }
 
-  public static void insert(){
+  public static void insert(String tableName, ArrayList<String> fields, ArrayList<String> values){
 
   }
 
-  public static void delete(){
+  public static void delete(String tableName, ArrayList<String> conditions){
 
   }
 
@@ -417,7 +426,7 @@ public static void saveDatabase(String dataBaseName){
     }
   }
 
-  public static void inputFile(){
+  public static void inputFile(String fileName){
 
   }
 
