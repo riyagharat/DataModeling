@@ -8,8 +8,11 @@ public class TSQLx{
 
     do{
       System.out.print("TSQLx>");
+      // reads input from the console
       userInput = reader.nextLine();
+      // passes the user input to the Parser
       Parser consoleInput = new Parser(userInput);
+      // returns the parsed input as a choice to the main function
       choice = consoleInput.Scan();
       switch(choice){
          /*
@@ -18,6 +21,7 @@ public class TSQLx{
                params = (consoleInput.getArg0(),...Arg1(),...Arg2());
          */
         case 0:
+            // locates an error and displays where it is in the SQL statment
             System.out.print("      ");
             for(int k = 0; k<consoleInput.getError(); k++){
                System.out.print(" ");
@@ -26,6 +30,11 @@ public class TSQLx{
             System.out.println("Error at index: "+consoleInput.getError());
             break;
          case 1:
+            // Calls the create method
+            // consoleInput.getArg0().get(0) is tablename or dataBaseName
+            // consoleInput.getArg1() is the Column names
+            // consoleInput.getArg2() is the fieldDefs
+            // listOfTables is the arrayList of tables in the current database
             System.out.println("CREATE");
             if(!(consoleInput.getArg1().size() == 0)){
               create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
@@ -34,6 +43,11 @@ public class TSQLx{
             }
             break;
          case 2:
+            // Calls the drop method
+            // consoleInput.getArg1().get(0) is tablename
+            // consoleInput.getArg0() is the database name
+            // consoleInput.getArg2() is the fieldDefs
+            // listOfTables is the arrayList of tables in the current database
             System.out.println("DROP");
             if(!(consoleInput.getArg1().size() == 0)){
               dropT(consoleInput.getArg1().get(0), listOfTables);
@@ -42,37 +56,51 @@ public class TSQLx{
             }
             break;
          case 3:
+            // Calls the save method
+            // consoleInput.getArg0().get(0) is the database name
             System.out.println("SAVE");
             saveDatabase(consoleInput.getArg0().get(0));
             break;
          case 4:
+            // Calls the load method
+            // consoleInput.getArg0().get(0) is the database name
             System.out.println("LOAD");
             loadDatabase(consoleInput.getArg0().get(0));
             break;
          case 5:
-            System.out.println("INSERT");
-            //consoleInput.getArg0().get(0) is tablename
+            // Calls the insert method
+            // consoleInput.getArg0().get(0) is tablename
             // consoleInput.getArg1() is the Column names
             // consoleInput.getArg2() is the values
+            System.out.println("INSERT");
             insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2());
             break;
          case 6:
-            System.out.println("DELETE");
+            // Calls the delete method
             // consoleInput.getArg1().get(0) is the tablename
             // consoleInput.getArg2() is the conditions
+            System.out.println("DELETE");
             delete(consoleInput.getArg1().get(0), consoleInput.getArg2());
             break;
          case 7:
-            System.out.println("SELECT");
-            //consoleInput.getArg0() is * or conditions
+            // Calls the select method
+            // consoleInput.getArg0() is * or conditions
             // consoleInput.getArg1() is the table name
             // consoleInput.getArg2() is the where condition
+            // listOfTables is the arrayList of tables in the current database
+            System.out.println("SELECT");
             select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
             break;
          case 8:
+            // Calls the dateSelect method
             System.out.println("TSELECT");
             break;
          case 9:
+            // Calls the convert method
+            // consoleInput.getArg0().get(0) is the XML filename
+            // consoleInput.getArg1().get(0) is the XSD filename
+            // consoleInput.getArg2().get(0) is the filename to store the inserts
+            // listOfTables is the arrayList of tables in the current database
             System.out.println("CONVERT");
             String XSD = "";
             if(!(getArg1.size() == 0)){
@@ -83,16 +111,21 @@ public class TSQLx{
             convertXML(consoleInput.getArg0().get(0), XSD, consoleInput.getArg2().get(0), listOfTables);
             break;
          case 10:
+            // Currently Autocommiting
             System.out.println("COMMIT");
             break;
          case 11:
+            // Calls the input method
+            // consoleInput.getArg0().get(0) is the filename to be inserted
             System.out.println("INPUT");
             inputFile(consoleInput.getArg0().get(0));
             break;
          case 12:
+            // Prints EXIT and exits the application
             System.out.println("EXIT");
             break;
          default:
+            // Prints Reject and prompts the user to enter another input on the command line
             System.out.println("Reject");
             break;
         
@@ -100,23 +133,29 @@ public class TSQLx{
     }while(choice!=12);
   }
 
-public static void saveDatabase(String dataBaseName){
+  // Saves the database to the file
+  public static void saveDatabase(String dataBaseName){
 
   }
 
+  // Loads the file from an existing database file
   public static void loadDatabase(String dataBaseName){
 
   }
 
- public static void create(String dataBaseName){
+  // Overloaded create method, this one will create a database file with the given database name
+  public static void create(String dataBaseName){
    File file = new File(dataBaseName + ".txt");
   }
-
+  
+  // Overloaded create method, this one will create a table with the given table name
+  // and its field names and field definitions
   public static void create(String dataBaseName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs){
     Table newTable = new Table(tableName, fieldNames, fieldDefs);
     listOfTables.add(newTable)
   }
 
+  // Drops the table from the arraylist if it matches the table name
   public static void dropT(String tableName, ArrayList<Table> listOfTables){
     for(int i = 0; i < listOfTables.size(); i++){
       if((listOfTables.get(i).getName()).equals(tableName)){
@@ -125,19 +164,23 @@ public static void saveDatabase(String dataBaseName){
     }
   }
 
+  // Deletes the Database file from the system
   public static void dropDB(String dataBaseName){
     File file = new File(dataBaseName + ".txt");
     file.delete();
   }
 
+  // The SQL insert command, inserts into the database
   public static void insert(String tableName, ArrayList<String> fields, ArrayList<String> values){
 
   }
 
+  // The SQL delete command, deletes from the table
   public static void delete(String tableName, ArrayList<String> conditions){
 
   }
 
+  // Reads if there are two files or one and accordingly calls the right method
   public static void convertXML(String XMLFileName, String XSDFileName, String inputFileName, ArrayList<Table> listOfTables){
     if((XSDFileName.equals(""))){;
       File XMLfile = new File(XMLFileName + ".xml");
@@ -149,6 +192,9 @@ public static void saveDatabase(String dataBaseName){
     }
   }
 
+  // Given both an XSD file and a XML file, the XSD file is parsed and the field names and field definitions are stored
+  // A table is created from that. Then the XML file is parsed and the INSERT INTO commands are generated and stored in
+  // the current database under a separate table
   public static void bothFiles(File XSDfile, File XMLfile, String inputFileName, ArrayList<Table> listOfTables){
     ArrayList<XSDFormat> XSDList = new ArrayList<XSDFormat>();
     ArrayList<String> fieldNames = new ArrayList<String>();
@@ -330,7 +376,9 @@ public static void saveDatabase(String dataBaseName){
         e.printStackTrace();
     }
   }
-
+  
+  // Given only an XML file, the XML file is parsed and the INSERT INTO commands are generated and stored in
+  // the current database under a separate table that should be existing
   public static void oneFile(File XMLfile, String inputFileName){
     try{
       Scanner input = new Scanner(XMLfile);
