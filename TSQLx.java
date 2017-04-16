@@ -196,14 +196,19 @@ public class TSQLx{
   // A table is created from that. Then the XML file is parsed and the INSERT INTO commands are generated and stored in
   // the current database under a separate table
   public static void bothFiles(File XSDfile, File XMLfile, String inputFileName, ArrayList<Table> listOfTables){
+    // Stores the parse of the XSD file
     ArrayList<XSDFormat> XSDList = new ArrayList<XSDFormat>();
+    // Stores the field names from the XSD file
     ArrayList<String> fieldNames = new ArrayList<String>();
+    // Stores the field definitions from the XSD file
     ArrayList<String> fieldDefs = new ArrayList<String>();
     try{
       Scanner input = new Scanner(XSDfile);
       Scanner input2 = new Scanner(XMLfile);
+      // Runs through and reads the XSD file
       while(input.hasNextLine()){
         String text = input.nextLine();
+        // "xsd:complexType name=" will always indicate the table name
         if(text.contains("xsd:complexType name=")){
           String tablename = "";
           for(int i = (text.indexOf("=") +2); i < text.length(); i++){
@@ -213,9 +218,10 @@ public class TSQLx{
               break;
             }
           }
+          // Create a XSDFormat object that can be added to the XSDList
           XSDFormat format = new XSDFormat(tablename, "", "", "", "", "");
           XSDList.add(format);
-          System.out.println("");
+        // "xsd:element name=" will always indicate the attributeName
         }else if(text.contains("xsd:element name=")){
           int firstEqualIndex = text.indexOf("=");
           String attributeName = "";
@@ -226,11 +232,14 @@ public class TSQLx{
               break;
             }
           }
-          System.out.println("");
+          // Create another XSDFormat object that will begin to store an attributeName and the
+          // associated information
           XSDFormat format2 = new XSDFormat("", attributeName, "", "", "", "");
           fieldNames.add(attributeName);
+          // Defines the string fieldDef which will be used during the print insert into statment
           String fieldDef = "";
           int colonIndex = 0;
+          // "type=" will indicate if its a char or an integer or a number
           if(text.contains("type=")){
             colonIndex = text.indexOf(":", firstEqualIndex);
             String attributeType = "";
@@ -241,14 +250,18 @@ public class TSQLx{
                 break;
               }
             }
+            // Rewrites the "string" tag as a "char" tag
             if(attributeType.equals("string")){
               attributeType = "char";
             }
             attributeType = attributeType.toUpperCase();
+            // Begins building the field Def String
             fieldDef = fieldDef + attributeType;
+            // Assigns an attributeType to the XSDFormat object
             format2.setAttributeType(attributeType);
           }
           int index = 0;
+          // "maxOccurs=" will indicate the length of the attribute
           if(text.contains("maxOccurs=")){
             index = text.indexOf("=", colonIndex);
             String attributeLength = "";
@@ -259,10 +272,13 @@ public class TSQLx{
                 break;
               }
             }
+            // Generates the fieldDef with (length)
             fieldDef = fieldDef + "(" + attributeLength + ")";
+            // Assigns an attributeLength to the XSDFormat object
             format2.setAttributeLength(attributeLength);
           }
           int fractionIndex = 0;
+          // "fraction=" will indicate if the Number has any decimals
           if(text.contains("fraction=")){
             fractionIndex = text.lastIndexOf("=");
             String decimals = "";
@@ -273,9 +289,11 @@ public class TSQLx{
                 break;
               }
             }
+            // Assigns decimals to the XSDFormat object
             format2.setFraction(decimals);
           }
           int dateIndex = 0;
+          // "date=" will indicate if it is a date type
           if(text.contains("date=")){
             dateIndex = text.lastIndexOf("=");
             String dateFormat = "";
@@ -286,23 +304,35 @@ public class TSQLx{
                 break;
               }
             }
+            // Generates the fieldDef appending the dateFormat
             fieldDef = fieldDef + dateFormat;
+            // Assigns dateFormat to the XSDFormat object
             format2.setDateFormat(dateFormat);
           }
+          // Adds the XSDFormat object to the XSDList
           XSDList.add(format2);
+          // Adds the fieldDef object to the fieldDefs list
           fieldDefs.add(fieldDef);
         }
       }
       
+      // Creates a table with the given field names and field definitions
       Table newTable = new Table(XSDList.get(0).getTableName(), fieldNames, fieldDefs);
+      // Adds the table to listOfTables
       listOfTables.add(newTable);
       
+      // Checks the XML file if its currently looking at a record or not
       boolean check = false;
+      // Stores the list of attributeNames
       ArrayList<String> attributeNames = new ArrayList<String>();
+      // Stores the associated list of attributeValues
       ArrayList<String> attributeValues = new ArrayList<String>();
+      // Counter counts the number of attributes to a record and keeps incrementing until
+      // it is out of a record
       int counter = 0;
       String attributes = "";
       String values = "";
+      // Generates the fileStream to print to the file that was created
       PrintStream fileStream = new PrintStream(new FileOutputStream(inputFileName + ".txt", true));
         while(input2.hasNextLine()){
           String text = input2.nextLine();
@@ -319,6 +349,8 @@ public class TSQLx{
                   check = false;
                   break;
                 }
+               // Checks if the next character after ">" exists, if so then it is not a table
+              // declaration, but is a attribute with a value
               }else if((text.indexOf(">") + 1) < text.length()){
                 if((((text.charAt(text.indexOf(">") + 1)) >= 'a') && ((text.charAt(text.indexOf(">") + 1)) <= 'z'))
                     || (((text.charAt(text.indexOf(">") + 1)) >= 'A') && ((text.charAt(text.indexOf(">") + 1)) <= 'Z'))
@@ -340,10 +372,14 @@ public class TSQLx{
               }
             }
             if(check == true){
+              // Continues to append attributes and their values while it is still in a record
               counter++;
               attributeNames.add(attributename);
               attributeValues.add(value);
             }else{
+              // Once it is no longer in a record, it builds the string for both the attributeNames
+              // and the attributeValues and the creates an INSERT INTO command which is inserted into
+              // a file
               if(attributes.length() > 0){
                 attributes = attributes.substring(1, attributes.length()-1);
               }
@@ -385,15 +421,21 @@ public class TSQLx{
       String tablename = "";
       String attributename = "";
       String value = "";
+      // Checks the XML file if its currently looking at a record or not
       boolean check = false;
+      // Stores the list of attributeNames
       ArrayList<String> attributeNames = new ArrayList<String>();
+      // Stores the associated list of attributeValues
       ArrayList<String> attributeValues = new ArrayList<String>();
+      // Stores the associated list of table names
       ArrayList<String> tableNames = new ArrayList<String>();
+      // Counter counts the number of attributes to a record and keeps incrementing until
+      // it is out of a record
       int counter = 0;
       String attributes = "";
       String values = "";
+      // Generates the fileStream to print to the file that was created
       PrintStream fileStream = new PrintStream(new FileOutputStream(inputFileName + ".txt", true));
-      // Create columns here with attributes
       while(input.hasNextLine()){
         tablename = "";
         attributename = "";
@@ -412,6 +454,8 @@ public class TSQLx{
                 check = false;
                 break;
               }
+            // Checks if the next character after ">" exists, if so then it is not a table
+            // declaration, but is a attribute with a value
             }else if((text.indexOf(">") + 1) < text.length()){
               if((((text.charAt(text.indexOf(">") + 1)) >= 'a') && ((text.charAt(text.indexOf(">") + 1)) <= 'z'))
                   || (((text.charAt(text.indexOf(">") + 1)) >= 'A') && ((text.charAt(text.indexOf(">") + 1)) <= 'Z'))
@@ -433,10 +477,14 @@ public class TSQLx{
             }
           }
           if(check == true){
+            // Continues to append attributes and their values while it is still in a record
             counter++;
             attributeNames.add(attributename);
             attributeValues.add(value);
           }else{
+            // Once it is no longer in a record, it builds the string for both the attributeNames
+            // and the attributeValues and the creates an INSERT INTO command which is inserted into
+            // a file
             if(attributes.length() > 0){
               attributes = attributes.substring(1, attributes.length()-1);
             }
