@@ -481,7 +481,7 @@ class Parser{
       } 
       else if(tokens.get(j).getName().equalsIgnoreCase("table")){
          acc("table", true);
-         arg0.add(tokens.get(j).getName());
+         arg1.add(tokens.get(j).getName());
          acc("ID", false);
       }
       else setFalse();
