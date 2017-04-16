@@ -526,7 +526,32 @@ public class TSQLx{
   }
 
   public static void inputFile(String fileName){
-
+    File file = new File((fileName + ".txt"));
+    if(file.exists()){
+      try{
+        Scanner input = new Scanner(file);
+        int choice = 0;
+        while(input.hasNextLine()){
+          String text = input.nextLine();
+          Parser fileInput = new Parser(text);
+          choice = fileInput.Scan();
+          switch(choice){
+            case 5:
+               // Calls the insert method
+               // consoleInput.getArg0().get(0) is tablename
+               // consoleInput.getArg1() is the Column names
+               // consoleInput.getArg2() is the values
+               System.out.println("INSERT");
+               insert(fileInput.getArg0().get(0), fileInput.getArg1(), fileInput.getArg2());
+               break;
+          }
+        }
+      }catch(FileNotFoundException e){
+        e.printStackTrace();
+      }
+    }else{
+      System.out.println("ERROR: File specified does not exist");
+    }
   }
 
   public static void select(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
