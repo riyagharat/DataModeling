@@ -89,7 +89,10 @@ public class TSQLx{
             // consoleInput.getArg2() is the where condition
             // listOfTables is the arrayList of tables in the current database
             System.out.println("SELECT");
-            select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+            try{
+              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+            }catch(ParseException e){
+            }
             break;
          case 8:
             // Calls the dateSelect method
