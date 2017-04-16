@@ -35,7 +35,11 @@ public class TSQLx{
             break;
          case 2:
             System.out.println("DROP");
-            drop("q");
+            if(!(consoleInput.getArg1().size() == 0)){
+              dropT(consoleInput.getArg1().get(0), listOfTables);
+            }else{
+              dropDB(consoleInput.getArg0().get(0));
+            }
             break;
          case 3:
             System.out.println("SAVE");
@@ -107,17 +111,17 @@ public static void saveDatabase(String dataBaseName){
 
   }
 
-  public static void drop(String tableName){
-    // drop database
-//    File file = dataBaseName + ".txt";
-//    file.delete();
+  public static void dropT(String tableName, ArrayList<Table> listOfTables){
+    for(int i = 0; i < listOfTables.size(); i++){
+      if((listOfTables.get(i).getName()).equals(tableName)){
+        listOfTables.remove(i);
+      }
+    }
+  }
 
-    // drop tables
-//    for(int i = 0; i < listOfTables.size()){
-//      if((listOfTables.get(i).getName()).equals(tableName)){
-//        listOfTables.get(i).remove();
-//      }
-//    }
+  public static void dropDB(String dataBaseName){
+    File file = new File(dataBaseName + ".txt");
+    file.delete();
   }
 
   public static void insert(){
@@ -419,9 +423,9 @@ public static void saveDatabase(String dataBaseName){
     ArrayList<Table> listOfTables) throws ParseException{ // Begin select statement
     String TableName = TableNamer.get(0); //retrieve table name from arraylist
     int TableIndex = 0;
-    String ColumnName;
-    String Relational;
-    String Comparator;
+    String ColumnName = "";
+    String Relational = "";
+    String Comparator = "";
     int Case;
     if(Wheres.size() > 0){//if there is a where condition, get the parameters
        ColumnName = Wheres.get(0);
