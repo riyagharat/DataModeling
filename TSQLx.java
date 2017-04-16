@@ -538,9 +538,9 @@ public class TSQLx{
           switch(choice){
             case 5:
                // Calls the insert method
-               // consoleInput.getArg0().get(0) is tablename
-               // consoleInput.getArg1() is the Column names
-               // consoleInput.getArg2() is the values
+               // fileInput.getArg0().get(0) is tablename
+               // fileInput.getArg1() is the Column names
+               // fileInput.getArg2() is the values
                System.out.println("INSERT");
                insert(fileInput.getArg0().get(0), fileInput.getArg1(), fileInput.getArg2());
                break;
