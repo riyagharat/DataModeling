@@ -72,7 +72,7 @@ class Parser{
    public static final String params = "((([a-zA-z]+)|([0-9]+(\\.[0-9]+)?)|([^a-zA-Z0-9\\s])))";
    public static final String[] keywords = {"CREATE","DROP","SAVE","LOAD","INSERT","SELECT",
       "tSELECT","CONVERT","COMMIT","INTEGER","INPUT", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
-      "FROM","WHERE","XML","XSD","AS", "DATABASE", "TABLE"};
+      "FROM","WHERE","XML","XSD","AS", "DATABASE", "TABLE", "AND", "OR"};
    ArrayList<Token> tokens;
    //boolean isParsed;
    int choice;
@@ -757,6 +757,23 @@ class Parser{
       else if(tokens.get(j).getType().equals("DI")){
          arg2.add(tokens.get(j).getName());
          acc("DI",false);
+      }
+      else setFalse();
+   }
+   
+   void vd(){
+      if(tokens.get(j).getName().equalsIgnoreCase("AND")){
+         arg2.add(tokens.get(j).getName());
+         acc("AND",true);
+         va();
+      }
+      else if(tokens.get(j).getName().equalsIgnoreCase("OR")){
+         arg2.add(tokens.get(j).getName());
+         acc("OR", true);
+         va();
+      }
+      else if(tokens.get(j).getName().equals(";")){
+         return;
       }
       else setFalse();
    }
