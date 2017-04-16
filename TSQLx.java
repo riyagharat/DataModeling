@@ -64,12 +64,14 @@ public class TSQLx{
             System.out.println("TSELECT");
             break;
          case 9:
+            System.out.println("CONVERT");
+            String XSD = "";
             if(!(getArg1.size() == 0)){
-              String XSD = consoleInput.getArg1().get(0)
+              XSD = consoleInput.getArg1().get(0)
             }else{
               XSD = "";
             }
-            convertXML(consoleInput.getArg0().get(0), XSD, consoleInput.getArg2().get(0));
+            convertXML(consoleInput.getArg0().get(0), XSD, consoleInput.getArg2().get(0), listOfTables);
             break;
          case 10:
             System.out.println("COMMIT");
@@ -132,21 +134,21 @@ public static void saveDatabase(String dataBaseName){
 
   }
 
-  public static void convertXML(String XMLFileName, String XSDFileName, String inputFileName){
+  public static void convertXML(String XMLFileName, String XSDFileName, String inputFileName, ArrayList<Table> listOfTables){
     if((XSDFileName.equals(""))){;
       File XMLfile = new File(XMLFileName + ".xml");
       oneFile(XMLfile, inputFileName);
     }else{
       File XSDfile = new File(XSDFileName + ".xsd");
       File XMLfile = new File(XMLFileName + ".xml");
-      bothFiles(XSDfile, XMLfile, inputFileName);
+      bothFiles(XSDfile, XMLfile, inputFileName, listOfTables);
     }
   }
 
-  public static void bothFiles(File XSDfile, File XMLfile, String inputFileName){
+  public static void bothFiles(File XSDfile, File XMLfile, String inputFileName, ArrayList<Table> listOfTables){
     ArrayList<XSDFormat> XSDList = new ArrayList<XSDFormat>();
-    // need to add the XSD stuff to an array List
-    // Would check the XML format against this
+    ArrayList<String> fieldNames = new ArrayList<String>();
+    ArrayList<String> fieldDefs = new ArrayList<String>();
     try{
       Scanner input = new Scanner(XSDfile);
       Scanner input2 = new Scanner(XMLfile);
@@ -176,6 +178,8 @@ public static void saveDatabase(String dataBaseName){
           }
           System.out.println("");
           XSDFormat format2 = new XSDFormat("", attributeName, "", "", "", "");
+          fieldNames.add(attributeName);
+          String fieldDef = "";
           int colonIndex = 0;
           if(text.contains("type=")){
             colonIndex = text.indexOf(":", firstEqualIndex);
@@ -191,6 +195,7 @@ public static void saveDatabase(String dataBaseName){
               attributeType = "char";
             }
             attributeType = attributeType.toUpperCase();
+            fieldDef = fieldDef + attributeType;
             format2.setAttributeType(attributeType);
           }
           int index = 0;
@@ -204,6 +209,7 @@ public static void saveDatabase(String dataBaseName){
                 break;
               }
             }
+            fieldDef = fieldDef + "(" + attributeLength + ")";
             format2.setAttributeLength(attributeLength);
           }
           int fractionIndex = 0;
@@ -230,16 +236,17 @@ public static void saveDatabase(String dataBaseName){
                 break;
               }
             }
+            fieldDef = fieldDef + dateFormat;
             format2.setDateFormat(dateFormat);
           }
           XSDList.add(format2);
+          fieldDefs.add(fieldDef);
         }
       }
-
-      for(int i = 0; i < XSDList.size(); i++){
-        System.out.println(XSDList.get(i));
-      }
-      // Create columns here with attributes
+      
+      Table newTable = new Table(XSDList.get(0).getTableName(), fieldNames, fieldDefs);
+      listOfTables.add(newTable);
+      
       boolean check = false;
       ArrayList<String> attributeNames = new ArrayList<String>();
       ArrayList<String> attributeValues = new ArrayList<String>();
