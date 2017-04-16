@@ -214,7 +214,8 @@ class Parser{
       v->where_va|$
       va->ID_vb|Digit_vb
       vb-><_vc|<=_vc|<>_vc|=_vc|>_vc|>=_vc
-      vc->ID|Digit
+      vc->ID_vd|Digit_vd
+      vd->AND_va|OR_va|$
       w->*_u|(ID_wa)_u
       wa->,ID_r|$
       x->from_ID_v
@@ -753,10 +754,12 @@ class Parser{
       if(tokens.get(j).getType().equals("ID")){
          arg2.add(tokens.get(j).getName());
          acc("ID", false);
+         vd();
       }
       else if(tokens.get(j).getType().equals("DI")){
          arg2.add(tokens.get(j).getName());
          acc("DI",false);
+         vd();
       }
       else setFalse();
    }
