@@ -147,38 +147,6 @@ class Parser{
    
    /*
       The following three functions return argument lists for functions that call the sql commands and execute them.
-      
-      $ == empty
-
-      a->b|exit
-      b->c
-      c->d;
-      d->create_e|drop_n|save_o|load_o|insert_p|delete_u|tselect_w|select_w|convert_z|commit|input_ID
-      e->database_ID|table_ID_f
-      f->(h_g)
-      g->,h_g|$
-      h->ID_i
-      i->integer_j|number_k|character(Digit)|date
-      j->(Digit)|$
-      k->(Digit_l)|$
-      l->,Digit|$
-      n->database_ID|table_ID
-      o->database_ID
-      p->into_ID_q_values_s
-      q->(ID_r)|$
-      r->,ID_r|$
-      s->('ID't)|('Float't)|('Digit't)|('Digit/Digit/Digit't)
-      t->,'ID't|,'Float't|,'Digit't|,'Digit/Digit/Digit't|$
-      u->from_ID_v
-      v->where_va|$
-      va->ID_vb|Digit_vb
-      vb-><_vc|<=_vc|<>_vc|=_vc|>_vc|>=_vc
-      vc->ID|Digit
-      w->*_u|(ID_wa)_u
-      wa->,ID_r|$
-      x->from_ID_v
-      z->xml_ID_aa_AS_ID
-      aa->,XSD_ID|$
    */
    public ArrayList<String> getArg0(){
       return this.arg0;
@@ -218,6 +186,40 @@ class Parser{
    
    /*
       parses the tokens collected by the scanner, and checks if those tokens follow the grammar rules of sql
+      
+      follws the following CFG
+      
+      $ == empty
+
+      a->b|exit
+      b->c
+      c->d;
+      d->create_e|drop_n|save_o|load_o|insert_p|delete_u|tselect_w|select_w|convert_z|commit|input_ID
+      e->database_ID|table_ID_f
+      f->(h_g)
+      g->,h_g|$
+      h->ID_i
+      i->integer_j|number_k|character(Digit)|date
+      j->(Digit)|$
+      k->(Digit_l)|$
+      l->,Digit|$
+      n->database_ID|table_ID
+      o->database_ID
+      p->into_ID_q_values_s
+      q->(ID_r)|$
+      r->,ID_r|$
+      s->('ID't)|('Float't)|('Digit't)|('Digit/Digit/Digit't)
+      t->,'ID't|,'Float't|,'Digit't|,'Digit/Digit/Digit't|$
+      u->from_ID_v
+      v->where_va|$
+      va->ID_vb|Digit_vb
+      vb-><_vc|<=_vc|<>_vc|=_vc|>_vc|>=_vc
+      vc->ID|Digit
+      w->*_u|(ID_wa)_u
+      wa->,ID_r|$
+      x->from_ID_v
+      z->xml_ID_aa_AS_ID
+      aa->,XSD_ID|$
    */
    public int Parse(){
       this.accept = true;
