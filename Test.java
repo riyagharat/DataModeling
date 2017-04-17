@@ -13,6 +13,11 @@ public class Test{
       Parser parser = new Parser(testLine);
       switch(parser.Scan()){
          case 0:
+            //System.out.print("      ");
+            for(int i = 0; i<parser.getError(); i++){
+               System.out.print(" ");
+            }
+            System.out.println("*");
             System.out.println("Reject");
             break;
          case 1:
@@ -71,7 +76,7 @@ class Parser{
    //static final variables are used for both the regex, and the keywords listings
    public static final String params = "((([a-zA-z]+)|([0-9]+(\\.[0-9]+)?)|([^a-zA-Z0-9\\s])))";
    public static final String[] keywords = {"CREATE","DROP","SAVE","LOAD","INSERT","SELECT",
-      "tSELECT","CONVERT","COMMIT","INT","INPUT", "DELETE","NUMBER","CHAR","DATE","INTO","VALUES",
+      "tSELECT","CONVERT","COMMIT","INTEGER","INPUT", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
       "FROM","WHERE","XML","XSD","AS", "DATABASE", "TABLE", "AND", "OR"};
    ArrayList<Token> tokens;
    //boolean isParsed;
@@ -214,8 +219,7 @@ class Parser{
       v->where_va|$
       va->ID_vb|Digit_vb
       vb-><_vc|<=_vc|<>_vc|=_vc|>_vc|>=_vc
-      vc->ID_vd|Digit_vd
-      vd->AND_va|OR_va|$
+      vc->ID|Digit
       w->*_u|(ID_wa)_u
       wa->,ID_r|$
       x->from_ID_v
@@ -397,9 +401,9 @@ class Parser{
    
    void i(){
       temp = "";
-      if(tokens.get(j).getName().equalsIgnoreCase("INT")){
+      if(tokens.get(j).getName().equalsIgnoreCase("integer")){
          temp += tokens.get(j).getName();
-         acc("INT",true);
+         acc("integer",true);
          j();
          arg2.add(temp);
       }
@@ -409,9 +413,9 @@ class Parser{
          k();
          arg2.add(temp);
       }
-      else if(tokens.get(j).getName().equalsIgnoreCase("CHAR")){
+      else if(tokens.get(j).getName().equalsIgnoreCase("character")){
          temp += tokens.get(j).getName();
-         acc("CHAR", true);
+         acc("character", true);
          temp += tokens.get(j).getName();
          acc("(",false);
          temp += tokens.get(j).getName();
@@ -540,13 +544,17 @@ class Parser{
    }
    
    void s(){
+      String temp = "";
       if(tokens.get(j).getName().equals("(")){
          acc("(", false);
          if(tokens.get(j).getName().equals("'")){
             acc("'", false);
             if(tokens.get(j).getType().equals("ID")){
-               arg2.add(tokens.get(j).getName());
-               acc("ID", false);
+               while(tokens.get(j).getType().equals("ID")){
+                  temp+=tokens.get(j).getName()+" ";
+                  acc("ID", false);
+               }
+               arg2.add(temp);
             }
             else if(tokens.get(j).getType().equals("FL")){
                arg2.add(tokens.get(j).getName());
@@ -605,13 +613,17 @@ class Parser{
    }
    
    void t(){
+      String temp = "";
       if(tokens.get(j).getName().equals(",")){
          acc(",", false);
          if(tokens.get(j).getName().equals("'")){
             acc("'", false);
             if(tokens.get(j).getType().equals("ID")){
-               arg2.add(tokens.get(j).getName());
-               acc("ID", false);
+               while(tokens.get(j).getType().equals("ID")){
+                  temp+=tokens.get(j).getName()+" ";
+                  acc("ID", false);
+               }
+               arg2.add(temp);
             }
             else if(tokens.get(j).getType().equals("FL")){
                arg2.add(tokens.get(j).getName());
