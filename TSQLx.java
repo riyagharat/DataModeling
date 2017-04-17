@@ -170,7 +170,15 @@ public class TSQLx{
   // Deletes the Database file from the system
   public static void dropDB(String dataBaseName){
     File file = new File(dataBaseName + ".txt");
-    file.delete();
+    if(file.exists()){
+      try{
+        file.delete()
+      }catch(FileNotFoundException e){
+        e.printStackTrace();
+      }
+    }else{
+      System.out.println("ERROR: File specified does not exist");
+    }
   }
 
   // The SQL insert command, inserts into the database
