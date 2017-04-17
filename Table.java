@@ -161,7 +161,7 @@ class Table{
 		  list.get(i).initializeRowAL();
 	  for(int i = 0; i < values.size(); i ++)		//insert data
 		  list.get(i).insertRecord(values.get(i));  	
-	  System.out.println("Insertion of " + values.toString() + " successful");
+	  System.out.println("Insertion successful");
 	  return;
   }
   public void specificInsert(ArrayList<String> fields, ArrayList<String> values1)			
@@ -269,7 +269,7 @@ class Table{
 		  list.get(i).initializeRowAL();
 	  for(int i = 0; i < values.size(); i ++)			//insert data at appropriate columns
 		  list.get(insertHere.get(i)).insertRecord(values.get(i)); 
-	  System.out.println("Insertion of " + values.toString() + " into " + fields.toString() + " successful");
+	  System.out.println("Insertion successful");
 	  return;
   }
   
