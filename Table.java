@@ -162,8 +162,8 @@ class Table{
 		  //search for correct column name insert
 	  {
 		  int colIndex = 0;
-		  while(colIndex < this.list.size() - 2 && !(this.list.get(colIndex).getName().equals(fields.get(i))))		
-			  //while not correct column	  
+		  for(; colIndex < this.list.size();)
+		  if(!this.list.get(colIndex).getName().equals(fields.get(i)))						  //while not correct column	  
 			  colIndex++;
 		 
 		  if(this.list.get(colIndex).getType().equalsIgnoreCase("CHAR"))				
@@ -435,5 +435,23 @@ class Table{
 	  for(int i = 0; i < this.list.size(); i ++)
 		  this.list.get(i).deleteFromList(index);
   }
+  public void displayColumns()
+  {
+	  for(int i = 0; i < this.list.size(); i ++)
+		  System.out.print(this.list.get(i).getName() + " ");
+	  
+	  System.out.println();
+  }
+
+  public void displayTable()
+  {
+      for(int i = 0; i<this.list.size() ; i++)
+      {
+          System.out.println(this.list.get(i).getName() + " " + this.list.get(i).getType() + this.list.get(i).getSize() + "," + this.list.get(i).getDecimal() + " ");
+          System.out.println("--------------");
+          this.list.get(i).displayRecords();
+      }
+  } 
+  
 
 }
