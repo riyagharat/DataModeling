@@ -145,12 +145,12 @@ public class TSQLx{
   // Loads the file from an existing database file
   public static void loadDatabase(String dataBaseName){
 	File dbFile = new File(dataBaseName + ".txt");
-
-	if (!dbFile.exists()) { // check to see if the database exists
-		System.out.println("ERROR: Database does not exist");
+	// check to see if the database exists
+	if (!dbFile.exists()) { 
+		System.out.println("ERROR: Database does not exist"); // database doesn't exist,
 		return;
 	}
-    Scanner fileIn = new Scanner(dbFile);
+    Scanner fileIn = new Scanner(dbFile); // create scanner to read through the file
 	String userInput = "";
 	int choice = 0;
 
