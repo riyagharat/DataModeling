@@ -790,8 +790,7 @@ public class TSQLx{
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");//check for date format
                       return;
-                   }
-                   else{
+                   }else{
                       SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy"); //4 digit years
                       SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy"); //2 digit years
                       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd"); //formatted for comparison
@@ -815,7 +814,8 @@ public class TSQLx{
                       if(formattedRowValue.compareTo(Comparator) > 0){//And this checks if the where condition is fulfilled
                          FilteredColumns.add(RowNumber);
                       }
-                   }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) > 0){
+                   }
+		   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) > 0){
                       FilteredColumns.add(RowNumber);//This checks for any other case such as integer
                    }
                 }
@@ -860,10 +860,9 @@ public class TSQLx{
                          FilteredColumns.add(RowNumber);
                       }
                    }
-                }else{
-                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) < 0){
-                      FilteredColumns.add(RowNumber);//This checks for any other case such as integer
-                   }
+                }
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) < 0){
+                   FilteredColumns.add(RowNumber);//This checks for any other case such as integer
                 }
              }
              break;
