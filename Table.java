@@ -15,26 +15,29 @@ class Table{
   public Table(){}
   
   public Table(String name, ArrayList<String> fields, ArrayList<String> types) 
+  		//create columns and set types/size
   {
-    for(int i = 0; i < fields.size(); i++)					//create columns and set types/size
+    for(int i = 0; i < fields.size(); i++)					
     {
     	Column newCol = new Column();
     	newCol.setName(fields.get(i));
     	String type = "";
-    	if(types.get(i).contains("(") && types.get(i).contains(")"))					//if a size is specified
+    	if(types.get(i).contains("(") && types.get(i).contains(")"))					
+    		//if a size is specified
     	{
     			type = types.get(i).substring(0, types.get(i).indexOf("("));		
-    	    	if(type.equalsIgnoreCase("integer"))										//if float, set size, decimal size
+    	    	if(type.equalsIgnoreCase("integer"))										
+    	    	//if float, set size, decimal size
     	    	{
     	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(","))));
     	    		newCol.setDecimal(Integer.parseInt(types.get(i).substring(types.get(i).indexOf(",") + 1, types.get(i).indexOf(")"))));
     	    	}
-    	    	else															//else set size
+    	    	else	//else set size
     	    	{
     	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(")"))));
     	    	}
     	}
-    	else														//if no size is specified, set size,?(decimal) to 255
+    	else	//if no size is specified, set size,?(decimal) to 255
     	{
     		type = types.get(i);
     		if(type.equalsIgnoreCase("integer"))
@@ -42,7 +45,8 @@ class Table{
     			newCol.setSize(255);
     			newCol.setDecimal(255);
 	    	}
-    		else if(type.equalsIgnoreCase("date"))					//set date by default to size 10
+    		else if(type.equalsIgnoreCase("date"))	
+    			//set date by default to size 10
     			newCol.setSize(10);
     		else newCol.setSize(255);
     	}
@@ -68,19 +72,23 @@ class Table{
   public String toString(){
       return getName() + "\n";
   }
-  public void simpleInsert(ArrayList<String> values)					//insert values sequentially
+  public void simpleInsert(ArrayList<String> values)					
+  			//insert values sequentially
   {
 	  ArrayList<Integer> insertHere = new ArrayList<Integer>();	
 	  for(int i = 0; i < values.size(); i ++)						
 	  {			 
-		  if(this.list.get(i).getType().equalsIgnoreCase("char"))				//semantic checks
+		  if(this.list.get(i).getType().equalsIgnoreCase("char"))				
+			  //semantic checks
 		  {
-			  if(values.get(i).contains("[0-9]+") == true)			//decline if data contains any digits
+			/*  if(values.get(i).contains("[0-9]+") == true)			
+				  //decline if data contains any digits
 			  {
 				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type char");
 				  return;
 			  }
-			  else if (values.get(i).length() > this.list.get(i).getSize())			//decline if too large
+			  else*/ if (values.get(i).length() > this.list.get(i).getSize())			
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " too large for " + this.list.get(i).getName());
 				  return;
@@ -88,12 +96,14 @@ class Table{
 		  }
 		  else if(this.list.get(i).getType().equalsIgnoreCase("number"))
 		  {
-			  if(values.get(i).contains("[a-zA-Z]+") == true)				//decline if data contains any letters
+			  if(values.get(i).contains("[a-zA-Z]+") == true)				
+				  //decline if data contains any letters
 			  {
 				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type number");
 				  return;
 			  }
-			  else if (values.get(i).length() > this.list.get(i).getSize())				//decline if too large	
+			  else if (values.get(i).length() > this.list.get(i).getSize())				
+				  //decline if too large	
 				{
 				  System.out.println(values.get(i) + " too large for " + this.list.get(i).getName());
 				  return;
@@ -108,12 +118,14 @@ class Table{
 				  System.out.println("can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type number");
 				  return;
 			  }
-			  else if (leftSide.length() > this.list.get(i).getSize())					//decline if too large
+			  else if (leftSide.length() > this.list.get(i).getSize())					
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " has too many digits before the decimal " + this.list.get(i).getName());
 				  return;
 				}
-			  else if (rightSide.length() > this.list.get(i).getDecimal())				//decline if too large
+			  else if (rightSide.length() > this.list.get(i).getDecimal())				
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " has too many digits after the decimal " + this.list.get(i).getName());
 				  return;
@@ -121,12 +133,14 @@ class Table{
 		  } 
 		  else if(this.list.get(i).getType().equalsIgnoreCase("date"))
 		  {
-			  if(values.get(i).matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)				//decline if data is not in date format
+			  if(values.get(i).matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)				
+				  //decline if data is not in date format
 			  {
 				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type date");
 				  return;
 			  }
-			  else if (values.get(i).length() > this.list.get(i).getSize())		//decline if too large
+			  else if (values.get(i).length() > this.list.get(i).getSize())		
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " too large for " + this.list.get(i).getName());
 				  return;
@@ -135,28 +149,34 @@ class Table{
 			  
 		  }
     	}
-	  for(int i = 0; i < this.list.size(); i ++)			//create row objects
+	  for(int i = 0; i < this.list.size(); i ++)	//create row objects
 		  list.get(i).initializeRowAL();
-	  for(int i = 0; i < values.size(); i ++)				//insert data
+	  for(int i = 0; i < values.size(); i ++)		//insert data
 		  list.get(i).insertRecord(values.get(i));  	
   }
-  public void specificInsert(ArrayList<String> fields, ArrayList<String> values)			//insert values into specified columns
+  public void specificInsert(ArrayList<String> fields, ArrayList<String> values)			
+  				//insert values into specified columns
   {
 	  ArrayList<Integer> insertHere = new ArrayList<Integer>();		
-	  for(int i = 0; i < values.size(); i ++)						//search for correct column name insert
+	  for(int i = 0; i < values.size(); i ++)						
+		  //search for correct column name insert
 	  {
 		  int colIndex = 0;
-		  while(colIndex < this.list.size() - 1 && !(this.list.get(colIndex).getName().equals(fields.get(i))))		//while not correct column	  
+		  while(colIndex < this.list.size() - 1 && !(this.list.get(colIndex).getName().equals(fields.get(i))))		
+			  //while not correct column	  
 			  colIndex++;
 		 
-		  if(this.list.get(colIndex).getType().equalsIgnoreCase("char"))				//semantic checks
+		  if(this.list.get(colIndex).getType().equalsIgnoreCase("char"))				
+			  //semantic checks
 		  {
-			  if(values.get(i).contains("[0-9]+") == true)				//decline if data contains any digits
+/*			  if(values.get(i).contains("[0-9]+") == true)				
+				  //decline if data contains any digits
 			  {
 				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type char");
 				  return;
 			  }
-			  else if (values.get(i).length() > this.list.get(colIndex).getSize())		//decline if too large
+			  else*/ if (values.get(i).length() > this.list.get(colIndex).getSize())		
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " too large for " + this.list.get(colIndex).getName());
 				  return;
@@ -165,12 +185,14 @@ class Table{
 		  }
 		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("number"))
 		  {
-			  if(values.get(i).contains("[a-zA-Z]+") == true)				//decline if data contains any letters
+			  if(values.get(i).contains("[a-zA-Z]+") == true)				
+				  //decline if data contains any letters
 			  {
 				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(colIndex).getName() + ", type number");
 				  return;
 			  }
-			  else if (values.get(i).length() > this.list.get(colIndex).getSize())			//decline if too large
+			  else if (values.get(i).length() > this.list.get(colIndex).getSize())			
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " too large for " + this.list.get(colIndex).getName());
 				  return;
@@ -186,12 +208,14 @@ class Table{
 				  System.out.println("can't insert " + fields.get(i) + " into attribute" + this.list.get(colIndex).getName() + ", type number");
 				  return;
 			  }
-			  else if (leftSide.length() > this.list.get(colIndex).getSize())		//decline if too large
+			  else if (leftSide.length() > this.list.get(colIndex).getSize())		
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " has too many digits before the decimal " + this.list.get(colIndex).getName());
 				  return;
 				}
-			  else if (rightSide.length() > this.list.get(colIndex).getDecimal())		//decline if too large
+			  else if (rightSide.length() > this.list.get(colIndex).getDecimal())		
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " has too many digits after the decimal " + this.list.get(colIndex).getName());
 				  return;
@@ -200,12 +224,14 @@ class Table{
 		  }
 		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("date"))
 		  {
-			  if(values.get(i).matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)				//decline if data is not in date format
+			  if(values.get(i).matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)				
+				  //decline if data is not in date format
 			  {
 				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type date");
 				  return;
 			  }
-			  else if (values.get(i).length() > this.list.get(colIndex).getSize())		//decline if too large
+			  else if (values.get(i).length() > this.list.get(colIndex).getSize())		
+				  //decline if too large
 				{
 				  System.out.println(values.get(i) + " too large for " + this.list.get(colIndex).getName());
 				  return;
@@ -214,39 +240,22 @@ class Table{
 			  
 		  }
     	}
-	  for(int i = 0; i < this.list.size(); i ++)			//create row objects
+	  for(int i = 0; i < this.list.size(); i ++)		//create row objects
 		  list.get(i).initializeRowAL();
-	  for(int i = 0; i < values.size(); i ++)				//insert data at appropriate columns
+	  for(int i = 0; i < values.size(); i ++)			//insert data at appropriate columns
 		  list.get(insertHere.get(i)).insertRecord(values.get(i)); 
   }
   
-  public void insert(ArrayList<String> fields, ArrayList<String> values)		//decision maker
+  public void insert(ArrayList<String> fields, ArrayList<String> values)		
+  //decision maker
   {	  	
-	  if(fields.isEmpty())									//if no fields specified, simple insert
+	  if(fields.isEmpty())					//if no fields specified, simple insert
 		  simpleInsert(values);
 	  else specificInsert(fields, values);
   }
- 
-  public void displayColumns()
-  {
-	  for(int i = 0; i < this.list.size(); i ++)
-		  System.out.print(this.list.get(i).getName() + " ");
-	  
-	  System.out.println();
-  }
-  
-  public void displayTable()
-  {	  
-	  for(int i = 0; i<this.list.size() ; i++)
-	  {
-		  System.out.println(this.list.get(i).getName() + " " + this.list.get(i).getType() + this.list.get(i).getSize() + "," + this.list.get(i).getDecimal() + " ");
-		  System.out.println("--------------");
-		  this.list.get(i).displayRecords();
-	  }
-  }  
   public void delete(ArrayList<String> conditions) throws ParseException
   {	
-	  if(conditions.isEmpty())								//if no conditions specified, delete all data from this table
+	  if(conditions.isEmpty())		//if no conditions specified, delete all data from this table
 	  {
 		  for(int i = 0; i < this.list.size(); i++)
 			  this.list.get(i).deleteAll();
@@ -264,7 +273,8 @@ class Table{
 		 String operator = conditions.get(i+1);
 		 String rightSide = conditions.get(i+2);
 		 i += 3;
-		 for(; j < this.list.size(); j++)								//find if right side is an attribute in this table
+		 for(; j < this.list.size(); j++)								
+			 //find if right side is an attribute in this table
 		  {
 			 if(this.list.get(j).getName().equals(rightSide))
 			 {
@@ -274,22 +284,24 @@ class Table{
 				 break;
 			 }
 		  }
-		 if(rSideCol == true)				//if the right side of a condition is a column
+		 if(rSideCol == true)				
+			 //if the right side of a condition is a column
 		 {
 			 rowsToBeDeletedAND = deleteInitialCol(leftSide, operator, this.list.get(rColIndex));		//send the appropriate column
-		 }																												//if not, simply send the data
+		 }																											
+		 //if not, simply send the data
 		 else rowsToBeDeletedAND = deleteInitial(leftSide, operator, rightSide);		//get all indices that are true for the first condition
 		 rSideCol = false;
 		
-		 while(i < conditions.size())									//while there are more conditions
+		 while(i < conditions.size())	//while there are more conditions
 		 {
-			 if(conditions.get(i).equalsIgnoreCase("AND"))					// if AND		
+			 if(conditions.get(i).equalsIgnoreCase("AND"))		// if AND, only send indices that are being considered
 			 {
 				 i++;
 				 leftSide = conditions.get(i);
 				 operator = conditions.get(i+1);
 				 rightSide = conditions.get(i+2);
-				 for(; j < this.list.size(); j++)								//find if right side is an attribute in this table
+				 for(; j < this.list.size(); j++)		//find if right side is an attribute in this table
 				  {
 					 if(this.list.get(j).getName().equals(rightSide))
 					 {
@@ -307,7 +319,7 @@ class Table{
 				 else rowsToBeDeletedAND = deleteWhere(leftSide, operator, rightSide, rowsToBeDeletedAND);			//get indices that are still true
 				 rSideCol = false;
 				 }
-			 else																// OR
+			 else				// if OR, consider all indices for this condition
 			 {
 				 i++;
 				 leftSide = conditions.get(i);
@@ -345,7 +357,8 @@ class Table{
 		 }
 		
   }
-  public ArrayList<Integer> combineWithoutDuplicates(ArrayList<Integer> rowsTBDAND, ArrayList<Integer> rowsTBDOR)		//combine while rejecting duplicates and sort numerically
+  public ArrayList<Integer> combineWithoutDuplicates(ArrayList<Integer> rowsTBDAND, ArrayList<Integer> rowsTBDOR)		
+  				//combine while rejecting duplicates and sort numerically
   {
 	  for(int i = 0; i < rowsTBDOR.size(); i++)
 		  if(!rowsTBDAND.contains(rowsTBDOR.get(i)))
@@ -354,8 +367,8 @@ class Table{
 	  return rowsTBDAND;
   }
   public ArrayList<Integer> deleteInitialCol(String leftSide, String operator, Column rightSide) throws ParseException		
-  {	
-	  ArrayList<Integer> deletionIndices = new ArrayList<Integer>();										//finds all the row #s where the first condition is true and the right side of a condition is a column
+  {		//finds all the row #s where the first condition is true and the right side of a condition is a column
+	  ArrayList<Integer> deletionIndices = new ArrayList<Integer>();										  
 	  for(int i = 0; i < this.list.size(); i++)								//find correct column
 	  {
 		  if(this.list.get(i).getName().equals(leftSide))		
@@ -364,12 +377,13 @@ class Table{
 			  return deletionIndices;
 		  }
 	  }
-	  System.out.println(leftSide + " not found in " + this.name);			//if left side is not present in this table, clear the indices being considered and report the error
+	  System.out.println(leftSide + " not found in " + this.name);			
+	  //if left side is not present in this table, clear the indices being considered and report the error
 	  deletionIndices.clear();
 	  return deletionIndices;
   }
   public ArrayList<Integer> deleteWhereCol(String leftSide, String operator, Column rightSide, ArrayList<Integer> deletionIndices) throws ParseException		
-  {																											//finds the row #s that are still true (checks 2nd, 3rd, etc conditions) and the right side of a condition is a column
+  {	//finds the row #s that are still true (checks 2nd, 3rd, etc conditions) and the right side of a condition is a column
 	  for(int i = 0; i < this.list.size(); i++)								//find correct column
 	  {
 		  if(this.list.get(i).getName().equals(leftSide))				
@@ -378,13 +392,14 @@ class Table{
 			  return deletionIndices;
 		  }
 	  }
-	  System.out.println(leftSide + " not found in " + this.name);		//if left side is not present in this table, clear the indices being considered and report the error
+	  System.out.println(leftSide + " not found in " + this.name);		
+	  //if left side is not present in this table, clear the indices being considered and report the error
 	  deletionIndices.clear();
 	  return deletionIndices;
   }
   
   public ArrayList<Integer> deleteWhere(String leftSide, String operator, String rightSide, ArrayList<Integer> deletionIndices) throws ParseException		
-  {																											//finds the row #s that are still true (checks 2nd, 3rd, etc conditions)
+  {	//finds the row #s that are still true (checks 2nd, 3rd, etc conditions)
 	  for(int i = 0; i < this.list.size(); i++)								//find correct column
 	  {
 		  if(this.list.get(i).getName().equals(leftSide))				
@@ -393,15 +408,16 @@ class Table{
 			  return deletionIndices;
 		  }
 	  }
-	  System.out.println(leftSide + " not found in " + this.name);			//if left side is not present in this table, clear the indices being considered and report the error
+	  System.out.println(leftSide + " not found in " + this.name);			
+	  //if left side is not present in this table, clear the indices being considered and report the error
 	  deletionIndices.clear();
 	  return deletionIndices;
   }
   
   public ArrayList<Integer> deleteInitial(String leftSide, String operator, String rightSide) throws ParseException			
-  {																										//finds all the row #s where the first condition is true
+  {			//finds all the row #s where the first condition is true
 	  ArrayList<Integer> deletionIndices = new ArrayList<Integer>();
-	  for(int i = 0; i < this.list.size(); i++)								//find correct column
+	  for(int i = 0; i < this.list.size(); i++)							//find correct column
 	  {
 		  if(this.list.get(i).getName().equals(leftSide))		
 		  {
@@ -409,11 +425,12 @@ class Table{
 			  return deletionIndices;
 		  }
 	  }
-	  System.out.println(leftSide + " not found in " + this.name);			//if left side is not present in this table, clear the indices being considered and report the error
+	  System.out.println(leftSide + " not found in " + this.name);			
+	  //if left side is not present in this table, clear the indices being considered and report the error
 	  deletionIndices.clear();
 	  return deletionIndices;
   }
-  public void deleteFromList(int index)												
+  public void deleteFromList(int index)										
   {
 	  for(int i = 0; i < this.list.size(); i ++)
 		  this.list.get(i).deleteFromList(index);
