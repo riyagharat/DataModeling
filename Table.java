@@ -78,7 +78,11 @@ class Table{
 	  ArrayList<String> values = new ArrayList<String>();
 	  for(int i = 0; i < values1.size(); i++)
 		  if(!values1.get(i).isEmpty())
-			  values.add(values1.get(i));
+		  {
+			  String temp;
+			  temp = values1.get(i).replaceAll(" ","");
+			  values.add(temp);
+		  }
 	  System.out.println("Inserting " + values.toString()); 
 	  ArrayList<Integer> insertHere = new ArrayList<Integer>();	
 	  for(int i = 0; i < values.size(); i ++)						
@@ -170,7 +174,11 @@ class Table{
 	  ArrayList<String> values = new ArrayList<String>();
 	  for(int i = 0; i < values1.size(); i++)
 		  if(!values1.get(i).isEmpty())
-			  values.add(values1.get(i));
+		  {
+			  String temp;
+			  temp = values1.get(i).replaceAll(" ","");
+			  values.add(temp);
+		  }
       if(values.size() != fields.size())
       {
               System.out.println("Number of fields and values are not equal");
@@ -382,9 +390,124 @@ class Table{
 		 }
 		 else
 		 {
-			 for(int k = rowsTBD.size() - 1; k >= 0; k --)
+			 for(int k = rowsTBD.size()-1; k >= 0; k --)
 				 deleteFromList(rowsTBD.get(k));
-			 System.out.println("Success. Deleted rows " + rowsTBD.toString());
+			 System.out.println("Deletion successful on rows " + rowsTBD.toString());
+		 }
+		
+  }
+  public void select(ArrayList<String> conditions) throws ParseException
+  {	
+	  if(conditions.isEmpty())		//if no conditions specified, delete all data from this table
+	  {
+	      for(int p = 0; p< this.list.size() ; p++)
+	    	  System.out.print(this.list.get(p).getName() + "\t");
+	      System.out.println();
+	      System.out.print("------------------------------------------------------");
+		  for(int k = 0; k <this.list.get(0).list.size(); k ++)
+				displayTable(k);
+		  System.out.println();
+		  return;
+	  }
+	  System.out.println("Selecting all rows where " + conditions.toString());
+	  ArrayList<Integer> rowsToBeDeletedAND = new ArrayList<Integer>();
+	  ArrayList<Integer> rowsToBeDeletedOR = new ArrayList<Integer>();
+	 int i = 0;
+	 int j = 0;
+	 Boolean rSideCol = false;
+	 int rColIndex = 0;
+
+		 String leftSide = conditions.get(i);
+		 String operator = conditions.get(i+1);
+		 String rightSide = conditions.get(i+2);
+		 i += 3;
+		 for(; j < this.list.size(); j++)								
+			 //find if right side is an attribute in this table
+		  {
+			 if(this.list.get(j).getName().equals(rightSide))
+			 {
+				 rSideCol = true;
+				 rColIndex = j;
+				 j = 0;
+				 break;
+			 }
+		  }
+		 if(rSideCol == true)				
+			 //if the right side of a condition is a column
+		 {
+			 rowsToBeDeletedAND = deleteInitialCol(leftSide, operator, this.list.get(rColIndex));		//send the appropriate column
+		 }																											
+		 //if not, simply send the data
+		 else rowsToBeDeletedAND = deleteInitial(leftSide, operator, rightSide);		//get all indices that are true for the first condition
+		 rSideCol = false;
+		
+		 while(i < conditions.size())	//while there are more conditions
+		 {
+			 if(conditions.get(i).equalsIgnoreCase("AND"))		// if AND, only send indices that are being considered
+			 {
+				 i++;
+				 leftSide = conditions.get(i);
+				 operator = conditions.get(i+1);
+				 rightSide = conditions.get(i+2);
+				 for(; j < this.list.size(); j++)		//find if right side is an attribute in this table
+				  {
+					 if(this.list.get(j).getName().equals(rightSide))
+					 {
+						 rSideCol = true;
+						 rColIndex = j;
+						 j = 0;
+						 break;
+					 }
+				  }
+				 i += 3;
+				 if(rSideCol == true)										
+				 {																		//send the appropriate column																											//if not, simply send the data
+					 rowsToBeDeletedAND = deleteWhereCol(leftSide, operator, this.list.get(rColIndex), rowsToBeDeletedAND);			//get indices that are still true
+				 }																		//if not, simply send the data
+				 else rowsToBeDeletedAND = deleteWhere(leftSide, operator, rightSide, rowsToBeDeletedAND);			//get indices that are still true
+				 rSideCol = false;
+				 }
+			 else				// if OR, consider all indices for this condition
+			 {
+				 i++;
+				 leftSide = conditions.get(i);
+				 operator = conditions.get(i+1);
+				 rightSide = conditions.get(i+2);
+				 for(; j < this.list.size(); j++)								//find if right side is an attribute in this table
+				  {
+					 if(this.list.get(j).getName().equals(rightSide))
+					 {
+						 rSideCol = true;
+						 rColIndex = j;
+						 j = 0;
+						 break;
+					 }
+				  }
+				 i += 3;
+				 if(rSideCol == true)										
+				 {																		//send the appropriate column																											//if not, simply send the data
+					 rowsToBeDeletedOR.addAll(deleteInitialCol(leftSide, operator, this.list.get(rColIndex)));			//get all indices that are true for this condition
+				 }																		//if not, simply send the data
+				 else rowsToBeDeletedOR.addAll(deleteInitial(leftSide, operator, rightSide));			
+				 rSideCol = false;
+			 }
+		 }
+		 ArrayList<Integer> rowsTBD = combineWithoutDuplicates(rowsToBeDeletedAND, rowsToBeDeletedOR);
+		 if(rowsTBD.isEmpty())
+		 {
+			 System.out.println("Condition failed so nothing was selected.");
+			 return;
+		 }
+		 else
+		 {
+		      for(int p = 0; p< this.list.size() ; p++)
+		    	  System.out.print(this.list.get(p).getName() + "\t");
+		      System.out.println();
+		      System.out.print("------------------------------------------------------");
+			 for(int k = rowsTBD.size() - 1; k >= 0; k --)
+				 displayTable(rowsTBD.get(k));
+			 System.out.println();
+
 		 }
 		
   }
@@ -474,14 +597,14 @@ class Table{
 	  System.out.println();
   }
 
-  public void displayTable()
-  {
-      for(int i = 0; i<this.list.size() ; i++)
-      {
-          System.out.println(this.list.get(i).getName() + " " + this.list.get(i).getType() + this.list.get(i).getSize() + "," + this.list.get(i).getDecimal() + " ");
-          System.out.println("--------------");
-          this.list.get(i).displayRecords();
-      }
+  public void displayTable(Integer integer)
+  {	
+	  System.out.println();
+
+      for(int j = 0; j < this.list.size(); j++)
+    		  System.out.print(this.list.get(j).list.get(integer).getData() + "\t");
+
+
   } 
   
 
