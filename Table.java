@@ -26,7 +26,7 @@ class Table{
     		//if a size is specified
     	{
     			type = types.get(i).substring(0, types.get(i).indexOf("("));		
-    	    	if(type.equalsIgnoreCase("integer"))										
+    	    	if(type.equalsIgnoreCase("INTEGER"))										
     	    	//if float, set size, decimal size
     	    	{
     	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(","))));
@@ -40,12 +40,12 @@ class Table{
     	else	//if no size is specified, set size,?(decimal) to 255
     	{
     		type = types.get(i);
-    		if(type.equalsIgnoreCase("integer"))
+    		if(type.equalsIgnoreCase("INTEGER"))
 	    	{
     			newCol.setSize(255);
     			newCol.setDecimal(255);
 	    	}
-    		else if(type.equalsIgnoreCase("date"))	
+    		else if(type.equalsIgnoreCase("DATE"))	
     			//set date by default to size 10
     			newCol.setSize(10);
     		else newCol.setSize(255);
@@ -78,7 +78,7 @@ class Table{
 	  ArrayList<Integer> insertHere = new ArrayList<Integer>();	
 	  for(int i = 0; i < values.size(); i ++)						
 	  {			 
-		  if(this.list.get(i).getType().equalsIgnoreCase("char"))				
+		  if(this.list.get(i).getType().equalsIgnoreCase("CHAR"))				
 			  //semantic checks
 		  {
 			/*  if(values.get(i).contains("[0-9]+") == true)			
@@ -94,7 +94,7 @@ class Table{
 				  return;
 				}
 		  }
-		  else if(this.list.get(i).getType().equalsIgnoreCase("number"))
+		  else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER"))
 		  {
 			  if(values.get(i).contains("[a-zA-Z]+") == true)				
 				  //decline if data contains any letters
@@ -109,7 +109,7 @@ class Table{
 				  return;
 				}
 		  }
-		  else if(this.list.get(i).getType().equalsIgnoreCase("integer"))
+		  else if(this.list.get(i).getType().equalsIgnoreCase("INTEGER"))
 		  {
 			  String leftSide = values.get(i).substring(0, values.get(i).indexOf('.'));
 			  String rightSide = values.get(i).substring(values.get(i).indexOf('.') + 1, values.get(i).length());
@@ -131,7 +131,7 @@ class Table{
 				  return;
 				}
 		  } 
-		  else if(this.list.get(i).getType().equalsIgnoreCase("date"))
+		  else if(this.list.get(i).getType().equalsIgnoreCase("DATE"))
 		  {
 			  if(values.get(i).matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)				
 				  //decline if data is not in date format
@@ -166,7 +166,7 @@ class Table{
 			  //while not correct column	  
 			  colIndex++;
 		 
-		  if(this.list.get(colIndex).getType().equalsIgnoreCase("char"))				
+		  if(this.list.get(colIndex).getType().equalsIgnoreCase("CHAR"))				
 			  //semantic checks
 		  {
 /*			  if(values.get(i).contains("[0-9]+") == true)				
@@ -183,7 +183,7 @@ class Table{
 				}
 			  else insertHere.add(colIndex);
 		  }
-		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("number"))
+		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("NUMBER"))
 		  {
 			  if(values.get(i).contains("[a-zA-Z]+") == true)				
 				  //decline if data contains any letters
@@ -199,7 +199,7 @@ class Table{
 				}
 			  else insertHere.add(colIndex);
 		  }
-		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("integer"))
+		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("INTEGER"))
 		  {
 			  String leftSide = values.get(i).substring(0, values.get(i).indexOf('.'));
 			  String rightSide = values.get(i).substring(values.get(i).indexOf('.') + 1, values.get(i).length());
@@ -222,7 +222,7 @@ class Table{
 				}
 			  else insertHere.add(colIndex);
 		  }
-		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("date"))
+		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("DATE"))
 		  {
 			  if(values.get(i).matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)				
 				  //decline if data is not in date format
