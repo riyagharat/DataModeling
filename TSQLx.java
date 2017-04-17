@@ -346,22 +346,16 @@ public class TSQLx{
   public static void insert(String tableName, ArrayList<String> fields, ArrayList<String> values, ArrayList<Table> listOfTables){
 	 for(int i = 0; i < listOfTables.size(); i++)
 	 	if((listOfTables.get(i).getName()).equals(tableName))
-		{
 			listOfTables.get(i).insert(fields, values);
-			return;
-		}
-	  System.out.println(tableName + " not found.");
+			
   }
 
   // The SQL delete command, deletes from the table
   public static void delete(String tableName, ArrayList<String> conditions, ArrayList<Table> listOfTables)throws ParseException{
 	for(int i = 0; i < listOfTables.size(); i++){
 	 	if((listOfTables.get(i).getName()).equals(tableName))
-		{
 			listOfTables.get(i).delete(conditions);
-			return;
-		}
-	  System.out.println(tableName + " not found.");
+
       }
     }
   }
