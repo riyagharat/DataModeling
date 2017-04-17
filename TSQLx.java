@@ -1228,10 +1228,10 @@ public class TSQLx{
 	int j = 0;
         for(j = 0; j < listOfTables.get(TableIndex).list.get(j).list.size()-1; j++){//this for loop's checking for number of columns minus date
            for(i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//and this loop is getting those records
-              if(listOfTables.get(TableIndex).list.get(j).list.get(i) == null){//just tab twice for empty
+              if(listOfTables.get(TableIndex).list.get(j).list.get(i).getData() == null){//just tab twice for empty
                  System.out.print("\t\t");
               }else{
-                 System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
+                 System.out.print(listOfTables.get(TableIndex).list.get(j).list.get(i).getData() + "\t");
               }
            }
            System.out.print("\n");
