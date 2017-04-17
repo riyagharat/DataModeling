@@ -78,7 +78,7 @@ class Column{
 		this.list.add(newRec);
 	}
 	public void insertRecord(String data)					
-	//insert data and set timestamp into last record (will have been initialized by initializeRowAL
+	//insert data and set timestamp into last record (will have been initialized by initializeRowAL)
 	{
 		Date date = new Date();
 		dateFormat.format(date);
