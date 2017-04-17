@@ -20,7 +20,7 @@ class Column{
 
   }
 
-  public Column(ArrayList<Row> list, String name, Boolean notNull) 
+  public Column(ArrayList<Row> list, String name, Boolean notNull)
   {
 	    this.list = list;
 	    this.name = name;
@@ -72,20 +72,20 @@ class Column{
 			this.dataType = type;
 	}
 	public void initializeRowAL()
-	{	
+	{
 		Row newRec = new Row();
 		newRec.setType(this.dataType);
 		this.list.add(newRec);
 	}
-	public void insertRecord(String data)					
+	public void insertRecord(String data)
 	//insert data and set timestamp into last record (will have been initialized by initializeRowAL)
 	{
 		Date date = new Date();
 		dateFormat.format(date);
-		this.list.get(list.size() - 1).setData(data);	
+		this.list.get(list.size() - 1).setData(data);
 		this.list.get(list.size() - 1).setDateTime(date);
 	}
-	public ArrayList<Integer> findRowNoInitialRSC(String operator, Column rightSide) throws ParseException		
+	public ArrayList<Integer> findRowNoInitialRSC(String operator, Column rightSide) throws ParseException
 	//find all row #s where first condition is true when the right side of a condition is a column
 	{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
@@ -93,7 +93,7 @@ class Column{
 		{
 			if(this.list.get(i).getType().equalsIgnoreCase("CHAR"))
 			{
-				if(rightSide.list.get(i).getData().matches("[0-9]*") == true)			
+				if(rightSide.list.get(i).getData().matches("[0-9]*") == true)
 					//check for type compatibility
 				{
 					System.out.println("Invalid comparison between type char and " + rightSide);
@@ -105,10 +105,10 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))		
-			{	
-				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)				
-					//check for type compatibility		
+			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))
+			{
+				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)
+					//check for type compatibility
 				{
 					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide.list.get(i).getData());
 					rowsToBeDeleted.clear();
@@ -122,7 +122,7 @@ class Column{
 			}
 			else if(this.list.get(i).getType().equalsIgnoreCase("DATE"))
 			{
-				if(rightSide.list.get(i).getData().matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)		
+				if(rightSide.list.get(i).getData().matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
 					//check for type compatibility
 				{
 					System.out.println("Invalid format for type date");
@@ -137,14 +137,14 @@ class Column{
 			}
 		}
 		return rowsToBeDeleted;
-	}	
-	public ArrayList<Integer> findRowNoInitial(String operator, String rightSide) throws ParseException		
+	}
+	public ArrayList<Integer> findRowNoInitial(String operator, String rightSide) throws ParseException
 	//find all row #s where first condition is true
 	{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < this.list.size(); i++)
 		{
-			if(this.list.get(i).getType().equalsIgnoreCase("CHAR"))							
+			if(this.list.get(i).getType().equalsIgnoreCase("CHAR"))
 				//check for type compatibility
 			{
 				if(rightSide.matches("[0-9]*") == true)
@@ -160,7 +160,7 @@ class Column{
 			}
 			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))
 			{
-				if(rightSide.matches("[a-zA-z]*") == true)							
+				if(rightSide.matches("[a-zA-z]*") == true)
 					//check for type compatibility
 				{
 					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide);
@@ -173,7 +173,7 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("DATE"))						
+			else if(this.list.get(i).getType().equalsIgnoreCase("DATE"))
 				//check for type compatibility
 			{
 				if(rightSide.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
@@ -191,9 +191,9 @@ class Column{
 		}
 		return rowsToBeDeleted;
 	}
-	public ArrayList<Integer> findRowNo(String operator, String rightSide, ArrayList<Integer> indicesTBC) throws ParseException		
+	public ArrayList<Integer> findRowNo(String operator, String rightSide, ArrayList<Integer> indicesTBC) throws ParseException
 	//find row #s where the 2nd, 3rd, etc condition is true
-	{																											
+	{
 		//only considers rows that are currently true
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < indicesTBC.size(); i++)
@@ -212,7 +212,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))				
+			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))
 				//check for type compatibility
 			{
 				if(rightSide.matches("[a-zA-z]*") == true)
@@ -227,7 +227,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("DATE"))						
+			else if(this.list.get(i).getType().equalsIgnoreCase("DATE"))
 				//check for type compatibility
 			{
 				if(rightSide.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
@@ -245,13 +245,13 @@ class Column{
 		}
 		return rowsToBeDeleted;
 	}
-	public ArrayList<Integer> findRowNoRSC(String operator, Column rightSide, ArrayList<Integer> indicesTBC) throws ParseException		
+	public ArrayList<Integer> findRowNoRSC(String operator, Column rightSide, ArrayList<Integer> indicesTBC) throws ParseException
 	//find all row #s where first condition is true and the right side of the condition is a column
-	{	
+	{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < indicesTBC.size(); i++)
 		{
-			if(this.list.get(i).getType().equalsIgnoreCase("CHAR"))						
+			if(this.list.get(i).getType().equalsIgnoreCase("CHAR"))
 				//check for type compatibility
 			{
 				if(rightSide.list.get(i).getData().matches("[0-9]*") == true)
@@ -268,7 +268,7 @@ class Column{
 			}
 			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))
 			{
-				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)				
+				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)
 					//check for type compatibility
 				{
 					System.out.println("Invalid comparison between type "+ this.list.get(i).getType() + " and " + rightSide.list.get(i).getData());
@@ -281,7 +281,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("DATE"))							
+			else if(this.list.get(i).getType().equalsIgnoreCase("DATE"))
 				//check for type compatibility
 			{
 				if(rightSide.list.get(i).getData().matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
