@@ -799,10 +799,10 @@ public class TSQLx{
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){//error if String type
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
-                }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
+                }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");//check for date format
                       return;
@@ -842,11 +842,11 @@ public class TSQLx{
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){//error if String type
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");//check for date format
                       return;
@@ -887,7 +887,7 @@ public class TSQLx{
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");//check for date format
                       return;
@@ -928,7 +928,7 @@ public class TSQLx{
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");//check for date format
                       return;
@@ -969,11 +969,11 @@ public class TSQLx{
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){//error if String type
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");//check for date format
                       return;
@@ -1016,11 +1016,11 @@ public class TSQLx{
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){//error if String type
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
                       System.out.println("Incorrect Date Format.");//check for date format
                       return;
