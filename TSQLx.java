@@ -166,13 +166,16 @@ public class TSQLx{
 	}
    try{
     Scanner fileIn = new Scanner(dbFile); // create scanner to read through the file
-	boolean userInput;
+	String userInput;
 	int choice = 0;
 
     do{
       System.out.print("TSQLx Loading>");
       // reads input from the console
-      userInput = fileIn.hasNextLine();
+      if(fileIn.hasNextLine()){
+      	userInput = fileIn.NextLine();
+      }else
+	      userInput = "exit";
       // passes the user input to the Parser
       Parser consoleInput = new Parser(userInput);
       // returns the parsed input as a choice to the main function
