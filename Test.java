@@ -34,6 +34,18 @@ public class Test{
             break;
          case 5:
             System.out.println("INSERT");
+            for(int i = 0; i<parser.getArg0().size(); i++){
+               System.out.print(parser.getArg0().get(i)+", ");
+            }
+            System.out.println();
+            for(int i = 0; i<parser.getArg1().size(); i++){
+               System.out.print(parser.getArg1().get(i)+", ");
+            }
+            System.out.println();
+            for(int i = 0; i<parser.getArg2().size(); i++){
+               System.out.print(parser.getArg2().get(i)+", ");
+            }
+            System.out.println();
             break;
          case 6:
             System.out.println("DELETE");
@@ -544,64 +556,66 @@ class Parser{
    }
    
    void s(){
-      String temp = "";
+      String temp1 = "";
       if(tokens.get(j).getName().equals("(")){
          acc("(", false);
          if(tokens.get(j).getName().equals("'")){
             acc("'", false);
-            if(tokens.get(j).getType().equals("ID")){
-               while(tokens.get(j).getType().equals("ID")){
-                  temp+=tokens.get(j).getName()+" ";
+            while(!tokens.get(j).getName().equals("'")){
+               if(tokens.get(j).getType().equals("ID")){
+                  temp1+=tokens.get(j).getName()+" ";
                   acc("ID", false);
                }
-               arg2.add(temp);
-            }
-            else if(tokens.get(j).getType().equals("FL")){
-               arg2.add(tokens.get(j).getName());
-               acc("FL", false);
-            }
-            else if(tokens.get(j).getType().equals("DI")){
-               temp = "";
-               if(tokens.get(j).getName().length()>2){
-                  arg2.add(tokens.get(j).getName());
-                  acc("DI", false);
+               else if(tokens.get(j).getType().equals("FL")){
+                  temp1+=tokens.get(j).getName()+" ";
+                  acc("FL", false);
                }
-               else{
-                  temp+=tokens.get(j).getName();
-                  acc("DI", false);
-                  if(tokens.get(j).getName().equals("/")){
+               else if(tokens.get(j).getType().equals("DI")){
+                  temp = "";
+                  if(tokens.get(j).getName().length()>2){
+                     temp1+=tokens.get(j).getName()+" ";
+                     acc("DI", false);
+                  }
+                  else{
                      temp+=tokens.get(j).getName();
-                     acc("/", false);
-                     if(tokens.get(j).getType().equals("DI")){
-                        if(tokens.get(j).getName().length()>2){
-                           this.accept = false;
-                        }
-                        else{
-                           temp+=tokens.get(j).getName();
-                           acc("DI", false);
-                           temp+=tokens.get(j).getName();
-                           acc("/", false);
-                           if(tokens.get(j).getType().equals("DI")){
-                           if(tokens.get(j).getName().length()>4){
+                     acc("DI", false);
+                     if(tokens.get(j).getName().equals("/")){
+                        temp+=tokens.get(j).getName();
+                        acc("/", false);
+                        if(tokens.get(j).getType().equals("DI")){
+                           if(tokens.get(j).getName().length()>2){
                               this.accept = false;
                            }
                            else{
                               temp+=tokens.get(j).getName();
                               acc("DI", false);
-                              arg2.add(temp);
+                              temp+=tokens.get(j).getName();
+                              acc("/", false);
+                              if(tokens.get(j).getType().equals("DI")){
+                              if(tokens.get(j).getName().length()>4){
+                                 this.accept = false;
+                              }
+                              else{
+                                 temp+=tokens.get(j).getName();
+                                 acc("DI", false);
+                                 //temp1+=temp+" ";
+                              }
+                        }
+                        else setFalse();
                            }
-                     }
-                     else setFalse();
                         }
                      }
+                     temp1+=temp+" ";
                   }
-                  else if(tokens.get(j).getName().equals("'")){
-                  }
-                  else setFalse();
                }
-               arg2.add(temp);
+               else if (tokens.get(j).getType().equals("SP")){
+                  temp1+=tokens.get(j).getName()+" ";
+                  acc("SP", false);
+               }
+               else setFalse();
             }
-            else setFalse();
+            temp1=temp1.substring(0,temp1.length()-1);
+            arg2.add(temp1);
             acc("'",false);
             t();
             acc(")", false);
@@ -613,64 +627,67 @@ class Parser{
    }
    
    void t(){
-      String temp = "";
+      String temp1 = "";
       if(tokens.get(j).getName().equals(",")){
          acc(",", false);
          if(tokens.get(j).getName().equals("'")){
             acc("'", false);
-            if(tokens.get(j).getType().equals("ID")){
-               while(tokens.get(j).getType().equals("ID")){
-                  temp+=tokens.get(j).getName()+" ";
+            while(!tokens.get(j).getName().equals("'")){
+               if(tokens.get(j).getType().equals("ID")){
+                  temp1+=tokens.get(j).getName()+" ";
                   acc("ID", false);
                }
-               arg2.add(temp);
-            }
-            else if(tokens.get(j).getType().equals("FL")){
-               arg2.add(tokens.get(j).getName());
-               acc("FL", false);
-            }
-            else if(tokens.get(j).getType().equals("DI")){
-               temp = "";
-               if(tokens.get(j).getName().length()>2){
-                  arg2.add(tokens.get(j).getName());
-                  acc("DI", false);
+               else if(tokens.get(j).getType().equals("FL")){
+                  temp1+=tokens.get(j).getName()+" ";
+                  acc("FL", false);
                }
-               else{
-                  temp+=tokens.get(j).getName();
-                  acc("DI", false);
-                  if(tokens.get(j).getName().equals("/")){
+               else if(tokens.get(j).getType().equals("DI")){
+                  temp = "";
+                  if(tokens.get(j).getName().length()>2){
+                     temp1+=tokens.get(j).getName()+" ";
+                     acc("DI", false);
+                  }
+                  else{
                      temp+=tokens.get(j).getName();
-                     acc("/", false);
-                     if(tokens.get(j).getType().equals("DI")){
-                        if(tokens.get(j).getName().length()>2){
-                           this.accept = false;
-                        }
-                        else{
-                           temp+=tokens.get(j).getName();
-                           acc("DI", false);
-                           temp+=tokens.get(j).getName();
-                           acc("/", false);
-                           if(tokens.get(j).getType().equals("DI")){
-                           if(tokens.get(j).getName().length()>4){
+                     acc("DI", false);
+                     if(tokens.get(j).getName().equals("/")){
+                        temp+=tokens.get(j).getName();
+                        acc("/", false);
+                        if(tokens.get(j).getType().equals("DI")){
+                           if(tokens.get(j).getName().length()>2){
                               this.accept = false;
                            }
                            else{
                               temp+=tokens.get(j).getName();
                               acc("DI", false);
-                              arg2.add(temp);
+                              temp+=tokens.get(j).getName();
+                              acc("/", false);
+                              if(tokens.get(j).getType().equals("DI")){
+                              if(tokens.get(j).getName().length()>4){
+                                 this.accept = false;
+                              }
+                              else{
+                                 temp+=tokens.get(j).getName();
+                                 acc("DI", false);
+                                 //temp1+=temp+" ";
+                              }
+                        }
+                        else setFalse();
                            }
-                     }
-                     else setFalse();
                         }
                      }
+
+                     temp1+=temp+" ";
                   }
-                  else if(tokens.get(j).getName().equals("'")){
-                  }
-                  else setFalse();
                }
-               arg2.add(temp);
+               else if (tokens.get(j).getType().equals("SP")){
+                  temp1+=tokens.get(j).getName()+" ";
+                  acc("SP", false);
+               }
+               else setFalse();
             }
-            else setFalse();
+            temp1=temp1.substring(0,temp1.length()-1);
+            arg2.add(temp1);
             acc("'",false);
             t();
          }
