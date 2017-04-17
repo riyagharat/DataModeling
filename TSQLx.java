@@ -313,6 +313,13 @@ public class TSQLx{
     if(file.exists()){
         System.out.println("ERROR: Database specified exists");
     //    file.delete();
+    }else{
+      try{
+    	   FileWriter fw = new FileWriter(file);
+    	    fw.close();
+      }catch(IOException e){
+        e.printStackTrace();
+      }
     }
   }
 
