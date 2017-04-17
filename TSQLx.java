@@ -798,6 +798,14 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
+	     if(Comparator.parseFloat() == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     	System.out.println("Error, incompatible type comparison");
+		return;
+	     }
+	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
+		System.out.println("Error, incompatible type comparison");
+		return;
+	     } 
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
@@ -841,6 +849,14 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
+	     if(Comparator.parseFloat() == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     	System.out.println("Error, incompatible type comparison");
+		return;
+	     }
+	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
+		System.out.println("Error, incompatible type comparison");
+		return;
+	     } 
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
@@ -886,6 +902,14 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
+	     if(Comparator.parseFloat() == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     	System.out.println("Error, incompatible type comparison");
+		return;
+	     }
+	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
+		System.out.println("Error, incompatible type comparison");
+		return;
+	     } 
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
@@ -927,6 +951,14 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
+	     if(Comparator.parseFloat() == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     	System.out.println("Error, incompatible type comparison");
+		return;
+	     }
+	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
+		System.out.println("Error, incompatible type comparison");
+		return;
+	     } 
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
@@ -968,6 +1000,14 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
+   	     if(Comparator.parseFloat() == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     	System.out.println("Error, incompatible type comparison");
+		return;
+	     }
+	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
+		System.out.println("Error, incompatible type comparison");
+		return;
+	     } 
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
@@ -1015,6 +1055,14 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
+	     if(Comparator.parseFloat() == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     	System.out.println("Error, incompatible type comparison");
+		return;
+	     }
+	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
+		System.out.println("Error, incompatible type comparison");
+		return;
+	     } 
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
