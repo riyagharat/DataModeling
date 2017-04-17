@@ -1184,9 +1184,10 @@ public class TSQLx{
         }
      }else{
        //remind me to put the names of the columns up here some time
-        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
+	int j = 0;
+        for(j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); j++){//this for loop's checking for column size
            if(indices.contains(i)){
-              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); j++){//and here we got some rows
+              for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//and here we got some rows
                  if(filteredColumns.contains(j)){
                     if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                        System.out.print("\t\t");
