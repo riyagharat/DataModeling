@@ -97,7 +97,7 @@ public class TSQLx{
             // listOfTables is the arrayList of tables in the current database
             System.out.println("SELECT");
             try{
-              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, false);
+              select1(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, false);
             }catch(ParseException e){
             }
             break;
@@ -366,6 +366,7 @@ public class TSQLx{
       
     }
   }
+	
 
   // Reads if there are two files or one and accordingly calls the right method
   public static void convertXML(String XMLFileName, String XSDFileName, String inputFileName, ArrayList<Table> listOfTables){
@@ -737,6 +738,13 @@ public class TSQLx{
       System.out.println("ERROR: File specified does not exist");
     }
   }
+ public static void select1(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
+		    ArrayList<Table> listOfTables, boolean dateYes) throws ParseException
+  	{
+	  for(int i = 0; i < listOfTables.size(); i++)
+		 	if((listOfTables.get(i).getName()).equals(TableNamer.get(0)))
+				listOfTables.get(i).select(Wheres);
+ 	}
 
   public static void select(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
     ArrayList<Table> listOfTables, boolean dateYes) throws ParseException{ // Begin select statement
