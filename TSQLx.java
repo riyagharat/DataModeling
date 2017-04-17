@@ -163,7 +163,7 @@ public class TSQLx{
 	}
    try{
     Scanner fileIn = new Scanner(dbFile); // create scanner to read through the file
-	String userInput = "";
+	boolean userInput;
 	int choice = 0;
 
     do{
