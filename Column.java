@@ -105,7 +105,7 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INTEGER"))		
+			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))		
 			{	
 				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)				
 					//check for type compatibility		
@@ -158,7 +158,7 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INTEGER"))
+			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))
 			{
 				if(rightSide.matches("[a-zA-z]*") == true)							
 					//check for type compatibility
@@ -212,7 +212,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INTEGER"))				
+			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))				
 				//check for type compatibility
 			{
 				if(rightSide.matches("[a-zA-z]*") == true)
@@ -266,7 +266,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INTEGER"))
+			else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER") || this.list.get(i).getType().equalsIgnoreCase("INT"))
 			{
 				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)				
 					//check for type compatibility
