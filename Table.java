@@ -26,7 +26,7 @@ class Table{
     		//if a size is specified
     	{
     			type = types.get(i).substring(0, types.get(i).indexOf("("));		
-    	    	if(type.equalsIgnoreCase("INTEGER"))										
+    	    	if(type.equalsIgnoreCase("NUMBER"))										
     	    	//if float, set size, decimal size
     	    	{
     	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(","))));
@@ -40,7 +40,7 @@ class Table{
     	else	//if no size is specified, set size,?(decimal) to 255
     	{
     		type = types.get(i);
-    		if(type.equalsIgnoreCase("INTEGER"))
+    		if(type.equalsIgnoreCase("NUMBER"))
 	    	{
     			newCol.setSize(255);
     			newCol.setDecimal(255);
@@ -94,12 +94,12 @@ class Table{
 				  return;
 				}
 		  }
-		  else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER"))
+		  else if(this.list.get(i).getType().equalsIgnoreCase("INTEGER"))
 		  {
 			  if(values.get(i).contains("[a-zA-Z]+") == true)				
 				  //decline if data contains any letters
 			  {
-				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type number");
+				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(i).getName() + ", type integer");
 				  return;
 			  }
 			  else if (values.get(i).length() > this.list.get(i).getSize())				
@@ -109,7 +109,7 @@ class Table{
 				  return;
 				}
 		  }
-		  else if(this.list.get(i).getType().equalsIgnoreCase("INTEGER"))
+		  else if(this.list.get(i).getType().equalsIgnoreCase("NUMBER"))
 		  {
 			  String leftSide = values.get(i).substring(0, values.get(i).indexOf('.'));
 			  String rightSide = values.get(i).substring(values.get(i).indexOf('.') + 1, values.get(i).length());
@@ -183,12 +183,12 @@ class Table{
 				}
 			  else insertHere.add(colIndex);
 		  }
-		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("NUMBER"))
+		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("INTEGER"))
 		  {
 			  if(values.get(i).contains("[a-zA-Z]+") == true)				
 				  //decline if data contains any letters
 			  {
-				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(colIndex).getName() + ", type number");
+				  System.out.println("Can't insert " + values.get(i) + " into attribute" + this.list.get(colIndex).getName() + ", type integer");
 				  return;
 			  }
 			  else if (values.get(i).length() > this.list.get(colIndex).getSize())			
@@ -199,7 +199,7 @@ class Table{
 				}
 			  else insertHere.add(colIndex);
 		  }
-		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("INTEGER"))
+		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("NUMBER"))
 		  {
 			  String leftSide = values.get(i).substring(0, values.get(i).indexOf('.'));
 			  String rightSide = values.get(i).substring(values.get(i).indexOf('.') + 1, values.get(i).length());
