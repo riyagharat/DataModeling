@@ -1,3 +1,10 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.lang.StackOverflowError;
 
 /*
    This class creates a parser for the SQL language. The parser will perform lexical and syntax analysis. Semantic analysis will 
