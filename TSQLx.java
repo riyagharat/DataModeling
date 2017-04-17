@@ -1134,10 +1134,11 @@ public class TSQLx{
 
   public static void whereAll(int TableIndex, ArrayList filteredColumns, ArrayList<Table> listOfTables, boolean dateYes){
      if(dateYes == true){
-        //remind me to put the names of the columns up here some time
-        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
-           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); j++){//and this loop is getting those records
-              if(filteredColumns.contains(j)){
+        int i = 0;
+	int j = 0;
+        for(j = 0; j < listOfTables.get(TableIndex).list.get(j).list.size()-1; j++){//this for loop's checking for number of columns minus date
+           for(i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//and this loop is getting those records
+              if(filteredColumns.contains(i)){
                  if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                     System.out.print("\t\t");
                  }else{
@@ -1148,10 +1149,11 @@ public class TSQLx{
            System.out.print("\n");
         }
      }else{
-       //remind me to put the names of the columns up here some time
-        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
-           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); j++){//and this loop is getting those records
-              if(filteredColumns.contains(j)){
+        int i = 0;
+	int j = 0;
+        for(j = 0; j < listOfTables.get(TableIndex).list.get(j).list.size()-1; j++){//this for loop's checking for number of columns minus date
+           for(i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//and this loop is getting those records
+              if(filteredColumns.contains(i)){
                  if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                     System.out.print("\t\t");
                  }else{
@@ -1230,7 +1232,7 @@ public class TSQLx{
            }
            System.out.print("\n");
         }
-        }
+     }
   }
 
   public static void printSomething(int TableIndex, ArrayList<Integer> indices, ArrayList<Table> listOfTables, boolean dateYes){
