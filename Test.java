@@ -240,8 +240,8 @@ class Parser{
       p->into_ID_q_values_s
       q->(ID_r)|$
       r->,ID_r|$
-      s->('ID*'t)|('Float*'t)|('Digit*'t)|('Digit/Digit/Digit*'t)
-      t->,'ID*'t|,'Float*'t|,'Digit*'t|,'Digit/Digit/Digit*'t|$
+      s->('ID't)|('Float't)|('Digit't)|('Digit/Digit/Digit't)
+      t->,'ID't|,'Float't|,'Digit't|,'Digit/Digit/Digit't|$
       u->from_ID_v
       v->where_va|$
       va->ID_vb|Digit_vb
