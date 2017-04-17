@@ -571,7 +571,7 @@ public class TSQLx{
   }
 
   public static void select(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
-    ArrayList<Table> listOfTables) throws ParseException{ // Begin select statement
+    ArrayList<Table> listOfTables, boolean dateYes) throws ParseException{ // Begin select statement
     String TableName = TableNamer.get(0); //retrieve table name from arraylist
     int TableIndex = 0;//By default we're gonna start at 0, this'll be changed later
     String ColumnName = "";//initialize these to nothing
@@ -613,7 +613,7 @@ public class TSQLx{
 
     if(Wheres.size() == 0){ //if there is no where condition
        if(PrintList.get(0).equals("*")){ //SELECT * (everything)
-          printEverything(TableIndex, listOfTables);//Calls the statement that prints indiscriminately
+          printEverything(TableIndex, listOfTables, dateYes);//Calls the statement that prints indiscriminately
           return;
        }else{ //SELECT [columns]
           ArrayList indices = new ArrayList<Integer>(); //columns we want
@@ -628,7 +628,7 @@ public class TSQLx{
              indices.add(ColumnChecker); //the specified column was found - add the column we want
              }//end while
           }//end for loop
-          printSomething(TableIndex, indices, listOfTables);//Runs the print statement that selects columns
+          printSomething(TableIndex, indices, listOfTables, dateYes);//Runs the print statement that selects columns
        }//end else
     }else{//Where clause
        ArrayList FilteredColumns = new ArrayList<Integer>();//Create a list of the columns we want
@@ -901,7 +901,7 @@ public class TSQLx{
              break;
        }
        if(PrintList.get(0).equals("*")){//This calls the select-all with a where printing function
-          whereAll(TableIndex, FilteredColumns, listOfTables);
+          whereAll(TableIndex, FilteredColumns, listOfTables, dateYes);
           return;
        }else{
           ArrayList indices = new ArrayList<Integer>();//Checks specific columns
@@ -918,32 +918,16 @@ public class TSQLx{
              }//end while
              k++;
           }//end forloop
-       whereSelective(TableIndex, FilteredColumns, indices, listOfTables);
+       whereSelective(TableIndex, FilteredColumns, indices, listOfTables, dateYes);
        }//end else
     }
   }
 
   public static void whereAll(int TableIndex, ArrayList filteredColumns, ArrayList<Table> listOfTables){
-     //remind me to put the names of the columns up here some time
-     for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
-        for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
-           if(filteredColumns.contains(j)){
-              if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
-                 System.out.print("\t\t");
-              }else{
-                 System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
-              }
-           }
-        }
-        System.out.print("\n");
-     }
-  }
-
-  public static void whereSelective(int TableIndex, ArrayList filteredColumns, ArrayList<Integer> indices, ArrayList<Table> listOfTables){
-  //remind me to put the names of the columns up here some time
-     for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
-        if(indices.contains(i)){
-           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
+     if(dateYes = 1){
+        //remind me to put the names of the columns up here some time
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
+           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
               if(filteredColumns.contains(j)){
                  if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                     System.out.print("\t\t");
@@ -954,36 +938,113 @@ public class TSQLx{
            }
            System.out.print("\n");
         }
-     }
-     return;
-  }
-
-  public static void printEverything(int TableIndex, ArrayList<Table> listOfTables){
-     //remind me to put the names of the columns up here some time
-     for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
-        for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
-           if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
-              System.out.print("\t\t");
-           }else{
-              System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
-           }
-        }
-        System.out.print("\n");
-     }
-  }
-
-  public static void printSomething(int TableIndex, ArrayList<Integer> indices, ArrayList<Table> listOfTables){
-     //remind me to put the names of the columns up here some time
-     for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
-        if(indices.contains(i)){
-           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
-                 if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for rows
+     }else{
+       //remind me to put the names of the columns up here some time
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//this for loop's checking for number of records
+           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
+              if(filteredColumns.contains(j)){
+                 if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                     System.out.print("\t\t");
                  }else{
                     System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
                  }
+              }
            }
            System.out.print("\n");
+        } 
+  }
+
+  public static void whereSelective(int TableIndex, ArrayList filteredColumns, ArrayList<Integer> indices, 
+                                    ArrayList<Table> listOfTables, bool dateYes){
+     if(dateYes = 1){
+        //remind me to put the names of the columns up here some time
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
+           if(indices.contains(i)){
+              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
+                 if(filteredColumns.contains(j)){
+                    if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
+                       System.out.print("\t\t");
+                    }else{
+                       System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
+                    }
+                 }
+              }
+              System.out.print("\n");
+           }
+        }
+     }else{
+       //remind me to put the names of the columns up here some time
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//this for loop's checking for column size
+           if(indices.contains(i)){
+              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
+                 if(filteredColumns.contains(j)){
+                    if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
+                       System.out.print("\t\t");
+                    }else{
+                       System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
+                    }
+                 }
+              }
+              System.out.print("\n");
+           }
+        }
+     return;
+  }
+
+  public static void printEverything(int TableIndex, ArrayList<Table> listOfTables, bool dateYes){
+     //remind me to put the names of the columns up here some time
+     if(dateYes = 1){
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of columns
+           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
+              if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
+                 System.out.print("\t\t");
+              }else{
+                 System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
+              }
+           }
+           System.out.print("\n");
+        }
+     }else{
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//this for loop's checking for number of columns minus date
+           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
+              if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
+                 System.out.print("\t\t");
+              }else{
+                 System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
+              }
+           }
+           System.out.print("\n");
+        }
+  }
+
+  public static void printSomething(int TableIndex, ArrayList<Integer> indices, ArrayList<Table> listOfTables, bool dateYes){
+     if(dateYes = 1){
+        //remind me to put the names of the columns up here some time
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
+           if(indices.contains(i)){
+              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
+                    if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for rows
+                       System.out.print("\t\t");
+                    }else{
+                       System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
+                    }
+              }
+              System.out.print("\n");
+           }
+        }
+     }else{
+        //remind me to put the names of the columns up here some time
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//this for loop's checking for column size
+           if(indices.contains(i)){
+              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
+                    if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for rows
+                       System.out.print("\t\t");
+                    }else{
+                       System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
+                    }
+              }
+              System.out.print("\n");
+           }
         }
      }
   }
