@@ -1205,9 +1205,9 @@ public class TSQLx{
   public static void printEverything(int TableIndex, ArrayList<Table> listOfTables, boolean dateYes){
      //remind me to put the names of the columns up here some time
      if(dateYes == true){
-        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of columns
-           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
-              if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//this for loop's checking for number of columns
+           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size()-1; i++){//and this loop is getting those records
+              if(listOfTables.get(TableIndex).list.get(i).list.get(j) == null){//just tab twice for empty
                  System.out.print("\t\t");
               }else{
                  System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
@@ -1217,8 +1217,8 @@ public class TSQLx{
         }
      }else{
         for(int i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//this for loop's checking for number of columns minus date
-           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
-              if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
+           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size()-1; i++){//and this loop is getting those records
+              if(listOfTables.get(TableIndex).list.get(i).list.get(j) == null){//just tab twice for empty
                  System.out.print("\t\t");
               }else{
                  System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
@@ -1232,10 +1232,10 @@ public class TSQLx{
   public static void printSomething(int TableIndex, ArrayList<Integer> indices, ArrayList<Table> listOfTables, boolean dateYes){
      if(dateYes == true){
         //remind me to put the names of the columns up here some time
-        for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
+        for(int i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//this for loop's checking for column size
            if(indices.contains(i)){
-              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
-                    if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for rows
+              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size()-1; i++){//and here we got some rows
+                    if(listOfTables.get(TableIndex).list.get(i).list.get(j) == null){//just tab twice for rows
                        System.out.print("\t\t");
                     }else{
                        System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
@@ -1248,8 +1248,8 @@ public class TSQLx{
         //remind me to put the names of the columns up here some time
         for(int i = 0; i < listOfTables.get(TableIndex).list.size()-1; i++){//this for loop's checking for column size
            if(indices.contains(i)){
-              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
-                    if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for rows
+              for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size()-1; i++){//and here we got some rows
+                    if(listOfTables.get(TableIndex).list.get(i).list.get(j) == null){//just tab twice for rows
                        System.out.print("\t\t");
                     }else{
                        System.out.print(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() + "\t");
