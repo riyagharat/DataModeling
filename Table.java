@@ -26,11 +26,12 @@ class Table{
     		//if a size is specified
     	{
     			type = types.get(i).substring(0, types.get(i).indexOf("("));		
-    	    	if(type.equalsIgnoreCase("NUMBER") && types.get(i).contains(","))										
+    	    	if(type.equalsIgnoreCase("NUMBER"))										
     	    	//if float, set size, decimal size
     	    	{
-    	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(","))));
-    	    		newCol.setDecimal(Integer.parseInt(types.get(i).substring(types.get(i).indexOf(",") + 1, types.get(i).indexOf(")"))));
+    	    		newCol.setDecimal(Integer.parseInt(types.get(i).substring(types.get(i).indexOf(")") - 1, types.get(i).indexOf(")"))));
+    	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(")") - 1)));
+    	    		
     	    	}
     	    	else	//else set size
     	    	{
@@ -78,11 +79,8 @@ class Table{
 	  ArrayList<String> values = new ArrayList<String>();
 	  for(int i = 0; i < values1.size(); i++)
 		  if(!values1.get(i).isEmpty())
-		  {
-			  String temp;
-			  temp = values1.get(i).replaceAll(" ","");
-			  values.add(temp);
-		  }
+		  	values.add(values1.get(i));
+
 	  System.out.println("Inserting " + values.toString()); 
 	  ArrayList<Integer> insertHere = new ArrayList<Integer>();	
 	  for(int i = 0; i < values.size(); i ++)						
@@ -174,11 +172,7 @@ class Table{
 	  ArrayList<String> values = new ArrayList<String>();
 	  for(int i = 0; i < values1.size(); i++)
 		  if(!values1.get(i).isEmpty())
-		  {
-			  String temp;
-			  temp = values1.get(i).replaceAll(" ","");
-			  values.add(temp);
-		  }
+			  	values.add(values1.get(i));
       if(values.size() != fields.size())
       {
               System.out.println("Number of fields and values are not equal");
