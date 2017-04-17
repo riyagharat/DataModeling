@@ -157,158 +157,145 @@ public class TSQLx{
   }
 
   // Loads the file from an existing database file
-  public static void loadDatabase(String dataBaseName, ArrayList<Table> listOfTables){
-	File dbFile = new File(dataBaseName + ".txt");
-	// check to see if the database exists
-	if (!dbFile.exists()) {
-		System.out.println("ERROR: Database does not exist"); // database doesn't exist,
-		return;
-	}
-   try{
-    Scanner fileIn = new Scanner(dbFile); // create scanner to read through the file
-	userInput = "";
-	int choice = 0;
-  while(fileIn.hasNextLine()){
-    do{
-      //System.out.print("TSQLx Loading>");
-      // reads input from the console
-      if(fileIn.hasNextLine()){
-        userInput = fileIn.nextLine();
-      }else{
-        choice = 12;
-      }
-      // passes the user input to the Parser
-      Parser consoleInput = new Parser(userInput);
-      // returns the parsed input as a choice to the main function
-      choice = consoleInput.Scan();
-      switch(choice){
-        case 0:
-            // locates an error and displays where it is in the SQL statment
-            System.out.print("      ");
-            for(int k = 0; k<consoleInput.getError(); k++){
-               System.out.print(" ");
-            }
-            System.out.println("*");
-            System.out.println("Error at index: "+consoleInput.getError());
-            break;
-         case 1:
-            // Calls the create method
-            // consoleInput.getArg0().get(0) is tablename or dataBaseName
-            // consoleInput.getArg1() is the Column names
-            // consoleInput.getArg2() is the fieldDefs
-            // listOfTables is the arrayList of tables in the current database
-            System.out.println("CREATE");
-            if(!(consoleInput.getArg1().size() == 0)){
-              create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
-            }else{
-              create(consoleInput.getArg0().get(0));
-            }
-            break;
-         case 2:
-            // Calls the drop method
-            // consoleInput.getArg1().get(0) is tablename
-            // consoleInput.getArg0() is the database name
-            // consoleInput.getArg2() is the fieldDefs
-            // listOfTables is the arrayList of tables in the current database
-            System.out.println("DROP");
-            if(!(consoleInput.getArg1().size() == 0)){
-              dropT(consoleInput.getArg1().get(0), listOfTables);
-            }else{
-              dropDB(consoleInput.getArg0().get(0));
-            }
-            break;
-         case 3:
-            // Calls the save method
-            System.out.println("SAVE");
-            saveDatabase(listOfTables);
-            break;
-         case 4:
-            // Calls the load method
-            // consoleInput.getArg0().get(0) is the database name
-            System.out.println("LOAD");
-            loadDatabase(consoleInput.getArg0().get(0), listOfTables);
-            break;
-         case 5:
-            // Calls the insert method
-            // consoleInput.getArg0().get(0) is tablename
-            // consoleInput.getArg1() is the Column names
-            // consoleInput.getArg2() is the values
-            System.out.println("INSERT");
-            insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
-            break;
-         case 6:
-            // Calls the delete method
-            // consoleInput.getArg1().get(0) is the tablename
-            // consoleInput.getArg2() is the conditions
-            System.out.println("DELETE");
-            try{
-             delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listOfTables);
-            }catch(ParseException e){
-               e.printStackTrace();
-            }
-            break;
-         case 7:
-            // Calls the select method
-            // consoleInput.getArg0() is * or conditions
-            // consoleInput.getArg1() is the table name
-            // consoleInput.getArg2() is the where condition
-            // listOfTables is the arrayList of tables in the current database
-            System.out.println("SELECT");
-            try{
-              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, false);
-            }catch(ParseException e){
-            }
-            break;
-         case 8:
-            // Calls the dateSelect method
-            System.out.println("TSELECT");
-            try{
-              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, true);
-            }catch(ParseException e){
-            }
-            break;
-         case 9:
-            // Calls the convert method
-            // consoleInput.getArg0().get(0) is the XML filename
-            // consoleInput.getArg1().get(0) is the XSD filename
-            // consoleInput.getArg2().get(0) is the filename to store the inserts
-            // listOfTables is the arrayList of tables in the current database
-            System.out.println("CONVERT");
-            String XSD = "";
-            if(!(consoleInput.getArg1().size() == 0)){
-              XSD = consoleInput.getArg1().get(0);
-            }else{
-              XSD = "";
-            }
-            convertXML(consoleInput.getArg0().get(0), XSD, consoleInput.getArg2().get(0), listOfTables);
-            break;
-         case 10:
-            // Currently Autocommiting
-            System.out.println("COMMIT");
-            break;
-         case 11:
-            // Calls the input method
-            // consoleInput.getArg0().get(0) is the filename to be inserted
-            System.out.println("INPUT");
-            inputFile(consoleInput.getArg0().get(0), listOfTables);
-            break;
-         case 12:
-            // Prints EXIT and exits the application
-            System.out.println("EXIT");
-            break;
-         default:
-            // Prints Reject and prompts the user to enter another input on the command line
-            System.out.println("Reject");
-            break;
+    public static void loadDatabase(String dataBaseName, ArrayList<Table> listOfTables){
+    File dbFile = new File(dataBaseName + ".txt");
+    // check to see if the database exists
+    if (!dbFile.exists()) {
+      System.out.println("ERROR: Database does not exist"); // database doesn't exist,
+      return;
+    }
+    TSQLx.file = dbFile;
+     try{
+      Scanner fileIn = new Scanner(dbFile); // create scanner to read through the file
+    userInput = "";
+    int choice = 0;
+    while(fileIn.hasNextLine()){
+        //System.out.print("TSQLx Loading>");
+        // reads input from the console
+        // passes the user input to the Parser
+  	  userInput = fileIn.nextLine();
+        Parser consoleInput = new Parser(userInput);
+        // returns the parsed input as a choice to the main function
+        choice = consoleInput.Scan();
+        switch(choice){
+           case 1:
+              // Calls the create method
+              // consoleInput.getArg0().get(0) is tablename or dataBaseName
+              // consoleInput.getArg1() is the Column names
+              // consoleInput.getArg2() is the fieldDefs
+              // listOfTables is the arrayList of tables in the current database
+              System.out.println("CREATE");
+              if(!(consoleInput.getArg1().size() == 0)){
+                create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+              }else{
+                create(consoleInput.getArg0().get(0));
+              }
+              break;
+           case 2:
+              // Calls the drop method
+              // consoleInput.getArg1().get(0) is tablename
+              // consoleInput.getArg0() is the database name
+              // consoleInput.getArg2() is the fieldDefs
+              // listOfTables is the arrayList of tables in the current database
+              System.out.println("DROP");
+              if(!(consoleInput.getArg1().size() == 0)){
+                dropT(consoleInput.getArg1().get(0), listOfTables);
+              }else{
+                dropDB(consoleInput.getArg0().get(0));
+              }
+              break;
+           case 3:
+              // Calls the save method
+              System.out.println("SAVE");
+              saveDatabase(listOfTables);
+              break;
+           case 4:
+              // Calls the load method
+              // consoleInput.getArg0().get(0) is the database name
+              System.out.println("LOAD");
+              loadDatabase(consoleInput.getArg0().get(0), listOfTables);
+              break;
+           case 5:
+              // Calls the insert method
+              // consoleInput.getArg0().get(0) is tablename
+              // consoleInput.getArg1() is the Column names
+              // consoleInput.getArg2() is the values
+              System.out.println("INSERT");
+              insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+              break;
+           case 6:
+              // Calls the delete method
+              // consoleInput.getArg1().get(0) is the tablename
+              // consoleInput.getArg2() is the conditions
+              System.out.println("DELETE");
+              try{
+               delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listOfTables);
+              }catch(ParseException e){
+                 e.printStackTrace();
+              }
+              break;
+           case 7:
+              // Calls the select method
+              // consoleInput.getArg0() is * or conditions
+              // consoleInput.getArg1() is the table name
+              // consoleInput.getArg2() is the where condition
+              // listOfTables is the arrayList of tables in the current database
+              System.out.println("SELECT");
+              try{
+                select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, false);
+              }catch(ParseException e){
+              }
+              break;
+           case 8:
+              // Calls the dateSelect method
+              System.out.println("TSELECT");
+              try{
+                select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, true);
+              }catch(ParseException e){
+              }
+              break;
+           case 9:
+              // Calls the convert method
+              // consoleInput.getArg0().get(0) is the XML filename
+              // consoleInput.getArg1().get(0) is the XSD filename
+              // consoleInput.getArg2().get(0) is the filename to store the inserts
+              // listOfTables is the arrayList of tables in the current database
+              System.out.println("CONVERT");
+              String XSD = "";
+              if(!(consoleInput.getArg1().size() == 0)){
+                XSD = consoleInput.getArg1().get(0);
+              }else{
+                XSD = "";
+              }
+              convertXML(consoleInput.getArg0().get(0), XSD, consoleInput.getArg2().get(0), listOfTables);
+              break;
+           case 10:
+              // Currently Autocommiting
+              System.out.println("COMMIT");
+              break;
+           case 11:
+              // Calls the input method
+              // consoleInput.getArg0().get(0) is the filename to be inserted
+              System.out.println("INPUT");
+              inputFile(consoleInput.getArg0().get(0), listOfTables);
+              break;
+           case 12:
+              // Prints EXIT and exits the application
+              System.out.println("EXIT");
+              break;
+           default:
+              // Prints Reject and prompts the user to enter another input on the command line
+              System.out.println("Reject");
+              break;
 
+        }
       }
-    }while(choice!=12);
-  }
-      }catch(FileNotFoundException e){
-      e.printStackTrace();
-   }
-	return;
-  } // END loadDatabase
+        }catch(FileNotFoundException e){
+        e.printStackTrace();
+     }
+    return;
+    } // END loadDatabase
+
 
   // Overloaded create method, this one will create a database file with the given database name
   public static void create(String dataBaseName){
@@ -317,13 +304,13 @@ public class TSQLx{
         System.out.println("ERROR: Database specified exists");
     //    file.delete();
     }else{
-      try{
-    	   TSQLx.fileWriter = new FileWriter(file, true);
-         TSQLx.fileWriter.write(userInput);
-    	   fileWriter.close();
-      }catch(IOException e){
-        e.printStackTrace();
-      }
+  //    try{
+  //  	   TSQLx.fileWriter = new FileWriter(file, true);
+  //       TSQLx.fileWriter.write(userInput);
+  //  	   fileWriter.close();
+  //    }catch(IOException e){
+  //      e.printStackTrace();
+  //    }
     }
   }
 
@@ -609,6 +596,14 @@ public class TSQLx{
               if(!(attributes.equals(""))){
                 fileStream.println("INSERT INTO " + XSDList.get(0).getTableName() + " (" + attributes
                     + ") VALUES (" + values + ");");
+                try{
+              	   TSQLx.fileWriter = new FileWriter(file, true);
+                   TSQLx.fileWriter.write("INSERT INTO " + XSDList.get(0).getTableName() + " (" + attributes
+                       + ") VALUES (" + values + ");");
+              	   fileWriter.close();
+                }catch(IOException e){
+                  e.printStackTrace();
+                }
               }
 
               counter = 0;
@@ -715,6 +710,15 @@ public class TSQLx{
             if(!(attributes.equals(""))){
               fileStream.println("INSERT INTO " + tableNames.get(0) + " (" + attributes
                   + ") VALUES (" + values + ");");
+              try{
+                 TSQLx.fileWriter = new FileWriter(file, true);
+                 TSQLx.fileWriter.write("INSERT INTO " + tableNames.get(0) + " (" + attributes
+                     + ") VALUES (" + values + ");");
+                 fileWriter.close();
+              }catch(IOException e){
+                e.printStackTrace();
+              }
+
             }
 
             counter = 0;
