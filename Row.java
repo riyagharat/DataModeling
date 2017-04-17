@@ -51,7 +51,7 @@ class Row{
   {																			//only allow = and <> operators
 	  if(this.data == null)
 		  return false;
-	  if(operator.equals("="))
+	  if(operator.equals("="))												//find appropriate comparator and compare
 	  {
 		  if(rightSide.equals(this.data))
 			  return true;
@@ -76,21 +76,21 @@ class Row{
 		  return false;
 	  float thisData = Float.parseFloat(this.data);					//convert data to numerical type to allow for all comparison operators
 	  float rSide = Float.parseFloat(rightSide);
-	  if(operator.equals("="))
+	  if(operator.equals("="))										//find appropriate comparator and compare
 	  {
-		if(thisData == rSide)
-		  return true;
-		else return false;
-	  }
-	  else if(operator.equals("<>"))
-	  {
-		if(thisData != rSide)
+			if(thisData == rSide)
 			  return true;
 			else return false;
 	  }
+	  else if(operator.equals("<>"))			
+	  {
+			if(thisData != rSide)
+				  return true;
+				else return false;
+	  }
 	  else if(operator.equals("<"))
 	  {
-		  if(thisData < rSide)
+		  if(thisData > rSide)
 			  return true;
 			else return false;
 	  }
@@ -122,7 +122,7 @@ class Row{
   {
 	  if(this.data == null)
 		  return false;
-	  SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");
+	  SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");								//convert our dates from type String to java's SimpleDateFormat
 	  SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
 	  Date thisDate; 
 	  Date rSide;
@@ -135,7 +135,7 @@ class Row{
 	  else rSide = otherParser.parse(rightSide);
 
 
-	  if(operator.equals("="))
+	  if(operator.equals("="))											//find appropriate comparator and compare
 	  {
 			if(thisDate.compareTo(rSide) == 0)
 			  return true;
