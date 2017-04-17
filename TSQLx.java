@@ -13,7 +13,10 @@ public class TSQLx{
     do{
       System.out.print("TSQLx>");
       // reads input from the console
-      userInput = reader.nextLine();
+      if(reader.hasNextLine()){
+         userInput = reader.nextLine();
+      }else
+	      userInput = "exit";
       // passes the user input to the Parser
       Parser consoleInput = new Parser(userInput);
       // returns the parsed input as a choice to the main function
