@@ -419,7 +419,7 @@ class Table{
 	  {
 		  if(this.list.get(i).getName().equals(leftSide))				
 		  {
-			  deletionIndices = this.list.get(i).findRowNo(operator, rightSide.list.get(i).getData(), deletionIndices);
+			  deletionIndices = this.list.get(i).findRowNoRSC(operator, rightSide, deletionIndices);
 			  return deletionIndices;
 		  }
 	  }
