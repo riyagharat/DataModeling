@@ -1208,7 +1208,7 @@ public class TSQLx{
      //remind me to put the names of the columns up here some time
      if(dateYes == true){
         for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of columns
-           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); j++){//and this loop is getting those records
+           for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size()-1; j++){//and this loop is getting those records
               if(listOfTables.get(TableIndex).list.get(i).list.get(j) == null){//just tab twice for empty
                  System.out.print("\t\t");
               }else{
@@ -1220,7 +1220,7 @@ public class TSQLx{
      }else{
 	int i = 0;
 	int j = 0;
-        for(j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); j++){//this for loop's checking for number of columns minus date
+        for(j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size()-1; j++){//this for loop's checking for number of columns minus date
            for(i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//and this loop is getting those records
               if(listOfTables.get(TableIndex).list.get(i).list.get(j) == null){//just tab twice for empty
                  System.out.print("\t\t");
