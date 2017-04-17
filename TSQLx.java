@@ -798,14 +798,14 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-	     if(parseFloat(Comparator) == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
-	     	System.out.println("Error, incompatible type comparison");
-		return;
-	     }
 	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
 		System.out.println("Error, incompatible type comparison");
 		return;
 	     } 
+	     if(Comparator.indexOf(".") >= 0 && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     	System.out.println("Error, incompatible type comparison");
+		return;
+	     }
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
@@ -849,14 +849,14 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-	     if(parseFloat(Comparator) == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
-	     	System.out.println("Error, incompatible type comparison");
-		return;
-	     }
 	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
 		System.out.println("Error, incompatible type comparison");
 		return;
 	     } 
+	     if(Comparator.indexOf(".") >= 0 && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     	System.out.println("Error, incompatible type comparison");
+		return;
+	     }
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
@@ -902,7 +902,7 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-	     if(parseFloat(Comparator) == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     if(Comparator.indexOf(".") && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
 	     }
@@ -951,7 +951,7 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-	     if(parseFloat(Comparator) == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     if(Comparator.indexOf(".") == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
 	     }
@@ -1000,7 +1000,7 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-   	     if(parseFloat(Comparator) == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+   	     if(Comparator.indexOf(".") && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
 	     }
@@ -1055,7 +1055,7 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-	     if(parseFloat(Comparator) == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     if(Comparator.indexOf(".") && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
 	     }
