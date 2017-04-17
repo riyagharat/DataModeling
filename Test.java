@@ -22,51 +22,51 @@ public class Test{
             break;
          case 1:
             System.out.println("CREATE");
+            printArgs(parser);
             break;
          case 2:
             System.out.println("DROP");
+            printArgs(parser);
             break;
          case 3:
             System.out.println("SAVE");
+            printArgs(parser);
             break;
          case 4:
             System.out.println("LOAD");
+            printArgs(parser);
             break;
          case 5:
             System.out.println("INSERT");
-            for(int i = 0; i<parser.getArg0().size(); i++){
-               System.out.print(parser.getArg0().get(i)+", ");
-            }
-            System.out.println();
-            for(int i = 0; i<parser.getArg1().size(); i++){
-               System.out.print(parser.getArg1().get(i)+", ");
-            }
-            System.out.println();
-            for(int i = 0; i<parser.getArg2().size(); i++){
-               System.out.print(parser.getArg2().get(i)+", ");
-            }
-            System.out.println();
+            printArgs(parser);
             break;
          case 6:
             System.out.println("DELETE");
+            printArgs(parser);
             break;
          case 7:
             System.out.println("SELECT");
+            printArgs(parser);
             break;
          case 8:
             System.out.println("TSELECT");
+            printArgs(parser);
             break;
          case 9:
             System.out.println("CONVERT");
+            printArgs(parser);
             break;
          case 10:
             System.out.println("COMMIT");
+            printArgs(parser);
             break;
          case 11:
             System.out.println("INPUT");
+            printArgs(parser);
             break;
          case 12:
             System.out.println("EXIT");
+            printArgs(parser);
             break;
          default:
             System.out.println("Reject");
@@ -74,6 +74,21 @@ public class Test{
          
       }
       //parser.Scan();
+   }
+      static void printArgs(Parser parser){
+         for(int i = 0; i<parser.getArg0().size(); i++){
+               System.out.print(parser.getArg0().get(i)+", ");
+         }
+         System.out.println();
+         for(int i = 0; i<parser.getArg1().size(); i++){
+            System.out.print(parser.getArg1().get(i)+", ");
+         }            
+         System.out.println();
+         for(int i = 0; i<parser.getArg2().size(); i++){
+            System.out.print(parser.getArg2().get(i)+", ");
+         }
+         System.out.println();
+      
    }
 }
 
@@ -413,9 +428,9 @@ class Parser{
    
    void i(){
       temp = "";
-      if(tokens.get(j).getName().equalsIgnoreCase("integer")){
+      if(tokens.get(j).getName().equalsIgnoreCase("int")){
          temp += tokens.get(j).getName();
-         acc("integer",true);
+         acc("int",true);
          j();
          arg2.add(temp);
       }
@@ -425,9 +440,9 @@ class Parser{
          k();
          arg2.add(temp);
       }
-      else if(tokens.get(j).getName().equalsIgnoreCase("character")){
+      else if(tokens.get(j).getName().equalsIgnoreCase("char")){
          temp += tokens.get(j).getName();
-         acc("character", true);
+         acc("char", true);
          temp += tokens.get(j).getName();
          acc("(",false);
          temp += tokens.get(j).getName();
@@ -477,7 +492,7 @@ class Parser{
    
    void l(){
       if(tokens.get(j).getName().equals(",")){
-         //temp += tokens.get(j).getName();
+         temp += tokens.get(j).getName();
          acc(",", false);
          temp += tokens.get(j).getName();
          acc("DI", false);
