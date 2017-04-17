@@ -89,7 +89,7 @@ class Column{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < this.list.size(); i++)
 		{
-			if(this.list.get(i).getType().equals("char"))
+			if(this.list.get(i).getType().equalsIgnoreCase("char"))
 			{
 				if(rightSide.list.get(i).getData().matches("[0-9]*") == true)			//check for type compatibility
 				{
@@ -102,7 +102,7 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))		
+			else if(this.list.get(i).getType().equalsIgnoreCase("number") || this.list.get(i).getType().equalsIgnoreCase("integer"))		
 			{	
 				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)				//check for type compatibility		
 				{
@@ -116,7 +116,7 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-			else if(this.list.get(i).getType().equals("date"))
+			else if(this.list.get(i).getType().equalsIgnoreCase("date"))
 			{
 				if(rightSide.list.get(i).getData().matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)		//check for type compatibility
 				{
@@ -138,7 +138,7 @@ class Column{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < this.list.size(); i++)
 		{
-			if(this.list.get(i).getType().equals("char"))							//check for type compatibility
+			if(this.list.get(i).getType().equalsIgnoreCase("char"))							//check for type compatibility
 			{
 				if(rightSide.matches("[0-9]*") == true)
 				{
@@ -151,7 +151,7 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))
+			else if(this.list.get(i).getType().equalsIgnoreCase("number") || this.list.get(i).getType().equalsIgnoreCase("integer"))
 			{
 				if(rightSide.matches("[a-zA-z]*") == true)							//check for type compatibility
 				{
@@ -165,7 +165,7 @@ class Column{
 						rowsToBeDeleted.add(i);
 				}
 			}
-			else if(this.list.get(i).getType().equals("date"))						//check for type compatibility
+			else if(this.list.get(i).getType().equalsIgnoreCase("date"))						//check for type compatibility
 			{
 				if(rightSide.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
 				{
@@ -187,7 +187,7 @@ class Column{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < indicesTBC.size(); i++)
 		{
-			if(this.list.get(i).getType().equals("char"))					//check for type compatibility
+			if(this.list.get(i).getType().equalsIgnoreCase("char"))					//check for type compatibility
 			{
 				if(rightSide.matches("[0-9]*") == true)
 				{
@@ -201,7 +201,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))				//check for type compatibility
+			else if(this.list.get(i).getType().equalsIgnoreCase("number") || this.list.get(i).getType().equalsIgnoreCase("integer"))				//check for type compatibility
 			{
 				if(rightSide.matches("[a-zA-z]*") == true)
 				{
@@ -215,7 +215,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equals("date"))						//check for type compatibility
+			else if(this.list.get(i).getType().equalsIgnoreCase("date"))						//check for type compatibility
 			{
 				if(rightSide.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
 				{
@@ -237,7 +237,7 @@ class Column{
 		ArrayList<Integer> rowsToBeDeleted = new ArrayList<Integer>();
 		for(int i = 0; i < indicesTBC.size(); i++)
 		{
-			if(this.list.get(i).getType().equals("char"))						//check for type compatibility
+			if(this.list.get(i).getType().equalsIgnoreCase("char"))						//check for type compatibility
 			{
 				if(rightSide.list.get(i).getData().matches("[0-9]*") == true)
 				{
@@ -251,7 +251,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equals("number") || this.list.get(i).getType().equals("integer"))
+			else if(this.list.get(i).getType().equalsIgnoreCase("number") || this.list.get(i).getType().equalsIgnoreCase("integer"))
 			{
 				if(rightSide.list.get(i).getData().matches("[a-zA-z]*") == true)				//check for type compatibility
 				{
@@ -265,7 +265,7 @@ class Column{
 						rowsToBeDeleted.add(indicesTBC.get(i));
 				}
 			}
-			else if(this.list.get(i).getType().equals("date"))							//check for type compatibility
+			else if(this.list.get(i).getType().equalsIgnoreCase("date"))							//check for type compatibility
 			{
 				if(rightSide.list.get(i).getData().matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)
 				{
