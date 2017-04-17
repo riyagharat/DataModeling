@@ -149,6 +149,14 @@ public class TSQLx{
   // Overloaded create method, this one will create a database file with the given database name
   public static void create(String dataBaseName){
    File file = new File(dataBaseName + ".txt");
+    if(file.exists()){
+      try{
+        System.out.println("ERROR: Database specified exists");
+        file.delete();
+      }catch(FileNotFoundException e){
+        e.printStackTrace();
+      }
+    }
   }
   
   // Overloaded create method, this one will create a table with the given table name
@@ -172,12 +180,12 @@ public class TSQLx{
     File file = new File(dataBaseName + ".txt");
     if(file.exists()){
       try{
-        file.delete()
+        file.delete();
       }catch(FileNotFoundException e){
         e.printStackTrace();
       }
     }else{
-      System.out.println("ERROR: File specified does not exist");
+      System.out.println("ERROR: Database specified does not exist");
     }
   }
 
