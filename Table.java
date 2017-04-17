@@ -24,7 +24,7 @@ class Table{
     	if(types.get(i).contains("(") && types.get(i).contains(")"))					//if a size is specified
     	{
     			type = types.get(i).substring(0, types.get(i).indexOf("("));		
-    	    	if(type.equals("integer"))										//if float, set size, decimal size
+    	    	if(type.equalsIgnoreCase("integer"))										//if float, set size, decimal size
     	    	{
     	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(","))));
     	    		newCol.setDecimal(Integer.parseInt(types.get(i).substring(types.get(i).indexOf(",") + 1, types.get(i).indexOf(")"))));
@@ -37,12 +37,12 @@ class Table{
     	else														//if no size is specified, set size,?(decimal) to 255
     	{
     		type = types.get(i);
-    		if(type.equals("integer"))
+    		if(type.equalsIgnoreCase("integer"))
 	    	{
     			newCol.setSize(255);
     			newCol.setDecimal(255);
 	    	}
-    		else if(type.equals("date"))					//set date by default to size 10
+    		else if(type.equalsIgnoreCase("date"))					//set date by default to size 10
     			newCol.setSize(10);
     		else newCol.setSize(255);
     	}
@@ -73,7 +73,7 @@ class Table{
 	  ArrayList<Integer> insertHere = new ArrayList<Integer>();	
 	  for(int i = 0; i < values.size(); i ++)						
 	  {			 
-		  if(this.list.get(i).getType().equals("char"))				//semantic checks
+		  if(this.list.get(i).getType().equalsIgnoreCase("char"))				//semantic checks
 		  {
 			  if(values.get(i).contains("[0-9]+") == true)			//decline if data contains any digits
 			  {
@@ -86,7 +86,7 @@ class Table{
 				  return;
 				}
 		  }
-		  else if(this.list.get(i).getType().equals("number"))
+		  else if(this.list.get(i).getType().equalsIgnoreCase("number"))
 		  {
 			  if(values.get(i).contains("[a-zA-Z]+") == true)				//decline if data contains any letters
 			  {
@@ -99,7 +99,7 @@ class Table{
 				  return;
 				}
 		  }
-		  else if(this.list.get(i).getType().equals("integer"))
+		  else if(this.list.get(i).getType().equalsIgnoreCase("integer"))
 		  {
 			  String leftSide = values.get(i).substring(0, values.get(i).indexOf('.'));
 			  String rightSide = values.get(i).substring(values.get(i).indexOf('.') + 1, values.get(i).length());
@@ -119,7 +119,7 @@ class Table{
 				  return;
 				}
 		  } 
-		  else if(this.list.get(i).getType().equals("date"))
+		  else if(this.list.get(i).getType().equalsIgnoreCase("date"))
 		  {
 			  if(values.get(i).matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)				//decline if data is not in date format
 			  {
@@ -149,7 +149,7 @@ class Table{
 		  while(colIndex < this.list.size() - 1 && !(this.list.get(colIndex).getName().equals(fields.get(i))))		//while not correct column	  
 			  colIndex++;
 		 
-		  if(this.list.get(colIndex).getType().equals("char"))				//semantic checks
+		  if(this.list.get(colIndex).getType().equalsIgnoreCase("char"))				//semantic checks
 		  {
 			  if(values.get(i).contains("[0-9]+") == true)				//decline if data contains any digits
 			  {
@@ -163,7 +163,7 @@ class Table{
 				}
 			  else insertHere.add(colIndex);
 		  }
-		  else if(this.list.get(colIndex).getType().equals("number"))
+		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("number"))
 		  {
 			  if(values.get(i).contains("[a-zA-Z]+") == true)				//decline if data contains any letters
 			  {
@@ -177,7 +177,7 @@ class Table{
 				}
 			  else insertHere.add(colIndex);
 		  }
-		  else if(this.list.get(colIndex).getType().equals("integer"))
+		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("integer"))
 		  {
 			  String leftSide = values.get(i).substring(0, values.get(i).indexOf('.'));
 			  String rightSide = values.get(i).substring(values.get(i).indexOf('.') + 1, values.get(i).length());
@@ -198,7 +198,7 @@ class Table{
 				}
 			  else insertHere.add(colIndex);
 		  }
-		  else if(this.list.get(colIndex).getType().equals("date"))
+		  else if(this.list.get(colIndex).getType().equalsIgnoreCase("date"))
 		  {
 			  if(values.get(i).matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false)				//decline if data is not in date format
 			  {
