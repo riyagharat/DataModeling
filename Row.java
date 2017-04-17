@@ -47,11 +47,13 @@ class Row{
    return true;
   }
 
-  public Boolean findValueChar(String operator, String rightSide)			//use .equals to compare strings
-  {																			//only allow = and <> operators
+  public Boolean findValueChar(String operator, String rightSide)		
+  	//only allow = and <> operators for type char
+  	//find appropriate comparator and compare
+  {																			
 	  if(this.data == null)
 		  return false;
-	  if(operator.equals("="))												//find appropriate comparator and compare
+	  if(operator.equals("="))												
 	  {
 		  if(rightSide.equals(this.data))
 			  return true;
@@ -70,13 +72,15 @@ class Row{
 	  }
   }
 
-  public Boolean findValue(String operator, String rightSide)			
+  public Boolean findValue(String operator, String rightSide)		
+  //convert data to numerical type to allow for all comparison operators
+  //find appropriate comparator and compare
   {
 	  if(this.data == null)
 		  return false;
-	  float thisData = Float.parseFloat(this.data);					//convert data to numerical type to allow for all comparison operators
+	  float thisData = Float.parseFloat(this.data);					
 	  float rSide = Float.parseFloat(rightSide);
-	  if(operator.equals("="))										//find appropriate comparator and compare
+	  if(operator.equals("="))										
 	  {
 			if(thisData == rSide)
 			  return true;
@@ -118,11 +122,13 @@ class Row{
 		  return false;
 	  }
   	}
-  public Boolean findValueDate(String operator, String rightSide) throws ParseException			
+  public Boolean findValueDate(String operator, String rightSide) throws ParseException		
+  		//convert our dates from type String to java's SimpleDateFormat
+  		//find appropriate comparator and compare
   {
 	  if(this.data == null)
 		  return false;
-	  SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");								//convert our dates from type String to java's SimpleDateFormat
+	  SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");								
 	  SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
 	  Date thisDate; 
 	  Date rSide;
@@ -135,7 +141,7 @@ class Row{
 	  else rSide = otherParser.parse(rightSide);
 
 
-	  if(operator.equals("="))											//find appropriate comparator and compare
+	  if(operator.equals("="))											
 	  {
 			if(thisDate.compareTo(rSide) == 0)
 			  return true;
