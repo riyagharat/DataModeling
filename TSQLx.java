@@ -557,61 +557,65 @@ public class TSQLx{
   public static void select(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
     ArrayList<Table> listOfTables) throws ParseException{ // Begin select statement
     String TableName = TableNamer.get(0); //retrieve table name from arraylist
-    int TableIndex = 0;
-    String ColumnName = "";
-    String Relational = "";
-    String Comparator = "";
-    int Case;
+    int TableIndex = 0;//By default we're gonna start at 0, this'll be changed later
+    String ColumnName = "";//initialize these to nothing
+    String Relational = "";//that way the code doesn't get tripped up later
+    String Comparator = "";//if there's a where condition, these'll get changed
+    int Case;//If there's a where, this int will determine what part of the switch we do
     if(Wheres.size() > 0){//if there is a where condition, get the parameters
-       ColumnName = Wheres.get(0);
-       Relational = Wheres.get(1);
-       Comparator = Wheres.get(2);
+       ColumnName = Wheres.get(0);//The name of the column we want to compare to
+       Relational = Wheres.get(1);//What type of relational operator we have
+       Comparator = Wheres.get(2);//the number or string that we are comparing to
     }
 
     if(Wheres.size() > 0){ //switch case based on comparison operator
-       if(Relational.equals("<"))
+       if(Relational.equals("<"))//Check for less than case
           Case = 1;
-       if(Relational.equals(">"))
+       else if(Relational.equals(">"))//Check for greater than case
           Case = 2;
-       if(Relational.equals("="))
+       else if(Relational.equals("="))//Check for equal to case
           Case = 3;
-       if(Relational.equals("<>"))
+       else if(Relational.equals("<>"))//Check for 'not equal to' case
           Case = 4;
-       if(Relational.equals("<="))
+       else if(Relational.equals("<="))//Less than or equal to
           Case = 5;
-       if(Relational.equals(">="))
+       else if(Relational.equals(">="))//Greater than or equal to
           Case = 6;
+       else{
+          System.out.print("Error, invalid relational operator.")//If it's none of the above, then we have a problem
+          return;
+       }
     }
 
-    while(!listOfTables.get(TableIndex).equals(TableName)){//Checking if the table exists
-       TableIndex++;
+    while(!listOfTables.get(TableIndex).equals(TableName)){//Checking if the table exists, also why we initialized to 0
+       TableIndex++;//Increase the index until we get a hit
        if(TableIndex == listOfTables.size()){//If you've gone too far, give up
-          System.out.println("Table not found.");
+          System.out.println("Table not found.");//Report the error and return
           return;
        }
     }
 
     if(Wheres.size() == 0){ //if there is no where condition
        if(PrintList.get(0).equals("*")){ //SELECT * (everything)
-          printEverything(TableIndex, listOfTables);
+          printEverything(TableIndex, listOfTables);//Calls the statement that prints indiscriminately
           return;
        }else{ //SELECT [columns]
           ArrayList indices = new ArrayList<Integer>(); //columns we want
           for(int k = 0; k < PrintList.size(); k++){//so long as there are more columns we want
-             int Persona = 0;
-             while(!listOfTables.get(TableIndex).list.get(Persona).equals(PrintList.get(k))){//while the column is not equal to what we want, increment
-                Persona++;
+             int ComlumnChecker = 0;//We're gonna cycle through columns, so we start at 0
+             while(!listOfTables.get(TableIndex).list.get(ColumnChecker).equals(PrintList.get(k))){//while the column is not equal to what we want, increment
+                ColumnChecker++;//Increase the column we're looking for
                 if(Persona == listOfTables.get(TableIndex).list.size()){//return if a column doesn't exist
                    System.out.println("Specified column not found.");
                    return;
                 }
-             indices.add(Persona); //the specified column was found - add the column we want
+             indices.add(ColumnChecker); //the specified column was found - add the column we want
              }//end while
           }//end for loop
-          printSomething(TableIndex, indices, listOfTables);
+          printSomething(TableIndex, indices, listOfTables);//Runs the print statement that selects columns
        }//end else
     }else{//Where clause
-       ArrayList FilteredColumns = new ArrayList<Integer>();
+       ArrayList FilteredColumns = new ArrayList<Integer>();//Create a list of the columns we want
        int ColumnNumber = 0;
        switch(Case){
           case 1://less than case
@@ -637,278 +641,277 @@ public class TSQLx{
                       Date tempDate;
                       String formattedRowValue;//going to compare the dates as strings
                       if(theDate.length() > 8){
-                         rowValue = parser.parse(theDate);
+                         rowValue = parser.parse(theDate);//If the date is stored with 4 characters in year
                       }else{
-                         rowValue = otherParser.parse(theDate);
+                         rowValue = otherParser.parse(theDate);//Versus if the date is stored with only 2 year characters
                       }
-                      formattedRowValue = formatter.format(rowValue);
-                      if(Comparator.length() > 8){
+                      formattedRowValue = formatter.format(rowValue);//Format our string
+                      if(Comparator.length() > 8){//Repeat for our Comparator
                          tempDate = parser.parse(Comparator);
                       }else{
                          tempDate = otherParser.parse(Comparator);
                       }
                       Comparator = formatter.format(tempDate);
-                      if(formattedRowValue.compareTo(Comparator) > 0){
+                      if(formattedRowValue.compareTo(Comparator) > 0){//And this checks if the where condition is fulfilled
                          FilteredColumns.add(RowNumber);
                       }
-                   }
-                   if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) > 0){
-                      FilteredColumns.add(RowNumber);
+                   }else if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) > 0){
+                      FilteredColumns.add(RowNumber);//This checks for any other case such as integer
                    }
                 }
              }
              break;
-          case 2://greater than? check later
+          case 2://greater than case
              ColumnNumber = 0;
-             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){
+             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                      System.out.println("Incorrect Date Format.");
+                      System.out.println("Incorrect Date Format.");//check for date format
                       return;
                    }
                    else{
-                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");
-                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
-                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");//4 digit years
+                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");//2 digit years
+                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");//formatted for comparison
                       String formattedDate = formatter.format(Comparator);
                       String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
-                      String formattedRowValue;
+                      String formattedRowValue;//going to compare the dates as strings
                       if(theDate.length() > 8){
-                         rowValue = parser.parse(theDate);
+                         rowValue = parser.parse(theDate);//If the date is stored with 4 characters in year
                       }else{
-                         rowValue = otherParser.parse(theDate);
+                         rowValue = otherParser.parse(theDate);//Versus if the date is stored with only 2 year characters
                       }
-                      formattedRowValue = formatter.format(rowValue);
-                      if(Comparator.length() > 8){
+                      formattedRowValue = formatter.format(rowValue);//Format our string
+                      if(Comparator.length() > 8){//Repeat for our Comparator
                          tempDate = parser.parse(Comparator);
                       }else{
                          tempDate = otherParser.parse(Comparator);
                       }
                       Comparator = formatter.format(tempDate);
-                      if(formattedRowValue.compareTo(Comparator) < 0){
+                      if(formattedRowValue.compareTo(Comparator) < 0){//And this checks if the where condition is fulfilled
                          FilteredColumns.add(RowNumber);
                       }
                    }
                 }else{
                    if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) < 0){
-                      FilteredColumns.add(RowNumber);
+                      FilteredColumns.add(RowNumber);//This checks for any other case such as integer
                    }
                 }
              }
              break;
           case 3://equal to
              ColumnNumber = 0;
-             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
+             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                      System.out.println("Incorrect Date Format.");
+                      System.out.println("Incorrect Date Format.");//check for date format
                       return;
                    }
                    else{
-                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");
-                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
-                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");//4 digit years
+                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");//2 digit years
+                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");//formatted for comparison
                       String formattedDate = formatter.format(Comparator);
                       String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
-                      String formattedRowValue;
+                      String formattedRowValue;//going to compare the dates as strings
                       if(theDate.length() > 8){
-                         rowValue = parser.parse(theDate);
+                         rowValue = parser.parse(theDate);//If the date is stored with 4 characters in year
                       }else{
-                         rowValue = otherParser.parse(theDate);
+                         rowValue = otherParser.parse(theDate);//If the date is stored with 2 characters in year
                       }
-                      formattedRowValue = formatter.format(rowValue);
-                      if(Comparator.length() > 8){
+                      formattedRowValue = formatter.format(rowValue);//Format our string
+                      if(Comparator.length() > 8){//Repeat for our Comparator
                          tempDate = parser.parse(Comparator);
                       }else{
                          tempDate = otherParser.parse(Comparator);
                       }
                       Comparator = formatter.format(tempDate);
-                      if(formattedRowValue.compareTo(Comparator) == 0){
+                      if(formattedRowValue.compareTo(Comparator) == 0){//And this checks if the where condition is fulfilled
                          FilteredColumns.add(RowNumber);
                       }
                    }
                 }
                 else if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().equals(Comparator)){
-                   FilteredColumns.add(RowNumber);
+                   FilteredColumns.add(RowNumber);//This checks for any other case such as integer
                 }
              }
              break;
           case 4://not equal
              ColumnNumber = 0;
-             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
+             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                      System.out.println("Incorrect Date Format.");
+                      System.out.println("Incorrect Date Format.");//check for date format
                       return;
                    }
                    else{
-                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");
-                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
-                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");//4 digit years
+                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");//2 digit years
+                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");//formatted for comparison
                       String formattedDate = formatter.format(Comparator);
                       String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
-                      String formattedRowValue;
+                      String formattedRowValue;//going to compare the dates as strings
                       if(theDate.length() > 8){
-                         rowValue = parser.parse(theDate);
+                         rowValue = parser.parse(theDate);//If the date is stored with 4 characters in year
                       }else{
-                         rowValue = otherParser.parse(theDate);
+                         rowValue = otherParser.parse(theDate);//If the date is stored with 2 characters in year
                       }
-                      formattedRowValue = formatter.format(rowValue);
-                      if(Comparator.length() > 8){
+                      formattedRowValue = formatter.format(rowValue);//Format our string
+                      if(Comparator.length() > 8){//Repeat for our Comparator
                          tempDate = parser.parse(Comparator);
                       }else{
                          tempDate = otherParser.parse(Comparator);
                       }
                       Comparator = formatter.format(tempDate);
-                      if(formattedRowValue.compareTo(Comparator) != 0){
+                      if(formattedRowValue.compareTo(Comparator) != 0){//And this checks if the where condition is fulfilled
                          FilteredColumns.add(RowNumber);
                       }
                    }
                 }
                 else if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().equals(Comparator)){
-                   FilteredColumns.add(RowNumber);
+                   FilteredColumns.add(RowNumber);//This checks for any other case such as integer
                 }
              }
              break;
           case 5://less than or equal to?
              ColumnNumber = 0;
-             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){
+             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                      System.out.println("Incorrect Date Format.");
+                      System.out.println("Incorrect Date Format.");//check for date format
                       return;
                    }
                    else{
-                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");
-                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
-                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");//4 digit years
+                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");//2 digit years
+                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");//formatted for comparison
                       String formattedDate = formatter.format(Comparator);
                       String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
-                      String formattedRowValue;
+                      String formattedRowValue;//going to compare the dates as strings
                       if(theDate.length() > 8){
-                         rowValue = parser.parse(theDate);
+                         rowValue = parser.parse(theDate);//If the date is stored with 4 characters in year
                       }else{
-                         rowValue = otherParser.parse(theDate);
+                         rowValue = otherParser.parse(theDate);//If the date is stored with 2 characters in year
                       }
-                      formattedRowValue = formatter.format(rowValue);
-                      if(Comparator.length() > 8){
+                      formattedRowValue = formatter.format(rowValue);//Format our string
+                      if(Comparator.length() > 8){//Repeat for our Comparator
                          tempDate = parser.parse(Comparator);
                       }else{
                          tempDate = otherParser.parse(Comparator);
                       }
                       Comparator = formatter.format(tempDate);
-                      if(formattedRowValue.compareTo(Comparator) >= 0){
+                      if(formattedRowValue.compareTo(Comparator) >= 0){//And this checks if the where condition is fulfilled
                          FilteredColumns.add(RowNumber);
                       }
                    }
                    }
                    else{
                    if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) >= 0){
-                      FilteredColumns.add(RowNumber);
+                      FilteredColumns.add(RowNumber);//This checks for any other case such as integer
                    }
                 }
              }
              break;
           case 6://greater than or equal to?
              ColumnNumber = 0;
-             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))
+             while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){
-                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){
+             for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
+                if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("String")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
                    return;
                 }
-                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){
+                else if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equals("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
-                      System.out.println("Incorrect Date Format.");
+                      System.out.println("Incorrect Date Format.");//check for date format
                       return;
                    }
                    else{
-                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");
-                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");
-                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                      SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy");//4 digit years
+                      SimpleDateFormat otherParser = new SimpleDateFormat("MM/dd/yy");//2 digit years
+                      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");//formatted for comparison
                       String formattedDate = formatter.format(Comparator);
                       String theDate = new String(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData());
                       Date rowValue;
                       Date tempDate;
                       String formattedRowValue;
                       if(theDate.length() > 8){
-                         rowValue = parser.parse(theDate);
+                         rowValue = parser.parse(theDate);//If the date is stored with 4 characters in year
                       }else{
-                         rowValue = otherParser.parse(theDate);
+                         rowValue = otherParser.parse(theDate);//If the date is stored with 2 characters in year
                       }
-                      formattedRowValue = formatter.format(rowValue);
-                      if(Comparator.length() > 8){
+                      formattedRowValue = formatter.format(rowValue);//Format our string
+                      if(Comparator.length() > 8){//Repeat for our Comparator
                          tempDate = parser.parse(Comparator);
                       }else{
                          tempDate = otherParser.parse(Comparator);
                       }
                       Comparator = formatter.format(tempDate);
-                      if(formattedRowValue.compareTo(Comparator) <= 0){
+                      if(formattedRowValue.compareTo(Comparator) <= 0){//And this checks if the where condition is fulfilled
                          FilteredColumns.add(RowNumber);
                       }
                    }
                    }
                    else{
                    if(listOfTables.get(TableIndex).list.get(ColumnNumber).list.get(RowNumber).getData().compareTo(Comparator) <= 0){
-                      FilteredColumns.add(RowNumber);
+                      FilteredColumns.add(RowNumber);//This checks for any other case such as integer
                    }
                 }
              }
              break;
        }
-       if(PrintList.get(0).equals("*")){
-          please(TableIndex, FilteredColumns, listOfTables);
+       if(PrintList.get(0).equals("*")){//This calls the select-all with a where printing function
+          whereAll(TableIndex, FilteredColumns, listOfTables);
           return;
        }else{
-          ArrayList indices = new ArrayList<Integer>();
+          ArrayList indices = new ArrayList<Integer>();//Checks specific columns
           int checking = 0;
-          for(int k = 0; k < PrintList.size(); k++){
-             int Persona = 0;
-             while(!listOfTables.get(TableIndex).list.get(k).equals(Wheres.get(Persona))){
-                Persona++;
-                if(Persona == listOfTables.get(TableIndex).list.size()){
-                   System.out.println("Excuse me, WHAT column?");
+          for(int k = 0; k < PrintList.size(); k++){//checking for printed columns
+             int ColumnChecking = 0;
+             while(!listOfTables.get(TableIndex).list.get(ColumnChecking).equals(PrintList.get(k))){//Cycle until the column is equal to the value in the PrintList
+                ColumnChecking++;
+                if(ColumnChecking == listOfTables.get(TableIndex).list.size()){
+                   System.out.println("Error, column not found");
                    return;
                 }
-             indices.add(Persona);
+             indices.add(ColumnChecking);
              }//end while
              k++;
           }//end forloop
-
+       whereSelective(TableIndex, FilteredColumns, indices, listOfTables);
        }//end else
     }
   }
 
-  public static void please(int TableIndex, ArrayList helpMe, ArrayList<Table> listOfTables){
+  public static void whereAll(int TableIndex, ArrayList filteredColumns, ArrayList<Table> listOfTables){
      //remind me to put the names of the columns up here some time
      for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
         for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
-           if(helpMe.contains(j)){
+           if(filteredColumns.contains(j)){
               if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                  System.out.print("\t\t");
               }else{
@@ -920,12 +923,12 @@ public class TSQLx{
      }
   }
 
-  public static void AbbassiWhy(int TableIndex, ArrayList helpMe, ArrayList<Integer> indices, ArrayList<Table> listOfTables){
+  public static void whereSelective(int TableIndex, ArrayList filteredColumns, ArrayList<Integer> indices, ArrayList<Table> listOfTables){
   //remind me to put the names of the columns up here some time
      for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
         if(indices.contains(i)){
            for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and here we got some rows
-              if(helpMe.contains(j)){
+              if(filteredColumns.contains(j)){
                  if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
                     System.out.print("\t\t");
                  }else{
