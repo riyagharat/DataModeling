@@ -347,7 +347,7 @@ class Table{
   }
   public ArrayList<Integer> combineWithoutDuplicates(ArrayList<Integer> rowsTBDAND, ArrayList<Integer> rowsTBDOR)		//combine while rejecting duplicates and sort numerically
   {
-	  for(int i = 0; i < rowsTBDAND.size(); i++)
+	  for(int i = 0; i < rowsTBDOR.size(); i++)
 		  if(!rowsTBDAND.contains(rowsTBDOR.get(i)))
 			  rowsTBDAND.add(rowsTBDOR.get(i));
 	  Collections.sort(rowsTBDAND);
