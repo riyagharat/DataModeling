@@ -1,10 +1,14 @@
 import java.text.ParseException;
+import java.io.*;
+import java.text.*;
+import java.util.*;
 // TSQLx.java
 public class TSQLx{
   public static void main(String [] args){
     Scanner reader = new Scanner(System.in);
     String userInput;
     int choice = 0;
+    ArrayList<Table> listOfTables = new ArrayList<Table>();
 
     do{
       System.out.print("TSQLx>");
@@ -57,15 +61,14 @@ public class TSQLx{
             break;
          case 3:
             // Calls the save method
-            // consoleInput.getArg0().get(0) is the database name
             System.out.println("SAVE");
-            saveDatabase(consoleInput.getArg0().get(0));
+            saveDatabase(listOfTables);
             break;
          case 4:
             // Calls the load method
             // consoleInput.getArg0().get(0) is the database name
             System.out.println("LOAD");
-            loadDatabase(consoleInput.getArg0().get(0));
+            loadDatabase(consoleInput.getArg0().get(0), listOfTables);
             break;
          case 5:
             // Calls the insert method
@@ -80,7 +83,11 @@ public class TSQLx{
             // consoleInput.getArg1().get(0) is the tablename
             // consoleInput.getArg2() is the conditions
             System.out.println("DELETE");
-            delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listOfTables);
+            try{
+             delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listOfTables);
+            }catch(ParseException e){
+               e.printStackTrace();
+            }
             break;
          case 7:
             // Calls the select method
@@ -90,13 +97,17 @@ public class TSQLx{
             // listOfTables is the arrayList of tables in the current database
             System.out.println("SELECT");
             try{
-              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, false);
             }catch(ParseException e){
             }
             break;
          case 8:
             // Calls the dateSelect method
             System.out.println("TSELECT");
+            try{
+              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, true);
+            }catch(ParseException e){
+            }
             break;
          case 9:
             // Calls the convert method
@@ -106,8 +117,8 @@ public class TSQLx{
             // listOfTables is the arrayList of tables in the current database
             System.out.println("CONVERT");
             String XSD = "";
-            if(!(getArg1.size() == 0)){
-              XSD = consoleInput.getArg1().get(0)
+            if(!(consoleInput.getArg1().size() == 0)){
+              XSD = consoleInput.getArg1().get(0);
             }else{
               XSD = "";
             }
@@ -121,7 +132,7 @@ public class TSQLx{
             // Calls the input method
             // consoleInput.getArg0().get(0) is the filename to be inserted
             System.out.println("INPUT");
-            inputFile(consoleInput.getArg0().get(0));
+            inputFile(consoleInput.getArg0().get(0), listOfTables);
             break;
          case 12:
             // Prints EXIT and exits the application
@@ -131,7 +142,7 @@ public class TSQLx{
             // Prints Reject and prompts the user to enter another input on the command line
             System.out.println("Reject");
             break;
-        
+
       }
     }while(choice!=12);
   }
@@ -143,13 +154,14 @@ public class TSQLx{
   }
 
   // Loads the file from an existing database file
-  public static void loadDatabase(String dataBaseName){
+  public static void loadDatabase(String dataBaseName, ArrayList<Table> listOfTables){
 	File dbFile = new File(dataBaseName + ".txt");
 	// check to see if the database exists
-	if (!dbFile.exists()) { 
+	if (!dbFile.exists()) {
 		System.out.println("ERROR: Database does not exist"); // database doesn't exist,
 		return;
 	}
+   try{
     Scanner fileIn = new Scanner(dbFile); // create scanner to read through the file
 	String userInput = "";
 	int choice = 0;
@@ -205,15 +217,14 @@ public class TSQLx{
             break;
          case 3:
             // Calls the save method
-            // consoleInput.getArg0().get(0) is the database name
             System.out.println("SAVE");
-            saveDatabase(consoleInput.getArg0().get(0));
+            saveDatabase(listOfTables);
             break;
          case 4:
             // Calls the load method
             // consoleInput.getArg0().get(0) is the database name
             System.out.println("LOAD");
-            loadDatabase(consoleInput.getArg0().get(0));
+            loadDatabase(consoleInput.getArg0().get(0), listOfTables);
             break;
          case 5:
             // Calls the insert method
@@ -228,7 +239,11 @@ public class TSQLx{
             // consoleInput.getArg1().get(0) is the tablename
             // consoleInput.getArg2() is the conditions
             System.out.println("DELETE");
-            delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listOfTables);
+            try{
+             delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listOfTables);
+            }catch(ParseException e){
+               e.printStackTrace();
+            }
             break;
          case 7:
             // Calls the select method
@@ -238,13 +253,17 @@ public class TSQLx{
             // listOfTables is the arrayList of tables in the current database
             System.out.println("SELECT");
             try{
-              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, false);
             }catch(ParseException e){
             }
             break;
          case 8:
             // Calls the dateSelect method
             System.out.println("TSELECT");
+            try{
+              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, true);
+            }catch(ParseException e){
+            }
             break;
          case 9:
             // Calls the convert method
@@ -254,8 +273,8 @@ public class TSQLx{
             // listOfTables is the arrayList of tables in the current database
             System.out.println("CONVERT");
             String XSD = "";
-            if(!(getArg1.size() == 0)){
-              XSD = consoleInput.getArg1().get(0)
+            if(!(consoleInput.getArg1().size() == 0)){
+              XSD = consoleInput.getArg1().get(0);
             }else{
               XSD = "";
             }
@@ -269,7 +288,7 @@ public class TSQLx{
             // Calls the input method
             // consoleInput.getArg0().get(0) is the filename to be inserted
             System.out.println("INPUT");
-            inputFile(consoleInput.getArg0().get(0));
+            inputFile(consoleInput.getArg0().get(0), listOfTables);
             break;
          case 12:
             // Prints EXIT and exits the application
@@ -279,10 +298,12 @@ public class TSQLx{
             // Prints Reject and prompts the user to enter another input on the command line
             System.out.println("Reject");
             break;
-        
+
       }
     }while(choice!=12);
-
+      }catch(FileNotFoundException e){
+      e.printStackTrace();
+   }
 	return;
   } // END loadDatabase
 
@@ -290,20 +311,16 @@ public class TSQLx{
   public static void create(String dataBaseName){
    File file = new File(dataBaseName + ".txt");
     if(file.exists()){
-      try{
         System.out.println("ERROR: Database specified exists");
-        file.delete();
-      }catch(FileNotFoundException e){
-        e.printStackTrace();
-      }
+    //    file.delete();
     }
   }
-  
+
   // Overloaded create method, this one will create a table with the given table name
   // and its field names and field definitions
-  public static void create(String dataBaseName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs){
+  public static void create(String tableName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs, ArrayList<Table> listOfTables){
     Table newTable = new Table(tableName, fieldNames, fieldDefs);
-    listOfTables.add(newTable)
+    listOfTables.add(newTable);
   }
 
   // Drops the table from the arraylist if it matches the table name
@@ -319,11 +336,7 @@ public class TSQLx{
   public static void dropDB(String dataBaseName){
     File file = new File(dataBaseName + ".txt");
     if(file.exists()){
-      try{
-        file.delete();
-      }catch(FileNotFoundException e){
-        e.printStackTrace();
-      }
+      file.delete();
     }else{
       System.out.println("ERROR: Database specified does not exist");
     }
@@ -337,10 +350,12 @@ public class TSQLx{
   }
 
   // The SQL delete command, deletes from the table
-  public static void delete(String tableName, ArrayList<String> conditions, ArrayList<Table> listofTables){
-	for(int i = 0; i < listOfTables.size(); i++)
-	 	if((listOfTables.get(i).getName()).equals(tableName))
+  public static void delete(String tableName, ArrayList<String> conditions, ArrayList<Table> listOfTables)throws ParseException{
+	for(int i = 0; i < listOfTables.size(); i++){
+	 	if((listOfTables.get(i).getName()).equals(tableName)){
 			listOfTables.get(i).delete(conditions);
+      }
+    }
   }
 
   // Reads if there are two files or one and accordingly calls the right method
@@ -478,12 +493,12 @@ public class TSQLx{
           fieldDefs.add(fieldDef);
         }
       }
-      
+
       // Creates a table with the given field names and field definitions
       Table newTable = new Table(XSDList.get(0).getTableName(), fieldNames, fieldDefs);
       // Adds the table to listOfTables
       listOfTables.add(newTable);
-      
+
       // Checks the XML file if its currently looking at a record or not
       boolean check = false;
       // Stores the list of attributeNames
@@ -575,7 +590,7 @@ public class TSQLx{
         e.printStackTrace();
     }
   }
-  
+
   // Given only an XML file, the XML file is parsed and the INSERT INTO commands are generated and stored in
   // the current database under a separate table that should be existing
   public static void oneFile(File XMLfile, String inputFileName){
@@ -685,7 +700,7 @@ public class TSQLx{
     }
   }
 
-  public static void inputFile(String fileName){
+  public static void inputFile(String fileName, ArrayList<Table> listOfTables){
     File file = new File((fileName + ".txt"));
     if(file.exists()){
       try{
@@ -702,7 +717,7 @@ public class TSQLx{
                // fileInput.getArg1() is the Column names
                // fileInput.getArg2() is the values
                System.out.println("INSERT");
-               insert(fileInput.getArg0().get(0), fileInput.getArg1(), fileInput.getArg2());
+               insert(fileInput.getArg0().get(0), fileInput.getArg1(), fileInput.getArg2(), listOfTables);
                break;
           }
         }
@@ -721,7 +736,8 @@ public class TSQLx{
     String ColumnName = "";//initialize these to nothing
     String Relational = "";//that way the code doesn't get tripped up later
     String Comparator = "";//if there's a where condition, these'll get changed
-    int Case;//If there's a where, this int will determine what part of the switch we do
+    int Case = 0;//If there's a where, this int will determine what part of the switch we do
+    int ColumnChecker = 0;
     if(Wheres.size() > 0){//if there is a where condition, get the parameters
        ColumnName = Wheres.get(0);//The name of the column we want to compare to
        Relational = Wheres.get(1);//What type of relational operator we have
@@ -742,7 +758,7 @@ public class TSQLx{
        else if(Relational.equals(">="))//Greater than or equal to
           Case = 6;
        else{
-          System.out.print("Error, invalid relational operator.")//If it's none of the above, then we have a problem
+          System.out.print("Error, invalid relational operator.");//If it's none of the above, then we have a problem
           return;
        }
     }
@@ -765,7 +781,7 @@ public class TSQLx{
              int ComlumnChecker = 0;//We're gonna cycle through columns, so we start at 0
              while(!listOfTables.get(TableIndex).list.get(ColumnChecker).equals(PrintList.get(k))){//while the column is not equal to what we want, increment
                 ColumnChecker++;//Increase the column we're looking for
-                if(Persona == listOfTables.get(TableIndex).list.size()){//return if a column doesn't exist
+                if(ColumnChecker == listOfTables.get(TableIndex).list.size()){//return if a column doesn't exist
                    System.out.println("Specified column not found.");
                    return;
                 }
@@ -1066,8 +1082,8 @@ public class TSQLx{
     }
   }
 
-  public static void whereAll(int TableIndex, ArrayList filteredColumns, ArrayList<Table> listOfTables){
-     if(dateYes = 1){
+  public static void whereAll(int TableIndex, ArrayList filteredColumns, ArrayList<Table> listOfTables, boolean dateYes){
+     if(dateYes == true){
         //remind me to put the names of the columns up here some time
         for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of records
            for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
@@ -1094,12 +1110,13 @@ public class TSQLx{
               }
            }
            System.out.print("\n");
-        } 
+        }
+      }
   }
 
-  public static void whereSelective(int TableIndex, ArrayList filteredColumns, ArrayList<Integer> indices, 
-                                    ArrayList<Table> listOfTables, bool dateYes){
-     if(dateYes = 1){
+  public static void whereSelective(int TableIndex, ArrayList filteredColumns, ArrayList<Integer> indices, ArrayList<Table> listOfTables, boolean dateYes){
+
+     if(dateYes == true){
         //remind me to put the names of the columns up here some time
         for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
            if(indices.contains(i)){
@@ -1133,10 +1150,11 @@ public class TSQLx{
         }
      return;
   }
+  }
 
-  public static void printEverything(int TableIndex, ArrayList<Table> listOfTables, bool dateYes){
+  public static void printEverything(int TableIndex, ArrayList<Table> listOfTables, boolean dateYes){
      //remind me to put the names of the columns up here some time
-     if(dateYes = 1){
+     if(dateYes == true){
         for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for number of columns
            for(int j = 0; j < listOfTables.get(TableIndex).list.get(i).list.size(); i++){//and this loop is getting those records
               if(listOfTables.get(TableIndex).list.get(i).list.get(j).getData() == null){//just tab twice for empty
@@ -1158,10 +1176,11 @@ public class TSQLx{
            }
            System.out.print("\n");
         }
+        }
   }
 
-  public static void printSomething(int TableIndex, ArrayList<Integer> indices, ArrayList<Table> listOfTables, bool dateYes){
-     if(dateYes = 1){
+  public static void printSomething(int TableIndex, ArrayList<Integer> indices, ArrayList<Table> listOfTables, boolean dateYes){
+     if(dateYes == true){
         //remind me to put the names of the columns up here some time
         for(int i = 0; i < listOfTables.get(TableIndex).list.size(); i++){//this for loop's checking for column size
            if(indices.contains(i)){
@@ -1191,7 +1210,7 @@ public class TSQLx{
         }
      }
   }
-  
+
   public static void dateSelect(){
 
   }
