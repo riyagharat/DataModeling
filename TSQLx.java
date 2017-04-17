@@ -169,7 +169,7 @@ public class TSQLx{
     do{
       System.out.print("TSQLx Loading>");
       // reads input from the console
-      userInput = fileIn.nextLine();
+      userInput = fileIn.hasNextLine();
       // passes the user input to the Parser
       Parser consoleInput = new Parser(userInput);
       // returns the parsed input as a choice to the main function
