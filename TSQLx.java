@@ -4,19 +4,19 @@ import java.text.*;
 import java.util.*;
 // TSQLx.java
 public class TSQLx{
+  static File file = new File("");
+  static FileWriter fileWriter;
+  static String userInput = "";
   public static void main(String [] args){
     Scanner reader = new Scanner(System.in);
-    String userInput;
+    userInput = "";
     int choice = 0;
     ArrayList<Table> listOfTables = new ArrayList<Table>();
 
     do{
       System.out.print("TSQLx>");
       // reads input from the console
-      if(reader.hasNextLine()){
-         userInput = reader.nextLine();
-      }else
-	      userInput = "exit";
+      userInput = reader.nextLine();
       // passes the user input to the Parser
       Parser consoleInput = new Parser(userInput);
       // returns the parsed input as a choice to the main function
@@ -166,26 +166,22 @@ public class TSQLx{
 	}
    try{
     Scanner fileIn = new Scanner(dbFile); // create scanner to read through the file
-	String userInput;
+	userInput = "";
 	int choice = 0;
-
+  while(fileIn.hasNextLine()){
     do{
-      System.out.print("TSQLx Loading>");
+      //System.out.print("TSQLx Loading>");
       // reads input from the console
       if(fileIn.hasNextLine()){
-      	userInput = fileIn.nextLine();
-      }else
-	      userInput = "exit";
+        userInput = fileIn.nextLine();
+      }else{
+        choice = 12;
+      }
       // passes the user input to the Parser
       Parser consoleInput = new Parser(userInput);
       // returns the parsed input as a choice to the main function
       choice = consoleInput.Scan();
       switch(choice){
-         /*
-            fromat:
-               call function name
-               params = (consoleInput.getArg0(),...Arg1(),...Arg2());
-         */
         case 0:
             // locates an error and displays where it is in the SQL statment
             System.out.print("      ");
@@ -307,6 +303,7 @@ public class TSQLx{
 
       }
     }while(choice!=12);
+  }
       }catch(FileNotFoundException e){
       e.printStackTrace();
    }
@@ -315,14 +312,15 @@ public class TSQLx{
 
   // Overloaded create method, this one will create a database file with the given database name
   public static void create(String dataBaseName){
-   File file = new File(dataBaseName + ".txt");
+   TSQLx.file = new File((dataBaseName + ".txt"));
     if(file.exists()){
         System.out.println("ERROR: Database specified exists");
     //    file.delete();
     }else{
       try{
-    	   FileWriter fw = new FileWriter(file);
-    	    fw.close();
+    	   TSQLx.fileWriter = new FileWriter(file, true);
+         TSQLx.fileWriter.write(userInput);
+    	   fileWriter.close();
       }catch(IOException e){
         e.printStackTrace();
       }
@@ -334,6 +332,13 @@ public class TSQLx{
   public static void create(String tableName, ArrayList<String> fieldNames, ArrayList<String> fieldDefs, ArrayList<Table> listOfTables){
     Table newTable = new Table(tableName, fieldNames, fieldDefs);
     listOfTables.add(newTable);
+    try{
+       TSQLx.fileWriter = new FileWriter(file, true);
+       TSQLx.fileWriter.write(userInput);
+       fileWriter.close();
+    }catch(IOException e){
+      e.printStackTrace();
+    }
   }
 
   // Drops the table from the arraylist if it matches the table name
@@ -342,6 +347,13 @@ public class TSQLx{
       if((listOfTables.get(i).getName()).equals(tableName)){
         listOfTables.remove(i);
       }
+    }
+    try{
+       TSQLx.fileWriter = new FileWriter(file, true);
+       TSQLx.fileWriter.write(userInput);
+       fileWriter.close();
+    }catch(IOException e){
+      e.printStackTrace();
     }
   }
 
@@ -360,19 +372,25 @@ public class TSQLx{
 	 for(int i = 0; i < listOfTables.size(); i++)
 	 	if((listOfTables.get(i).getName()).equals(tableName))
 			listOfTables.get(i).insert(fields, values);
-			
+
   }
 
   // The SQL delete command, deletes from the table
   public static void delete(String tableName, ArrayList<String> conditions, ArrayList<Table> listOfTables)throws ParseException{
-	for(int i = 0; i < listOfTables.size(); i++){
-	 	if((listOfTables.get(i).getName()).equals(tableName))
-			listOfTables.get(i).delete(conditions);
-
-      
+  	for(int i = 0; i < listOfTables.size(); i++){
+  	 	if((listOfTables.get(i).getName()).equals(tableName)){
+  			listOfTables.get(i).delete(conditions);
+      }
+    }
+    try{
+       TSQLx.fileWriter = new FileWriter(file, true);
+       TSQLx.fileWriter.write(userInput);
+       fileWriter.close();
+    }catch(IOException e){
+      e.printStackTrace();
     }
   }
-	
+
 
   // Reads if there are two files or one and accordingly calls the right method
   public static void convertXML(String XMLFileName, String XSDFileName, String inputFileName, ArrayList<Table> listOfTables){
@@ -383,6 +401,13 @@ public class TSQLx{
       File XSDfile = new File(XSDFileName + ".xsd");
       File XMLfile = new File(XMLFileName + ".xml");
       bothFiles(XSDfile, XMLfile, inputFileName, listOfTables);
+    }
+    try{
+       TSQLx.fileWriter = new FileWriter(file, true);
+       TSQLx.fileWriter.write(userInput);
+       fileWriter.close();
+    }catch(IOException e){
+      e.printStackTrace();
     }
   }
 
@@ -754,6 +779,13 @@ public class TSQLx{
 
   public static void select(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
     ArrayList<Table> listOfTables, boolean dateYes) throws ParseException{ // Begin select statement
+      try{
+         TSQLx.fileWriter = new FileWriter(file, true);
+         TSQLx.fileWriter.write(userInput);
+         fileWriter.close();
+      }catch(IOException e){
+        e.printStackTrace();
+      }
     String TableName = TableNamer.get(0); //retrieve table name from arraylist
     int TableIndex = 0;//By default we're gonna start at 0, this'll be changed later
     String ColumnName = "";//initialize these to nothing
@@ -824,7 +856,7 @@ public class TSQLx{
 	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
 		System.out.println("Error, incompatible type comparison");
 		return;
-	     } 
+	     }
 	     if(Comparator.indexOf(".") >= 0 && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
@@ -875,7 +907,7 @@ public class TSQLx{
 	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
 		System.out.println("Error, incompatible type comparison");
 		return;
-	     } 
+	     }
 	     if(Comparator.indexOf(".") >= 0 && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
@@ -932,7 +964,7 @@ public class TSQLx{
 	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
 		System.out.println("Error, incompatible type comparison");
 		return;
-	     } 
+	     }
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
@@ -981,7 +1013,7 @@ public class TSQLx{
 	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
 		System.out.println("Error, incompatible type comparison");
 		return;
-	     } 
+	     }
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Date")){//checking for dates
                    if(Comparator.matches("\\d\\d\\/\\d\\d\\/(\\d\\d)?\\d\\d") == false){
@@ -1030,7 +1062,7 @@ public class TSQLx{
 	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
 		System.out.println("Error, incompatible type comparison");
 		return;
-	     } 
+	     }
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
@@ -1085,7 +1117,7 @@ public class TSQLx{
 	     if (Comparator.contains("[a-zA-Z]+") == true && !listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){
 		System.out.println("Error, incompatible type comparison");
 		return;
-	     } 
+	     }
              for(int RowNumber = 0; RowNumber < listOfTables.get(TableIndex).list.get(ColumnNumber).list.size(); RowNumber++){//finding the right row
                 if(listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("char")){//error if String type
                    System.out.println("Error. Cannot compare strings with less than.");
