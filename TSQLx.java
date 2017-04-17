@@ -137,8 +137,8 @@ public class TSQLx{
   }
 
   // Saves the database to the file
-  public static void saveDatabase(String dataBaseName){
-	tableList = new ArrayList<Table>(); // flush tables from internal memory
+  public static void saveDatabase(ArrayList<Table> tablesList){
+	tablesList.clear(); // flush tables from internal memory
 	return;
   }
 
