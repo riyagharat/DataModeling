@@ -73,14 +73,14 @@ public class TSQLx{
             // consoleInput.getArg1() is the Column names
             // consoleInput.getArg2() is the values
             System.out.println("INSERT");
-            insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2(), listofTables);
+            insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
             break;
          case 6:
             // Calls the delete method
             // consoleInput.getArg1().get(0) is the tablename
             // consoleInput.getArg2() is the conditions
             System.out.println("DELETE");
-            delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listofTables);
+            delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listOfTables);
             break;
          case 7:
             // Calls the select method
@@ -221,14 +221,14 @@ public class TSQLx{
             // consoleInput.getArg1() is the Column names
             // consoleInput.getArg2() is the values
             System.out.println("INSERT");
-            insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2(), listofTables);
+            insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
             break;
          case 6:
             // Calls the delete method
             // consoleInput.getArg1().get(0) is the tablename
             // consoleInput.getArg2() is the conditions
             System.out.println("DELETE");
-            delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listofTables);
+            delete(consoleInput.getArg1().get(0), consoleInput.getArg2(), listOfTables);
             break;
          case 7:
             // Calls the select method
@@ -330,7 +330,7 @@ public class TSQLx{
   }
 
   // The SQL insert command, inserts into the database
-  public static void insert(String tableName, ArrayList<String> fields, ArrayList<String> values, ArrayList<Table> listofTables){
+  public static void insert(String tableName, ArrayList<String> fields, ArrayList<String> values, ArrayList<Table> listOfTables){
 	 for(int i = 0; i < listOfTables.size(); i++)
 	 	if((listOfTables.get(i).getName()).equals(tableName))
 			listOfTables.get(i).insert(fields, values);
