@@ -162,7 +162,7 @@ class Table{
 		  //search for correct column name insert
 	  {
 		  int colIndex = 0;
-		  while(colIndex < this.list.size() - 1 && !(this.list.get(colIndex).getName().equals(fields.get(i))))		
+		  while(colIndex < this.list.size() - 2 && !(this.list.get(colIndex).getName().equals(fields.get(i))))		
 			  //while not correct column	  
 			  colIndex++;
 		 
