@@ -902,7 +902,7 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-	     if(Comparator.indexOf(".") && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     if(Comparator.indexOf(".") >= 0 && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
 	     }
@@ -951,7 +951,7 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-	     if(Comparator.indexOf(".") == true && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     if(Comparator.indexOf(".") >= 0 && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
 	     }
@@ -1000,7 +1000,7 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-   	     if(Comparator.indexOf(".") && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+   	     if(Comparator.indexOf(".") >= 0 && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
 	     }
@@ -1055,7 +1055,7 @@ public class TSQLx{
              ColumnNumber = 0;
              while(!listOfTables.get(TableIndex).list.get(ColumnNumber).equals(ColumnName))//while we are in the wrong column, move
                 ColumnNumber++;
-	     if(Comparator.indexOf(".") && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
+	     if(Comparator.indexOf(".") >= 0 && listOfTables.get(TableIndex).list.get(ColumnNumber).getType().equalsIgnoreCase("Integer")) {
 	     	System.out.println("Error, incompatible type comparison");
 		return;
 	     }
