@@ -138,13 +138,153 @@ public class TSQLx{
 
   // Saves the database to the file
   public static void saveDatabase(String dataBaseName){
-
+	tableList = new ArrayList<Table>(); // flush tables from internal memory
+	return;
   }
 
   // Loads the file from an existing database file
   public static void loadDatabase(String dataBaseName){
+	File dbFile = new File(dataBaseName + ".txt");
+	// check to see if the database exists
+	if (!dbFile.exists()) { 
+		System.out.println("ERROR: Database does not exist"); // database doesn't exist,
+		return;
+	}
+    Scanner fileIn = new Scanner(dbFile); // create scanner to read through the file
+	String userInput = "";
+	int choice = 0;
 
-  }
+    do{
+      System.out.print("TSQLx Loading>");
+      // reads input from the console
+      userInput = fileIn.nextLine();
+      // passes the user input to the Parser
+      Parser consoleInput = new Parser(userInput);
+      // returns the parsed input as a choice to the main function
+      choice = consoleInput.Scan();
+      switch(choice){
+         /*
+            fromat:
+               call function name
+               params = (consoleInput.getArg0(),...Arg1(),...Arg2());
+         */
+        case 0:
+            // locates an error and displays where it is in the SQL statment
+            System.out.print("      ");
+            for(int k = 0; k<consoleInput.getError(); k++){
+               System.out.print(" ");
+            }
+            System.out.println("*");
+            System.out.println("Error at index: "+consoleInput.getError());
+            break;
+         case 1:
+            // Calls the create method
+            // consoleInput.getArg0().get(0) is tablename or dataBaseName
+            // consoleInput.getArg1() is the Column names
+            // consoleInput.getArg2() is the fieldDefs
+            // listOfTables is the arrayList of tables in the current database
+            System.out.println("CREATE");
+            if(!(consoleInput.getArg1().size() == 0)){
+              create((consoleInput.getArg0().get(0)), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+            }else{
+              create(consoleInput.getArg0().get(0));
+            }
+            break;
+         case 2:
+            // Calls the drop method
+            // consoleInput.getArg1().get(0) is tablename
+            // consoleInput.getArg0() is the database name
+            // consoleInput.getArg2() is the fieldDefs
+            // listOfTables is the arrayList of tables in the current database
+            System.out.println("DROP");
+            if(!(consoleInput.getArg1().size() == 0)){
+              dropT(consoleInput.getArg1().get(0), listOfTables);
+            }else{
+              dropDB(consoleInput.getArg0().get(0));
+            }
+            break;
+         case 3:
+            // Calls the save method
+            // consoleInput.getArg0().get(0) is the database name
+            System.out.println("SAVE");
+            saveDatabase(consoleInput.getArg0().get(0));
+            break;
+         case 4:
+            // Calls the load method
+            // consoleInput.getArg0().get(0) is the database name
+            System.out.println("LOAD");
+            loadDatabase(consoleInput.getArg0().get(0));
+            break;
+         case 5:
+            // Calls the insert method
+            // consoleInput.getArg0().get(0) is tablename
+            // consoleInput.getArg1() is the Column names
+            // consoleInput.getArg2() is the values
+            System.out.println("INSERT");
+            insert(consoleInput.getArg0().get(0), consoleInput.getArg1(), consoleInput.getArg2());
+            break;
+         case 6:
+            // Calls the delete method
+            // consoleInput.getArg1().get(0) is the tablename
+            // consoleInput.getArg2() is the conditions
+            System.out.println("DELETE");
+            delete(consoleInput.getArg1().get(0), consoleInput.getArg2());
+            break;
+         case 7:
+            // Calls the select method
+            // consoleInput.getArg0() is * or conditions
+            // consoleInput.getArg1() is the table name
+            // consoleInput.getArg2() is the where condition
+            // listOfTables is the arrayList of tables in the current database
+            System.out.println("SELECT");
+            try{
+              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables);
+            }catch(ParseException e){
+            }
+            break;
+         case 8:
+            // Calls the dateSelect method
+            System.out.println("TSELECT");
+            break;
+         case 9:
+            // Calls the convert method
+            // consoleInput.getArg0().get(0) is the XML filename
+            // consoleInput.getArg1().get(0) is the XSD filename
+            // consoleInput.getArg2().get(0) is the filename to store the inserts
+            // listOfTables is the arrayList of tables in the current database
+            System.out.println("CONVERT");
+            String XSD = "";
+            if(!(getArg1.size() == 0)){
+              XSD = consoleInput.getArg1().get(0)
+            }else{
+              XSD = "";
+            }
+            convertXML(consoleInput.getArg0().get(0), XSD, consoleInput.getArg2().get(0), listOfTables);
+            break;
+         case 10:
+            // Currently Autocommiting
+            System.out.println("COMMIT");
+            break;
+         case 11:
+            // Calls the input method
+            // consoleInput.getArg0().get(0) is the filename to be inserted
+            System.out.println("INPUT");
+            inputFile(consoleInput.getArg0().get(0));
+            break;
+         case 12:
+            // Prints EXIT and exits the application
+            System.out.println("EXIT");
+            break;
+         default:
+            // Prints Reject and prompts the user to enter another input on the command line
+            System.out.println("Reject");
+            break;
+        
+      }
+    }while(choice!=12);
+
+	return;
+  } // END loadDatabase
 
   // Overloaded create method, this one will create a database file with the given database name
   public static void create(String dataBaseName){
