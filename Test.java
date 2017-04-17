@@ -71,7 +71,7 @@ class Parser{
    //static final variables are used for both the regex, and the keywords listings
    public static final String params = "((([a-zA-z]+)|([0-9]+(\\.[0-9]+)?)|([^a-zA-Z0-9\\s])))";
    public static final String[] keywords = {"CREATE","DROP","SAVE","LOAD","INSERT","SELECT",
-      "tSELECT","CONVERT","COMMIT","INTEGER","INPUT", "DELETE","NUMBER","CHARACTER","DATE","INTO","VALUES",
+      "tSELECT","CONVERT","COMMIT","INT","INPUT", "DELETE","NUMBER","CHAR","DATE","INTO","VALUES",
       "FROM","WHERE","XML","XSD","AS", "DATABASE", "TABLE", "AND", "OR"};
    ArrayList<Token> tokens;
    //boolean isParsed;
@@ -397,9 +397,9 @@ class Parser{
    
    void i(){
       temp = "";
-      if(tokens.get(j).getName().equalsIgnoreCase("integer")){
+      if(tokens.get(j).getName().equalsIgnoreCase("INT")){
          temp += tokens.get(j).getName();
-         acc("integer",true);
+         acc("INT",true);
          j();
          arg2.add(temp);
       }
@@ -409,9 +409,9 @@ class Parser{
          k();
          arg2.add(temp);
       }
-      else if(tokens.get(j).getName().equalsIgnoreCase("character")){
+      else if(tokens.get(j).getName().equalsIgnoreCase("CHAR")){
          temp += tokens.get(j).getName();
-         acc("character", true);
+         acc("CHAR", true);
          temp += tokens.get(j).getName();
          acc("(",false);
          temp += tokens.get(j).getName();
