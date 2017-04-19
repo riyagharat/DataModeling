@@ -20,6 +20,7 @@ public class TSQLx{
       // passes the user input to the Parser
       Parser consoleInput = new Parser(userInput);
       // returns the parsed input as a choice to the main function
+      
       choice = consoleInput.Scan();
       switch(choice){
          /*
@@ -108,7 +109,7 @@ public class TSQLx{
             // Calls the dateSelect method
             System.out.println("TSELECT");
             try{
-              select(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, true);
+              select1(consoleInput.getArg0(), consoleInput.getArg1(), consoleInput.getArg2(), listOfTables, true);
             }catch(ParseException e){
             }
             break;
@@ -778,7 +779,7 @@ public class TSQLx{
   	{
 	  for(int i = 0; i < listOfTables.size(); i++)
 		 	if((listOfTables.get(i).getName()).equals(TableNamer.get(0)))
-				listOfTables.get(i).select(Wheres);
+				listOfTables.get(i).select(Wheres, dateYes);
  	}
 
   public static void select(ArrayList<String> PrintList, ArrayList<String> TableNamer, ArrayList<String> Wheres,
