@@ -30,7 +30,7 @@ class Table{
     	    	//if float, set size, decimal size
     	    	{
     	    		newCol.setDecimal(Integer.parseInt(types.get(i).substring(types.get(i).indexOf(")") - 1, types.get(i).indexOf(")"))));
-    	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(")") - 1)));
+    	    		newCol.setSize(Integer.parseInt(types.get(i).substring(types.get(i).indexOf("(") + 1, types.get(i).indexOf(")") - 2)));
 
     	    	}
     	    	else	//else set size
@@ -390,18 +390,32 @@ class Table{
 		 }
 
   }
-  public void select(ArrayList<String> conditions) throws ParseException
+  public void select(ArrayList<String> conditions, Boolean dates) throws ParseException
   {
 	  if(conditions.isEmpty())		//if no conditions specified, delete all data from this table
 	  {
-	      for(int p = 0; p< this.list.size() ; p++)
-	    	  System.out.print(this.list.get(p).getName() + "\t");
-	      System.out.println();
-	      System.out.print("------------------------------------------------------");
-		  for(int k = 0; k <this.list.get(0).list.size(); k ++)
-				displayTable(k);
-		  System.out.println();
-		  return;
+		  if(dates == true)
+		  {
+		      for(int p = 0; p< this.list.size() ; p++)
+		    	  System.out.print(this.list.get(p).getName() + "\t\t\t\t\t\t");
+		      System.out.println();
+		      System.out.print("---------------------------------------------------------------------------------------");
+			  for(int k = 0; k <this.list.get(0).list.size(); k ++)
+					displayTableWDates(k);
+			  System.out.println();
+			  return;
+		  }
+		  else
+		  {
+		      for(int p = 0; p< this.list.size() ; p++)
+		    	  System.out.print(this.list.get(p).getName() + "\t\t");
+		      System.out.println();
+		      System.out.print("-----------------------------------------------------------------");
+			  for(int k = 0; k <this.list.get(0).list.size(); k ++)
+					displayTable(k);
+			  System.out.println();
+			  return;
+		  }
 	  }
 	  System.out.println("Selecting all rows where " + conditions.toString());
 	  ArrayList<Integer> rowsToBeDeletedAND = new ArrayList<Integer>();
@@ -494,13 +508,26 @@ class Table{
 		 }
 		 else
 		 {
-		      for(int p = 0; p< this.list.size() ; p++)
-		    	  System.out.print(this.list.get(p).getName() + "\t");
-		      System.out.println();
-		      System.out.print("------------------------------------------------------");
-			 for(int k = rowsTBD.size() - 1; k >= 0; k --)
-				 displayTable(rowsTBD.get(k));
-			 System.out.println();
+			 if(dates == true)
+			 {
+			      for(int p = 0; p< this.list.size() ; p++)
+			    	  System.out.print(this.list.get(p).getName() + "\t\t\t\t\t\t\t");
+			      System.out.println();
+			      System.out.print("-----------------------------------------------------------------------------------");
+				 for(int k = rowsTBD.size() - 1; k >= 0; k --)
+					 displayTableWDates(rowsTBD.get(k));
+				 System.out.println();
+			 }
+			 else
+			 {
+			      for(int p = 0; p< this.list.size() ; p++)
+			    	  System.out.print(this.list.get(p).getName() + "\t\t");
+			      System.out.println();
+			      System.out.print("------------------------------------------------------");
+				 for(int k = rowsTBD.size() - 1; k >= 0; k --)
+					 displayTable(rowsTBD.get(k));
+				 System.out.println();
+			 }
 
 		 }
 
@@ -596,7 +623,16 @@ class Table{
 	  System.out.println();
 
       for(int j = 0; j < this.list.size(); j++)
-    		  System.out.print(this.list.get(j).list.get(integer).getData() + "\t");
+    		  System.out.print(this.list.get(j).list.get(integer).getData() + "\t\t");
+
+
+  }
+  public void displayTableWDates(Integer integer)
+  {
+	  System.out.println();
+
+      for(int j = 0; j < this.list.size(); j++)
+    		  System.out.print(this.list.get(j).list.get(integer).getData() + " " + this.list.get(j).list.get(integer).getDateTime() + "\t\t");
 
 
   }
